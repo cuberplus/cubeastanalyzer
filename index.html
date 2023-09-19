@@ -584,6 +584,43 @@
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-currency-dollar"></i>
                     </div>
+                    <input type="file" id="fileinput" />
+
+
+                    <script>
+                    function readSingleFile(evt) {
+                        let f = evt.target.files[0]; 
+                        if (f) {
+                        let r = new FileReader();
+                        r.onload = function(e) { 
+                            let contents = e.target.result;
+                            console.log("contents is ", contents);
+
+                                                    /*
+                            document.write("File Uploaded! <br />" + "name: " + f.name + "<br />" + "content: " + contents + "<br />" + "type: " + f.type + "<br />" + "size: " + f.size + " bytes <br />");
+                       */
+
+                                                    /*
+                            let lines = contents.split("\n");
+                            let output = [];
+                            for (let i=0; i<lines.length; i++){
+                                output.push("<tr><td>" + lines[i].split(",").join("</td><td>") + "</td></tr>");
+                            }
+                            output = "<table>" + output.join("") + "</table>";
+                            document.write(output);
+                       */
+                        }
+                        r.readAsText(f);
+                        //console.log("here", output);
+                        //document.write(output);
+                        } else { 
+                        alert("Failed to load file");
+                        }
+                    }
+                    document.getElementById('fileinput').addEventListener('change', readSingleFile);
+                    </script>
+
+
                     <div class="ps-3">
                       <h6>$3,264</h6>
                       <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
