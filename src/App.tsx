@@ -25,8 +25,7 @@ function App() {
             obj.time = Number(item.at(index));
             break;
           case "date":
-            // TODO: I think this is the wrong time zone, should be UTC
-            obj.date = moment(item.at(index), 'YYYY-MM-DD hh:mm:ss').toDate()
+            obj.date = moment.utc(item.at(index), 'YYYY-MM-DD hh:mm:ss').toDate()
             break;
           default:
             //console.log(key + " is an unused column");
