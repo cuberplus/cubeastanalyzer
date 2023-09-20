@@ -12,7 +12,18 @@ function App() {
         text?.then( (value: string) => {
           // right here, value is my csv as a string. This now needs to be parsed into a cool object
           console.log("CSV text is ", value);
+          console.log("Parsed csv is ", parseCsv(value));
         })
+    }
+
+    const parseCsv = (text: string) => {
+      let x = parse;
+      console.log("thing is ", x);
+      //var myParser = parse(text, {delimiter: ','}, function(data,err) {
+      //  console.log("d", data);
+      //})
+
+      //console.log("p", myParser);
     }
 
   return (
