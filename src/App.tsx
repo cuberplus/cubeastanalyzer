@@ -5,7 +5,8 @@ import './App.css';
 function App() {
 
   interface Solve {
-    time: number
+    time: number,
+    date: Date
   }
 
   function csvToArr(stringVal: string, splitter: string): Solve[] {
@@ -15,12 +16,16 @@ function App() {
       .map((item) => item.split(splitter));
   
     const formedArr = rest.map((item) => {
-      const obj: Solve = {time: 0};
+      const obj: Solve = {time: 0, date: new Date()};
       keys.forEach((key, index) => {
         // TODO: need this for every column
         switch(key) {
           case "time":
             obj.time = Number(item.at(index));
+            break;
+          case "date":
+            console.log("date is ",item.at(index))
+            obj.date = new Date(item.at(index) as string);
             break;
           default:
             //console.log(key + " is an unused column");
