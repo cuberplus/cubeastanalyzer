@@ -3,6 +3,18 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+    const handleClick = () => {
+        let dataset = (document.getElementById("uploaded_data") as HTMLInputElement);
+        let files: FileList = dataset.files as FileList;
+        let file = files.item(0);  
+
+        let text = file?.text();
+        text?.then( (value: string) => {
+          // right here, value is my csv as a string. This now needs to be parsed into a cool object
+          console.log("CSV text is ", value);
+        })
+    }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -19,6 +31,18 @@ function App() {
           Learn React
         </a>
       </header>
+
+
+   <form>
+      Upload some files?
+      <br/>
+      <input type="file" id="uploaded_data" accept=".csv"/>
+      <br/>
+      <button type="button" onClick={() => {
+            handleClick();
+        }}>Display Data</button>
+    </form>
+
     </div>
   );
 }
