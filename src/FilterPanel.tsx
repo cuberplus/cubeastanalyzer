@@ -1,4 +1,5 @@
 import React from "react";
+import { MultiSelect } from "react-multi-select-component";
 import { CrossColor, FilterPanelProps, FilterPanelState, Filters, Solve } from "./Types";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
@@ -11,7 +12,15 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             fastestTime: 0,
             slowestTime: 1000000,
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red]
-        }
+        },
+        chosenColors: [
+            { label: CrossColor.White, value: CrossColor.White },
+            { label: CrossColor.Yellow, value: CrossColor.Yellow },
+            { label: CrossColor.Red, value: CrossColor.Red },
+            { label: CrossColor.Orange, value: CrossColor.Orange },
+            { label: CrossColor.Blue, value: CrossColor.Blue },
+            { label: CrossColor.Green, value: CrossColor.Green },
+        ]
     }
 
     static applyFiltersToSolves(allSolves: Solve[], filters: Filters): Solve[] {
@@ -43,14 +52,28 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         let newState: FilterPanelState = {
             allSolves: nextProps.solves,
             filteredSolves: FilterPanel.applyFiltersToSolves(nextProps.solves, prevState.filters),
-            filters: prevState.filters
+            filters: prevState.filters,
+            chosenColors: prevState.chosenColors
         }
 
         return newState;
     }
 
-    onUpdate() {
+    crossColorsChanged(selectedList: any[]) {
+        console.log("colors changing, selected list is ", selectedList);
+        let selectedColors: CrossColor[] = selectedList.map(x => x.label);
 
+        let newFilters: Filters = this.state.filters;
+        newFilters.crossColors = selectedColors;
+
+
+        this.setState({
+            filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
+            filters: newFilters,
+            chosenColors: selectedList
+        })
+
+        console.log("done setting state?");
     }
 
     render() {
@@ -60,6 +83,21 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         }
         return (
             <div>
+                <MultiSelect
+                    options={[
+                        { label: CrossColor.White, value: CrossColor.White },
+                        { label: CrossColor.Yellow, value: CrossColor.Yellow },
+                        { label: CrossColor.Red, value: CrossColor.Red },
+                        { label: CrossColor.Orange, value: CrossColor.Orange },
+                        { label: CrossColor.Blue, value: CrossColor.Blue },
+                        { label: CrossColor.Green, value: CrossColor.Green },
+                    ]}
+                    //selectedValues={this.state.filters.crossColors}
+                    value={this.state.chosenColors}
+                    onChange={this.crossColorsChanged.bind(this)}
+                    labelledBy="Select"
+                />
+
                 I'm a filter panel
             </div>
         )

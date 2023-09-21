@@ -1,10 +1,12 @@
+import { Option } from "react-multi-select-component"
+
 export enum CrossColor {
-    White,
-    Yellow,
-    Red,
-    Orange,
-    Blue,
-    Green
+    White = 'White',
+    Yellow = 'Yellow',
+    Red = 'Red',
+    Orange = 'Orange',
+    Blue = 'Blue',
+    Green = 'Green'
 }
 
 export interface Filters {
@@ -32,7 +34,8 @@ export interface FilterPanelProps {
 export interface FilterPanelState {
     allSolves: Solve[],
     filteredSolves: Solve[],
-    filters: Filters
+    filters: Filters,
+    chosenColors: Option[] // TODO: probably change this
 }
 
 export interface FileInputProps {
