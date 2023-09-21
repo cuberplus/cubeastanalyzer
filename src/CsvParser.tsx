@@ -4,6 +4,13 @@ import moment from 'moment';
 // TODO: finish this mapping, move to constants file
 let crossMappings = new Map<string, CrossColor>();
 crossMappings.set('DB', CrossColor.White);
+crossMappings.set('BU', CrossColor.Green);
+crossMappings.set('FU', CrossColor.Blue);
+crossMappings.set('UF', CrossColor.Yellow);
+crossMappings.set('LU', CrossColor.Red);
+crossMappings.set('RU', CrossColor.Orange);
+
+
 
 export function parseCsv(stringVal: string, splitter: string): Solve[] {
     const [keys, ...rest] = stringVal
@@ -38,6 +45,9 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     obj.date = moment.utc(item.at(index), 'YYYY-MM-DD hh:mm:ss').toDate()
                     break;
                 case "solution_rotation":
+                    if (crossMappings.get(item.at(index)!) == undefined) {
+                        console.log("couldn't parse rotation ", item.at(index));
+                    }
                     obj.crossColor = crossMappings.get(item.at(index)!)!
                     break;
                 case "scramble":
@@ -49,7 +59,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "total_recognition_time":
                     obj.recognitionTime = Number(item.at(index)) / 1000;
                     break;
-                case "total_inspection_time":
+                case "inspection_time":
                     obj.inspectionTime = Number(item.at(index)) / 1000;
                     break;
                 case "total_execution_time":
