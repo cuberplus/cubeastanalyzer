@@ -25,7 +25,8 @@ export interface Filters {
     startDate: Date,
     endDate: Date,
     slowestTime: number,
-    fastestTime: number
+    fastestTime: number,
+    pllCases: string[]
 }
 
 export interface Step {
@@ -34,7 +35,8 @@ export interface Step {
     recognitionTime: number,
     turns: number,
     tps: number,
-    moves: string
+    moves: string,
+    case: string
 }
 
 export interface Solve {
@@ -70,7 +72,10 @@ export interface FilterPanelState {
     allSolves: Solve[],
     filteredSolves: Solve[],
     filters: Filters,
-    chosenColors: Option[] // TODO: probably change this
+
+    // Objects required for filter objects to work
+    chosenColors: Option[]
+    chosenPLLs: Option[]
 }
 
 export interface FileInputProps {

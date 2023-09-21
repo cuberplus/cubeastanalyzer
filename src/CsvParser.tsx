@@ -18,7 +18,8 @@ export function GetEmptyStep() {
         recognitionTime: 0,
         turns: 0,
         tps: 0,
-        moves: ""
+        moves: "",
+        case: ""
     }
 
     return step;
@@ -142,7 +143,27 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     obj.steps.pll.time = Number(item.at(index)) / 1000;
                     break;
 
-
+                case "step_0_case":
+                    obj.steps.cross.case = item.at(index)!;
+                    break;
+                case "step_1_case":
+                    obj.steps.f2l_1.case = item.at(index)!;
+                    break;
+                case "step_2_case":
+                    obj.steps.f2l_2.case = item.at(index)!;
+                    break;
+                case "step_3_case":
+                    obj.steps.f2l_3.case = item.at(index)!;
+                    break;
+                case "step_4_case":
+                    obj.steps.f2l_4.case = item.at(index)!;
+                    break;
+                case "step_5_case":
+                    obj.steps.oll.case = item.at(index)!;
+                    break;
+                case "step_6_case":
+                    obj.steps.pll.case = item.at(index)!;
+                    break;
 
                 default:
                 //console.log(key + " is an unused column");

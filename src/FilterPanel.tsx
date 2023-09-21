@@ -14,7 +14,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             endDate: moment.utc("2300-01-01").toDate(),
             fastestTime: 0,
             slowestTime: 1000000,
-            crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red]
+            crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red],
+            pllCases: ["T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z", "Solved"]
         },
         chosenColors: [
             { label: CrossColor.White, value: CrossColor.White },
@@ -23,6 +24,30 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: CrossColor.Orange, value: CrossColor.Orange },
             { label: CrossColor.Blue, value: CrossColor.Blue },
             { label: CrossColor.Green, value: CrossColor.Green },
+        ],
+        chosenPLLs: [
+            { label: "T Perm", value: "T" },
+            { label: "V Perm", value: "V" },
+            { label: "Aa Perm", value: "Aa" },
+            { label: "Ab Perm", value: "Ab" },
+            { label: "Ga Perm", value: "Ga" },
+            { label: "Gb Perm", value: "Gb" },
+            { label: "Gc Perm", value: "Gc" },
+            { label: "Gd Perm", value: "Gd" },
+            { label: "Ja Perm", value: "Ja" },
+            { label: "Jb Perm", value: "Jb" },
+            { label: "F Perm", value: "F" },
+            { label: "Y Perm", value: "Y" },
+            { label: "Ua Perm", value: "Ua" },
+            { label: "Ub Perm", value: "Ub" },
+            { label: "Ra Perm", value: "Ra" },
+            { label: "Rb Perm", value: "Rb" },
+            { label: "Na Perm", value: "Na" },
+            { label: "Nb Perm", value: "Nb" },
+            { label: "H Perm", value: "H" },
+            { label: "E Perm", value: "E" },
+            { label: "Z Perm", value: "Z" },
+            { label: "Solved", value: "Solved" }
         ]
     }
 
@@ -43,6 +68,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             if (x.time < filters.fastestTime || x.time > filters.slowestTime) {
                 passesFilters = false;
             }
+            if (filters.pllCases.indexOf(x.steps.pll.case) < 0) {
+                passesFilters = false;
+            }
 
             if (passesFilters) {
                 filteredSolves.push(x);
@@ -56,15 +84,16 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             allSolves: nextProps.solves,
             filteredSolves: FilterPanel.applyFiltersToSolves(nextProps.solves, prevState.filters),
             filters: prevState.filters,
-            chosenColors: prevState.chosenColors
+
+            chosenColors: prevState.chosenColors,
+            chosenPLLs: prevState.chosenPLLs
         }
 
         return newState;
     }
 
     crossColorsChanged(selectedList: any[]) {
-        console.log("colors changing, selected list is ", selectedList);
-        let selectedColors: CrossColor[] = selectedList.map(x => x.label);
+        let selectedColors: CrossColor[] = selectedList.map(x => x.value);
 
         let newFilters: Filters = this.state.filters;
         newFilters.crossColors = selectedColors;
@@ -75,8 +104,20 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             filters: newFilters,
             chosenColors: selectedList
         })
+    }
 
-        console.log("done setting state?");
+    pllChanged(selectedList: any[]) {
+        let selectedPlls: string[] = selectedList.map(x => x.value);
+
+        let newFilters: Filters = this.state.filters;
+        newFilters.pllCases = selectedPlls;
+
+
+        this.setState({
+            filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
+            filters: newFilters,
+            chosenPLLs: selectedList
+        })
     }
 
     setStartDate(newStartDate: Date) {
@@ -114,6 +155,40 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         //selectedValues={this.state.filters.crossColors}
                         value={this.state.chosenColors}
                         onChange={this.crossColorsChanged.bind(this)}
+                        labelledBy="Select"
+                    />
+                </div>
+
+                <div>
+                    Pick PLL case
+                    <MultiSelect
+                        options={[
+                            { label: "T Perm", value: "T" },
+                            { label: "V Perm", value: "V" },
+                            { label: "Aa Perm", value: "Aa" },
+                            { label: "Ab Perm", value: "Ab" },
+                            { label: "Ga Perm", value: "Ga" },
+                            { label: "Gb Perm", value: "Gb" },
+                            { label: "Gc Perm", value: "Gc" },
+                            { label: "Gd Perm", value: "Gd" },
+                            { label: "Ja Perm", value: "Ja" },
+                            { label: "Jb Perm", value: "Jb" },
+                            { label: "F Perm", value: "F" },
+                            { label: "Y Perm", value: "Y" },
+                            { label: "Ua Perm", value: "Ua" },
+                            { label: "Ub Perm", value: "Ub" },
+                            { label: "Ra Perm", value: "Ra" },
+                            { label: "Rb Perm", value: "Rb" },
+                            { label: "Na Perm", value: "Na" },
+                            { label: "Nb Perm", value: "Nb" },
+                            { label: "H Perm", value: "H" },
+                            { label: "E Perm", value: "E" },
+                            { label: "Z Perm", value: "Z" },
+                            { label: "Solved", value: "Solved" }
+                        ]}
+                        //selectedValues={this.state.filters.crossColors}
+                        value={this.state.chosenPLLs}
+                        onChange={this.pllChanged.bind(this)}
                         labelledBy="Select"
                     />
                 </div>
