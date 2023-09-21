@@ -27,7 +27,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
     // TODO: this data feels wrong
     buildCrossTurnsData() {
-        let movingAverage = this.calculateMovingAverage(this.props.solves.filter(x => x.steps.cross.turns < 15).map(x => x.steps.cross.turns), 1000);
+        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.turns), 1000);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
