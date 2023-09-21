@@ -22,17 +22,17 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         allSolves.forEach(x => {
             let passesFilters: boolean = true;
 
-            if(filters.crossColors.indexOf(x.crossColor) <0) {
+            if (filters.crossColors.indexOf(x.crossColor) < 0) {
                 passesFilters = false;
             }
-            if(x.date < filters.startDate || x.date > filters.endDate) {
+            if (x.date < filters.startDate || x.date > filters.endDate) {
                 passesFilters = false;
             }
-            if(x.time < filters.fastestTime || x.time > filters.slowestTime) {
+            if (x.time < filters.fastestTime || x.time > filters.slowestTime) {
                 passesFilters = false;
             }
 
-            if(passesFilters) {
+            if (passesFilters) {
                 filteredSolves.push(x);
             }
         })
@@ -55,7 +55,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
     render() {
         console.log("my lengths are ", this.state.allSolves.length, " ", this.state.filteredSolves.length)
-        if(this.state.filteredSolves.length > 0) {
+        if (this.state.filteredSolves.length > 0) {
             console.log(this.state.filteredSolves[0]);
         }
         return (
