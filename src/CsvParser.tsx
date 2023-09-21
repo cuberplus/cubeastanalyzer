@@ -158,6 +158,8 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "step_4_case":
                     obj.steps.f2l_4.case = item.at(index)!;
                     break;
+
+                // As a note, these are out of order because F2L pair column 3 contains a comma, which breaks my script
                 case "step_6_case":
                     obj.steps.oll.case = item.at(index)!;
                     break;
