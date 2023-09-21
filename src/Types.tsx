@@ -30,7 +30,8 @@ export interface FilterPanelProps {
 }
 
 export interface FilterPanelState {
-    solves: Solve[],
+    allSolves: Solve[],
+    filteredSolves: Solve[],
     filters: Filters
 }
 
