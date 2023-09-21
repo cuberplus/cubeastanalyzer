@@ -26,7 +26,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     obj.date = moment.utc(item.at(index), 'YYYY-MM-DD hh:mm:ss').toDate()
                     break;
                 case "solution_rotation":
-                    obj.crossColor = item.at(index) == "DB" ? CrossColor.White : CrossColor.Red; // TODO: retrieve this and map properly
+                    obj.crossColor = item.at(index) === "DB" ? CrossColor.White : CrossColor.Red; // TODO: retrieve this and map properly
                     break;
                 default:
                 //console.log(key + " is an unused column");
