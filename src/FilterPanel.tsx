@@ -1,5 +1,7 @@
 import React from "react";
+import moment from "moment";
 import { MultiSelect } from "react-multi-select-component";
+import DatePicker from "react-datepicker";
 import { CrossColor, FilterPanelProps, FilterPanelState, Filters, Solve } from "./Types";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
@@ -7,8 +9,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         allSolves: [],
         filteredSolves: [],
         filters: {
-            startDate: new Date("1700-01-01"),
-            endDate: new Date("2300-01-01"),
+            startDate: moment.utc("1700-01-01").toDate(),
+            endDate: moment.utc("2300-01-01").toDate(),
             fastestTime: 0,
             slowestTime: 1000000,
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red]
@@ -76,6 +78,18 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         console.log("done setting state?");
     }
 
+    setStartDate(newStartDate: Date) {
+        let newFilters: Filters = this.state.filters;
+        newFilters.startDate = newStartDate;
+        this.setState({ filters: newFilters })
+    }
+
+    setEndDate(newEndDate: Date) {
+        let newFilters: Filters = this.state.filters;
+        newFilters.startDate = newEndDate;
+        this.setState({ filters: newFilters })
+    }
+
     render() {
         console.log("my lengths are ", this.state.allSolves.length, " ", this.state.filteredSolves.length)
         if (this.state.filteredSolves.length > 0) {
@@ -83,6 +97,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         }
         return (
             <div>
+                Pick starting cross color
                 <MultiSelect
                     options={[
                         { label: CrossColor.White, value: CrossColor.White },
@@ -97,6 +112,12 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     onChange={this.crossColorsChanged.bind(this)}
                     labelledBy="Select"
                 />
+
+                Pick start date
+                <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
+                Pick end date
+                <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
+
 
                 I'm a filter panel
             </div>
