@@ -1,6 +1,6 @@
 import React from "react";
 import { ChartPanelProps, ChartPanelState, Solve } from "./Types";
-import { Line, Chart } from 'react-chartjs-2';
+import { Line, Chart, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale } from 'chart.js/auto';
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
@@ -27,7 +27,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
     // TODO: this data feels wrong
     buildCrossTurnsData() {
-        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.turns), 1000);
+        let movingAverage = this.calculateMovingAverage(this.props.solves.filter(x => x.steps.cross.turns < 15).map(x => x.steps.cross.turns), 1000);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
@@ -64,9 +64,44 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
+    buildHistogramData() {
+        let solves = this.props.solves.map(x => x.time).slice(-1000);
+
+        let histogram = new Map<number, number>();
+
+        for (let i = 0; i < solves.length; i++) {
+            let val: number = Math.trunc(solves[i]);
+            if (!histogram.get(val)) {
+                histogram.set(val, 0);
+            }
+            histogram.set(val, histogram.get(val)! + 1)
+        }
+
+        let arr = Array.from(histogram).sort((a, b) => {
+            return a[0] - b[0];
+        })
+
+        console.log(arr);
+
+        let labels = arr.map(a => a[0]);
+        let values = arr.map(a => a[1]);
+
+        let data: ChartData<"bar"> = {
+            labels: labels,
+            datasets: [{
+                label: 'Number of solves by time (of recent 1000)',
+                data: values
+            }]
+        }
+
+        return data;
+    }
+
     render() {
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
+
+        this.buildHistogramData();
 
         return (
             <div>
@@ -76,6 +111,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                 </div>
                 <div>
                     <Line data={this.buildCrossTurnsData()} />
+                </div>
+                <div>
+                    <Bar data={this.buildHistogramData()} />
                 </div>
             </div>
         )
