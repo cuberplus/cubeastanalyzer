@@ -26,17 +26,33 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return result;
     };
 
-    buildAo1000Data() {
-
-
-        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.time), 1000);
+    // TODO: this data feels wrong
+    buildCrossTurnsData() {
+        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.turns), 1000);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
             labels.push(i.toString())
         };
 
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: 'Number of cross turns (ao1000)',
+                data: movingAverage
+            }]
+        }
 
+        return data;
+    }
+
+    buildAo1000Data() {
+        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.time), 1000);
+
+        let labels = [];
+        for (let i = 1; i <= movingAverage.length; i++) {
+            labels.push(i.toString())
+        };
 
         let data: ChartData<"line"> = {
             labels,
@@ -47,20 +63,20 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         }
 
         return data;
-
     }
 
     render() {
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
+
         return (
             <div>
-                <h2>Hi! I'm a Chart Panel</h2>
-
                 I have {this.props.solves.length} solves
-
                 <div>
                     <Line data={this.buildAo1000Data()} />
+                </div>
+                <div>
+                    <Line data={this.buildCrossTurnsData()} />
                 </div>
             </div>
         )

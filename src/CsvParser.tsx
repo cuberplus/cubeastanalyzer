@@ -1,4 +1,4 @@
-import { Solve, CrossColor } from "./Types";
+import { Solve, Step, CrossColor } from "./Types";
 import moment from 'moment';
 
 // TODO: finish this mapping, move to constants file
@@ -11,6 +11,44 @@ crossMappings.set('LU', CrossColor.Red);
 crossMappings.set('RU', CrossColor.Orange);
 
 
+export function GetEmptyStep() {
+    let step: Step = {
+        time: 0,
+        executionTime: 0,
+        recognitionTime: 0,
+        turns: 0,
+        tps: 0,
+        moves: ""
+    }
+
+    return step;
+}
+
+export function GetEmptySolve() {
+    let solve: Solve = {
+        time: 0,
+        date: new Date(),
+        crossColor: CrossColor.White,
+        scramble: "",
+        tps: 0,
+        recognitionTime: 0,
+        inspectionTime: 0,
+        executionTime: 0,
+        turns: 0,
+        steps: {
+            cross: GetEmptyStep(),
+            f2l_1: GetEmptyStep(),
+            f2l_2: GetEmptyStep(),
+            f2l_3: GetEmptyStep(),
+            f2l_4: GetEmptyStep(),
+            oll: GetEmptyStep(),
+            pll: GetEmptyStep()
+
+        }
+    };
+
+    return solve;
+}
 
 export function parseCsv(stringVal: string, splitter: string): Solve[] {
     const [keys, ...rest] = stringVal
@@ -19,18 +57,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
         .map((item) => item.split(splitter));
 
     let formedArr = rest.map((item) => {
-        // TODO: probably want to create this in a method somewhere.
-        const obj: Solve = {
-            time: 0,
-            date: new Date(),
-            crossColor: CrossColor.White,
-            scramble: "",
-            tps: 0,
-            recognitionTime: 0,
-            inspectionTime: 0,
-            executionTime: 0,
-            turns: 0
-        };
+        let obj = GetEmptySolve();
 
         // TODO: read in step data (time, turns, execution, inspection, tps, moves, case (g perm or whatever))
         // read in solution?
@@ -68,7 +95,27 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "slice_turns":
                     obj.turns = Number(item.at(index));
                     break;
-
+                case "step_0_slice_turns":
+                    obj.steps.cross.turns = Number(item.at(index));
+                    break;
+                case "step_1_slice_turns":
+                    obj.steps.f2l_1.turns = Number(item.at(index));
+                    break;
+                case "step_2_slice_turns":
+                    obj.steps.f2l_2.turns = Number(item.at(index));
+                    break;
+                case "step_3_slice_turns":
+                    obj.steps.f2l_3.turns = Number(item.at(index));
+                    break;
+                case "step_4_slice_turns":
+                    obj.steps.f2l_4.turns = Number(item.at(index));
+                    break;
+                case "step_5_slice_turns":
+                    obj.steps.oll.turns = Number(item.at(index));
+                    break;
+                case "step_6_slice_turns":
+                    obj.steps.pll.turns = Number(item.at(index));
+                    break;
 
 
 
