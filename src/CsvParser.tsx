@@ -95,6 +95,8 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "slice_turns":
                     obj.turns = Number(item.at(index));
                     break;
+
+
                 case "step_0_slice_turns":
                     obj.steps.cross.turns = Number(item.at(index));
                     break;
@@ -118,6 +120,27 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     break;
 
 
+                case "step_0_time":
+                    obj.steps.cross.time = Number(item.at(index)) / 1000;
+                    break;
+                case "step_1_time":
+                    obj.steps.f2l_1.time = Number(item.at(index)) / 1000;
+                    break;
+                case "step_2_time":
+                    obj.steps.f2l_2.time = Number(item.at(index)) / 1000;
+                    break;
+                case "step_3_time":
+                    obj.steps.f2l_3.time = Number(item.at(index)) / 1000;
+                    break;
+                case "step_4_time":
+                    obj.steps.f2l_4.time = Number(item.at(index)) / 1000;
+                    break;
+                case "step_5_time":
+                    obj.steps.oll.time = Number(item.at(index)) / 1000;
+                    break;
+                case "step_6_time":
+                    obj.steps.pll.time = Number(item.at(index)) / 1000;
+                    break;
 
 
 
