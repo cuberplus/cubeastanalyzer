@@ -7,6 +7,14 @@ export enum CrossColor {
     Green
 }
 
+export interface Filters {
+    crossColors: CrossColor[],
+    startDate: Date,
+    endDate: Date,
+    slowestTime: number,
+    fastestTime: number
+}
+
 export interface Solve {
     time: number,
     date: Date,
@@ -22,7 +30,8 @@ export interface FilterPanelProps {
 }
 
 export interface FilterPanelState {
-    solves: Solve[]
+    solves: Solve[],
+    filters: Filters
 }
 
 export interface FileInputProps {

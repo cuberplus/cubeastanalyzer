@@ -20,7 +20,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
         // TODO: need this for every column
         switch(key) {
           case "time":
-            obj.time = Number(item.at(index));
+            obj.time = Number(item.at(index)) / 1000;
             break;
           case "date":
             obj.date = moment.utc(item.at(index), 'YYYY-MM-DD hh:mm:ss').toDate()
