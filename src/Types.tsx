@@ -9,6 +9,17 @@ export enum CrossColor {
     Green = 'Green'
 }
 
+export enum StepName {
+    Cross = 'Cross',
+    F2L_1 = 'F2L_1',
+    F2L_2 = 'F2L_2',
+    F2L_3 = 'F2L_3',
+    F2L_4 = 'F2L_4',
+    OLL = 'OLL',
+    PLL = 'PLL',
+
+}
+
 export interface Filters {
     crossColors: CrossColor[],
     startDate: Date,
@@ -20,7 +31,13 @@ export interface Filters {
 export interface Solve {
     time: number,
     date: Date,
-    crossColor: CrossColor
+    crossColor: CrossColor,
+    scramble: string,
+    tps: number,
+    inspectionTime: number,
+    recognitionTime: number,
+    executionTime: number,
+    turns: number
 }
 
 export interface AppState {
