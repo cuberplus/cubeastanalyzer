@@ -25,7 +25,32 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return result;
     };
 
-    // TODO: this data feels wrong
+    calculateMovingPercentage(data: number[], window: number, criteria: (solve: number) => boolean): number[] {
+        let result: number[] = [];
+        if (data.length < window) {
+            return result;
+        }
+
+        let good = 0;
+        for (let i = 0; i < window; ++i) {
+            if (criteria(data[i])) {
+                good++;
+            }
+        }
+        result.push(good / window * 100);
+        const steps = data.length - window - 1;
+        for (let i = 0; i < steps; ++i) {
+            if (criteria(data[i])) {
+                good--;
+            }
+            if (criteria(data[i + window])) {
+                good++;
+            }
+            result.push(good / window * 100);
+        }
+        return result;
+    }
+
     buildCrossTurnsData() {
         let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.turns), 1000);
 
@@ -64,6 +89,34 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
+
+    buildGoodBadData() {
+        let checkIfBad = (time: number) => { return time > 20 };
+        let checkIfGood = (time: number) => { return time < 15 }
+
+        let movingPercentBad = this.calculateMovingPercentage(this.props.solves.map(x => x.time), 1000, checkIfBad);
+        let movingPercentGood = this.calculateMovingPercentage(this.props.solves.map(x => x.time), 1000, checkIfGood);
+
+        let labels = [];
+        for (let i = 1; i <= movingPercentBad.length; i++) {
+            labels.push(i.toString())
+        };
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: 'Percentage of good solves over last 1000',
+                data: movingPercentGood
+            },
+            {
+                label: 'Percentage of bad solves over last 1000',
+                data: movingPercentBad
+            }]
+        }
+
+        return data;
+    }
+
     buildHistogramData() {
         let solves = this.props.solves.map(x => x.time).slice(-1000);
 
@@ -80,8 +133,6 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let arr = Array.from(histogram).sort((a, b) => {
             return a[0] - b[0];
         })
-
-        console.log(arr);
 
         let labels = arr.map(a => a[0]);
         let values = arr.map(a => a[1]);
@@ -114,6 +165,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                 </div>
                 <div>
                     <Bar data={this.buildHistogramData()} />
+                </div>
+                <div>
+                    <Line data={this.buildGoodBadData()} />
                 </div>
             </div>
         )
