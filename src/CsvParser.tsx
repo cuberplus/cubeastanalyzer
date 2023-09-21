@@ -1,4 +1,4 @@
-import { Solve } from "./Types";
+import { Solve, CrossColor } from "./Types";
 import moment from 'moment';
 
 export function parseCsv(stringVal: string, splitter: string): Solve[] {
@@ -8,8 +8,15 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
       .map((item) => item.split(splitter));
   
     const formedArr = rest.map((item) => {
-      const obj: Solve = {time: 0, date: new Date()};
-      keys.forEach((key, index) => {
+        // TODO: probably want to create this in a method somewhere.
+        const obj: Solve = {
+        time: 0,
+        date: new Date(),
+        crossColor: CrossColor.White
+        };
+
+
+    keys.forEach((key, index) => {
         // TODO: need this for every column
         switch(key) {
           case "time":
@@ -17,6 +24,9 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
             break;
           case "date":
             obj.date = moment.utc(item.at(index), 'YYYY-MM-DD hh:mm:ss').toDate()
+            break;
+          case "solution_rotation":
+            obj.crossColor = CrossColor.White; // TODO: retrieve this and map properly
             break;
           default:
             //console.log(key + " is an unused column");

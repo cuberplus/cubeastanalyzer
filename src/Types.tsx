@@ -1,6 +1,16 @@
+export enum CrossColor {
+    White,
+    Yellow,
+    Red,
+    Orange,
+    Blue,
+    Green
+}
+
 export interface Solve {
     time: number,
-    date: Date
+    date: Date,
+    crossColor: CrossColor
 }
 
 export interface AppState {
