@@ -158,10 +158,11 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "step_4_case":
                     obj.steps.f2l_4.case = item.at(index)!;
                     break;
-                case "step_5_case":
+                case "step_6_case":
                     obj.steps.oll.case = item.at(index)!;
                     break;
-                case "step_6_case":
+                case "step_7_case":
+                    console.log("parsed pll ", item.at(index))
                     obj.steps.pll.case = item.at(index)!;
                     break;
 
