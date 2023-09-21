@@ -7,7 +7,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
         .split("\n")
         .map((item) => item.split(splitter));
 
-    const formedArr = rest.map((item) => {
+    let formedArr = rest.map((item) => {
         // TODO: probably want to create this in a method somewhere.
         const obj: Solve = {
             time: 0,
@@ -34,5 +34,10 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
         });
         return obj;
     });
+
+    formedArr = formedArr.sort((a: Solve, b: Solve) => {
+        return a.date.getTime() - b.date.getTime();
+    })
+
     return formedArr;
 }

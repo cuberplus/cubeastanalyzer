@@ -100,26 +100,33 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             <div>
                 I'm a filter panel
 
-                Pick starting cross color
-                <MultiSelect
-                    options={[
-                        { label: CrossColor.White, value: CrossColor.White },
-                        { label: CrossColor.Yellow, value: CrossColor.Yellow },
-                        { label: CrossColor.Red, value: CrossColor.Red },
-                        { label: CrossColor.Orange, value: CrossColor.Orange },
-                        { label: CrossColor.Blue, value: CrossColor.Blue },
-                        { label: CrossColor.Green, value: CrossColor.Green },
-                    ]}
-                    //selectedValues={this.state.filters.crossColors}
-                    value={this.state.chosenColors}
-                    onChange={this.crossColorsChanged.bind(this)}
-                    labelledBy="Select"
-                />
+                <div>
+                    Pick starting cross color
+                    <MultiSelect
+                        options={[
+                            { label: CrossColor.White, value: CrossColor.White },
+                            { label: CrossColor.Yellow, value: CrossColor.Yellow },
+                            { label: CrossColor.Red, value: CrossColor.Red },
+                            { label: CrossColor.Orange, value: CrossColor.Orange },
+                            { label: CrossColor.Blue, value: CrossColor.Blue },
+                            { label: CrossColor.Green, value: CrossColor.Green },
+                        ]}
+                        //selectedValues={this.state.filters.crossColors}
+                        value={this.state.chosenColors}
+                        onChange={this.crossColorsChanged.bind(this)}
+                        labelledBy="Select"
+                    />
+                </div>
 
-                Pick start date
-                <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
-                Pick end date
-                <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
+                <div>
+                    Pick start date
+                    <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
+                </div>
+
+                <div>
+                    Pick end date
+                    <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
+                </div>
 
                 <ChartPanel solves={this.state.filteredSolves} />
 
