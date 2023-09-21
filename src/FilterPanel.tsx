@@ -3,6 +3,7 @@ import moment from "moment";
 import { MultiSelect } from "react-multi-select-component";
 import DatePicker from "react-datepicker";
 import { CrossColor, FilterPanelProps, FilterPanelState, Filters, Solve } from "./Types";
+import { ChartPanel } from "./ChartPanel";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -97,6 +98,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         }
         return (
             <div>
+                I'm a filter panel
+
                 Pick starting cross color
                 <MultiSelect
                     options={[
@@ -118,8 +121,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                 Pick end date
                 <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
 
+                <ChartPanel solves={this.state.filteredSolves} />
 
-                I'm a filter panel
             </div>
         )
     }

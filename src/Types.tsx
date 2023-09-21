@@ -45,3 +45,11 @@ export interface FileInputProps {
 export interface FileInputState {
     solves: Solve[]
 }
+
+export interface ChartPanelProps {
+    solves: Solve[]
+}
+
+export interface ChartPanelState {
+
+}
