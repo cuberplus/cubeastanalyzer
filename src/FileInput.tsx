@@ -21,13 +21,10 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
     render() {
         return (
             <div>
-                <h2>Hi! I'm a fileinput</h2>
-
+                <br />
                 <form>
-                    Upload some files?
-                    <br />
+                    Upload your cubeast file:
                     <input type="file" id="uploaded_data" accept=".csv" />
-                    <br />
                     <button type="button" onClick={() => {
                         this.handleClick();
                     }}>Display Data</button>

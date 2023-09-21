@@ -2,7 +2,6 @@ import React from "react";
 import { ChartPanelProps, ChartPanelState, Solve } from "./Types";
 import { Line, Chart } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale } from 'chart.js/auto';
-import { calculateNewValue } from "@testing-library/user-event/dist/utils";
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
