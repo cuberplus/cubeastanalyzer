@@ -157,17 +157,23 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return (
             <div>
                 I have {this.props.solves.length} solves
-                <div>
-                    <Line data={this.buildAo1000Data()} />
-                </div>
-                <div>
-                    <Line data={this.buildCrossTurnsData()} />
-                </div>
-                <div>
-                    <Bar data={this.buildHistogramData()} />
-                </div>
-                <div>
-                    <Line data={this.buildGoodBadData()} />
+                <div >
+                    <div style={{ 'margin': 'auto', 'display': 'flex' }}>
+                        <div style={{ 'width': '50%' }}>
+                            <Line data={this.buildAo1000Data()} />
+                        </div>
+                        <div style={{ 'width': '50%' }}>
+                            <Line data={this.buildCrossTurnsData()} />
+                        </div>
+                    </div>
+                    <div style={{ 'margin': 'auto', 'display': 'flex' }}>
+                        <div style={{ 'width': '50%' }}>
+                            <Bar data={this.buildHistogramData()} />
+                        </div>
+                        <div style={{ 'width': '50%' }}>
+                            <Line data={this.buildGoodBadData()} />
+                        </div>
+                    </div>
                 </div>
             </div>
         )

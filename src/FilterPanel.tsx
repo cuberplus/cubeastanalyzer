@@ -152,77 +152,77 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         }
         return (
             <div>
-                I'm a filter panel
+                <div style={{ 'margin': 'auto', 'display': 'flex' }}>
+                    <div style={{ 'width': '20%' }}>
+                        Pick starting cross color
+                        <MultiSelect
+                            options={[
+                                { label: CrossColor.White, value: CrossColor.White },
+                                { label: CrossColor.Yellow, value: CrossColor.Yellow },
+                                { label: CrossColor.Red, value: CrossColor.Red },
+                                { label: CrossColor.Orange, value: CrossColor.Orange },
+                                { label: CrossColor.Blue, value: CrossColor.Blue },
+                                { label: CrossColor.Green, value: CrossColor.Green },
+                            ]}
+                            //selectedValues={this.state.filters.crossColors}
+                            value={this.state.chosenColors}
+                            onChange={this.crossColorsChanged.bind(this)}
+                            labelledBy="Select"
+                        />
+                    </div>
 
-                <div>
-                    Pick starting cross color
-                    <MultiSelect
-                        options={[
-                            { label: CrossColor.White, value: CrossColor.White },
-                            { label: CrossColor.Yellow, value: CrossColor.Yellow },
-                            { label: CrossColor.Red, value: CrossColor.Red },
-                            { label: CrossColor.Orange, value: CrossColor.Orange },
-                            { label: CrossColor.Blue, value: CrossColor.Blue },
-                            { label: CrossColor.Green, value: CrossColor.Green },
-                        ]}
-                        //selectedValues={this.state.filters.crossColors}
-                        value={this.state.chosenColors}
-                        onChange={this.crossColorsChanged.bind(this)}
-                        labelledBy="Select"
-                    />
-                </div>
+                    <div style={{ 'width': '20%' }}>
+                        Pick PLL case
+                        <MultiSelect
+                            options={[
+                                { label: "T Perm", value: "T" },
+                                { label: "V Perm", value: "V" },
+                                { label: "Aa Perm", value: "Aa" },
+                                { label: "Ab Perm", value: "Ab" },
+                                { label: "Ga Perm", value: "Ga" },
+                                { label: "Gb Perm", value: "Gb" },
+                                { label: "Gc Perm", value: "Gc" },
+                                { label: "Gd Perm", value: "Gd" },
+                                { label: "Ja Perm", value: "Ja" },
+                                { label: "Jb Perm", value: "Jb" },
+                                { label: "F Perm", value: "F" },
+                                { label: "Y Perm", value: "Y" },
+                                { label: "Ua Perm", value: "Ua" },
+                                { label: "Ub Perm", value: "Ub" },
+                                { label: "Ra Perm", value: "Ra" },
+                                { label: "Rb Perm", value: "Rb" },
+                                { label: "Na Perm", value: "Na" },
+                                { label: "Nb Perm", value: "Nb" },
+                                { label: "H Perm", value: "H" },
+                                { label: "E Perm", value: "E" },
+                                { label: "Z Perm", value: "Z" },
+                                { label: "Solved", value: "Solved" }
+                            ]}
+                            //selectedValues={this.state.filters.crossColors}
+                            value={this.state.chosenPLLs}
+                            onChange={this.pllChanged.bind(this)}
+                            labelledBy="Select"
+                        />
+                    </div>
 
-                <div>
-                    Pick PLL case
-                    <MultiSelect
-                        options={[
-                            { label: "T Perm", value: "T" },
-                            { label: "V Perm", value: "V" },
-                            { label: "Aa Perm", value: "Aa" },
-                            { label: "Ab Perm", value: "Ab" },
-                            { label: "Ga Perm", value: "Ga" },
-                            { label: "Gb Perm", value: "Gb" },
-                            { label: "Gc Perm", value: "Gc" },
-                            { label: "Gd Perm", value: "Gd" },
-                            { label: "Ja Perm", value: "Ja" },
-                            { label: "Jb Perm", value: "Jb" },
-                            { label: "F Perm", value: "F" },
-                            { label: "Y Perm", value: "Y" },
-                            { label: "Ua Perm", value: "Ua" },
-                            { label: "Ub Perm", value: "Ub" },
-                            { label: "Ra Perm", value: "Ra" },
-                            { label: "Rb Perm", value: "Rb" },
-                            { label: "Na Perm", value: "Na" },
-                            { label: "Nb Perm", value: "Nb" },
-                            { label: "H Perm", value: "H" },
-                            { label: "E Perm", value: "E" },
-                            { label: "Z Perm", value: "Z" },
-                            { label: "Solved", value: "Solved" }
-                        ]}
-                        //selectedValues={this.state.filters.crossColors}
-                        value={this.state.chosenPLLs}
-                        onChange={this.pllChanged.bind(this)}
-                        labelledBy="Select"
-                    />
-                </div>
+                    <div>
+                        Pick start date
+                        <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
+                    </div>
 
-                <div>
-                    Pick start date
-                    <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
-                </div>
+                    <div>
+                        Pick end date
+                        <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
+                    </div>
 
-                <div>
-                    Pick end date
-                    <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
-                </div>
-
-                <div>
-                    Include messed up solves?
-                    <input
-                        type="checkbox"
-                        checked={true}
-                        onChange={this.setMistakes.bind(this)}
-                    />
+                    <div>
+                        Include messed up solves?
+                        <input
+                            type="checkbox"
+                            checked={true}
+                            onChange={this.setMistakes.bind(this)}
+                        />
+                    </div>
                 </div>
 
                 <ChartPanel solves={this.state.filteredSolves} />
