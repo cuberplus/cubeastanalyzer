@@ -26,7 +26,8 @@ export interface Filters {
     endDate: Date,
     slowestTime: number,
     fastestTime: number,
-    pllCases: string[]
+    pllCases: string[],
+    includeMistakes: boolean
 }
 
 export interface Step {

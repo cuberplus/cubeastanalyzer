@@ -15,7 +15,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             fastestTime: 0,
             slowestTime: 1000000,
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red],
-            pllCases: ["T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z", "Solved"]
+            pllCases: ["T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z", "Solved"],
+            includeMistakes: true
         },
         chosenColors: [
             { label: CrossColor.White, value: CrossColor.White },
@@ -69,6 +70,11 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                 passesFilters = false;
             }
             if (filters.pllCases.indexOf(x.steps.pll.case) < 0) {
+                passesFilters = false;
+            }
+
+            // TODO: this is a bad way of filtering out mistakes
+            if (!filters.includeMistakes && x.time > 30) {
                 passesFilters = false;
             }
 
@@ -130,6 +136,13 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         let newFilters: Filters = this.state.filters;
         newFilters.startDate = newEndDate;
         this.setState({ filters: newFilters })
+    }
+
+    setMistakes(event: React.ChangeEvent<HTMLInputElement>) {
+        let newFilters: Filters = this.state.filters;
+        console.log("event is ", event)
+        newFilters.includeMistakes = event.target.checked;
+        this.setState({ filters: newFilters });
     }
 
     render() {
@@ -201,6 +214,15 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                 <div>
                     Pick end date
                     <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
+                </div>
+
+                <div>
+                    Include messed up solves?
+                    <input
+                        type="checkbox"
+                        checked={true}
+                        onChange={this.setMistakes.bind(this)}
+                    />
                 </div>
 
                 <ChartPanel solves={this.state.filteredSolves} />
