@@ -1,7 +1,7 @@
 import React from "react";
 import { ChartPanelProps, ChartPanelState, Solve } from "./Types";
 import { Line, Chart, Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale } from 'chart.js/auto';
+import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
@@ -89,6 +89,55 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
+    buildStepAverages() {
+        let crossAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.time), 1000);
+        let f2l_1Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_1.time), 1000);
+        let f2l_2Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_2.time), 1000);
+        let f2l_3Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_3.time), 1000);
+        let f2l_4Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_4.time), 1000);
+        let ollAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.oll.time), 1000);
+        let pllAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.pll.time), 1000);
+
+        let labels = [];
+        for (let i = 1; i <= crossAverage.length; i++) {
+            labels.push(i.toString())
+        };
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: 'Cross Average Of 1000',
+                data: crossAverage
+            },
+            {
+                label: 'Pair 1 Average Of 1000',
+                data: f2l_1Average
+            },
+            {
+                label: 'Pair 2 Average Of 1000',
+                data: f2l_2Average
+            },
+            {
+                label: 'Pair 3 Average Of 1000',
+                data: f2l_3Average
+            },
+            {
+                label: 'Pair 4 Average Of 1000',
+                data: f2l_4Average
+            },
+            {
+                label: 'OLL Average Of 1000',
+                data: ollAverage
+            },
+            {
+                label: 'PLL Average Of 1000',
+                data: pllAverage
+            }]
+        }
+
+        return data;
+    }
+
 
     buildGoodBadData() {
         let checkIfBad = (time: number) => { return time > 20 };
@@ -154,6 +203,8 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
         this.buildHistogramData();
 
+        let options = { spanGaps: true, datasets: { line: { pointRadius: 0 } } };
+
         return (
             <div>
                 I have {this.props.solves.length} solves
@@ -172,6 +223,11 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                         </div>
                         <div style={{ 'width': '50%' }}>
                             <Line data={this.buildGoodBadData()} />
+                        </div>
+                    </div>
+                    <div style={{ 'margin': 'auto', 'display': 'flex' }}>
+                        <div style={{ 'width': '50%' }}>
+                            <Line data={this.buildStepAverages()} options={options} />
                         </div>
                     </div>
                 </div>
