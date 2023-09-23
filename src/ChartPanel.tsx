@@ -51,6 +51,18 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return result;
     }
 
+    reduceDataset(values: any[]) {
+        let targetPoints = 100; // TODO: constants file
+
+        let reducedValues = []
+        let delta = Math.floor(values.length / targetPoints);
+        for (let i = 0; i < values.length; i = i + delta) {
+            reducedValues.push(values[i]);
+        }
+
+        return reducedValues;
+    }
+
     buildCrossTurnsData() {
         let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.turns), 1000);
 
@@ -58,6 +70,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         for (let i = 1; i <= movingAverage.length; i++) {
             labels.push(i.toString())
         };
+
+        movingAverage = this.reduceDataset(movingAverage);
+        labels = this.reduceDataset(labels);
 
         let data: ChartData<"line"> = {
             labels,
@@ -77,6 +92,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         for (let i = 1; i <= movingAverage.length; i++) {
             labels.push(i.toString())
         };
+
+        movingAverage = this.reduceDataset(movingAverage);
+        labels = this.reduceDataset(labels);
 
         let data: ChartData<"line"> = {
             labels,
@@ -102,6 +120,15 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         for (let i = 1; i <= crossAverage.length; i++) {
             labels.push(i.toString())
         };
+
+        labels = this.reduceDataset(labels);
+        crossAverage = this.reduceDataset(crossAverage);
+        f2l_1Average = this.reduceDataset(f2l_1Average);
+        f2l_2Average = this.reduceDataset(f2l_2Average);
+        f2l_3Average = this.reduceDataset(f2l_3Average);
+        f2l_4Average = this.reduceDataset(f2l_4Average);
+        ollAverage = this.reduceDataset(ollAverage);
+        pllAverage = this.reduceDataset(pllAverage);
 
         let data: ChartData<"line"> = {
             labels,
@@ -150,6 +177,10 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         for (let i = 1; i <= movingPercentBad.length; i++) {
             labels.push(i.toString())
         };
+
+        movingPercentBad = this.reduceDataset(movingPercentBad);
+        movingPercentGood = this.reduceDataset(movingPercentGood);
+        labels = this.reduceDataset(labels);
 
         let data: ChartData<"line"> = {
             labels,
@@ -201,7 +232,14 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
 
-        let options = { spanGaps: true, datasets: { line: { pointRadius: 0 } } };
+        let options = {
+            spanGaps: true,
+            datasets: {
+                line: {
+                    pointRadius: 0
+                }
+            }
+        };
 
         return (
             <div>
