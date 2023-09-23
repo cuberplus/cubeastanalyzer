@@ -53,7 +53,10 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     reduceDataset(values: any[]) {
-        let targetPoints = 100; // TODO: constants file
+        let targetPoints = Const.PointsPerGraph;
+        if (values.length <= targetPoints) {
+            return values;
+        }
 
         let reducedValues = []
         let delta = Math.floor(values.length / targetPoints);
