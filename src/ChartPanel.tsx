@@ -201,34 +201,26 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
 
-        this.buildHistogramData();
-
         let options = { spanGaps: true, datasets: { line: { pointRadius: 0 } } };
 
         return (
             <div>
                 I have {this.props.solves.length} solves
-                <div >
-                    <div style={{ 'margin': 'auto', 'display': 'flex' }}>
-                        <div style={{ 'width': '50%' }}>
-                            <Line data={this.buildAo1000Data()} />
-                        </div>
-                        <div style={{ 'width': '50%' }}>
-                            <Line data={this.buildCrossTurnsData()} />
-                        </div>
+                <div className="row">
+                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                        <Line data={this.buildAo1000Data()} />
                     </div>
-                    <div style={{ 'margin': 'auto', 'display': 'flex' }}>
-                        <div style={{ 'width': '50%' }}>
-                            <Bar data={this.buildHistogramData()} />
-                        </div>
-                        <div style={{ 'width': '50%' }}>
-                            <Line data={this.buildGoodBadData()} />
-                        </div>
+                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                        <Line data={this.buildCrossTurnsData()} />
                     </div>
-                    <div style={{ 'margin': 'auto', 'display': 'flex' }}>
-                        <div style={{ 'width': '50%' }}>
-                            <Line data={this.buildStepAverages()} options={options} />
-                        </div>
+                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                        <Bar data={this.buildHistogramData()} />
+                    </div>
+                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                        <Line data={this.buildGoodBadData()} />
+                    </div>
+                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                        <Line data={this.buildStepAverages()} options={options} />
                     </div>
                 </div>
             </div>
