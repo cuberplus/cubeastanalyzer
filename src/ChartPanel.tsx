@@ -246,19 +246,19 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             <div>
                 I have {this.props.solves.length} solves
                 <div className="row">
-                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                    <div className={"col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRunningAverageData()} />
                     </div>
-                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                    <div className={"col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildCrossTurnsData()} />
                     </div>
-                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                    <div className={"col-lg-6 col-md-6 col-sm-12"}>
                         <Bar data={this.buildHistogramData()} />
                     </div>
-                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                    <div className={"col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildGoodBadData()} />
                     </div>
-                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                    <div className={"col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildStepAverages()} options={options} />
                     </div>
                 </div>
