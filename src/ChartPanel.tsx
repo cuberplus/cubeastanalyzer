@@ -2,6 +2,7 @@ import React from "react";
 import { ChartPanelProps, ChartPanelState, Solve } from "./Types";
 import { Line, Chart, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
+import { Const } from "./Constants";
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
@@ -64,7 +65,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildCrossTurnsData() {
-        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.turns), 1000);
+        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.turns), Const.WindowSize);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
@@ -77,7 +78,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: 'Number of cross turns (ao1000)',
+                label: `Number of cross turns (ao${Const.WindowSize})`,
                 data: movingAverage
             }]
         }
@@ -85,8 +86,8 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
-    buildAo1000Data() {
-        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.time), 1000);
+    buildRunningAverageData() {
+        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.time), Const.WindowSize);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
@@ -99,7 +100,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: 'Average Of 1000',
+                label: `Average Of ${Const.WindowSize}`,
                 data: movingAverage
             }]
         }
@@ -108,13 +109,13 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildStepAverages() {
-        let crossAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.time), 1000);
-        let f2l_1Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_1.time), 1000);
-        let f2l_2Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_2.time), 1000);
-        let f2l_3Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_3.time), 1000);
-        let f2l_4Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_4.time), 1000);
-        let ollAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.oll.time), 1000);
-        let pllAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.pll.time), 1000);
+        let crossAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.time), Const.WindowSize);
+        let f2l_1Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_1.time), Const.WindowSize);
+        let f2l_2Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_2.time), Const.WindowSize);
+        let f2l_3Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_3.time), Const.WindowSize);
+        let f2l_4Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_4.time), Const.WindowSize);
+        let ollAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.oll.time), Const.WindowSize);
+        let pllAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.pll.time), Const.WindowSize);
 
         let labels = [];
         for (let i = 1; i <= crossAverage.length; i++) {
@@ -133,31 +134,31 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: 'Cross Average Of 1000',
+                label: `Cross Average Of ${Const.WindowSize}`,
                 data: crossAverage
             },
             {
-                label: 'Pair 1 Average Of 1000',
+                label: `Pair 1 Average Of ${Const.WindowSize}`,
                 data: f2l_1Average
             },
             {
-                label: 'Pair 2 Average Of 1000',
+                label: `Pair 2 Average Of ${Const.WindowSize}`,
                 data: f2l_2Average
             },
             {
-                label: 'Pair 3 Average Of 1000',
+                label: `Pair 3 Average Of ${Const.WindowSize}`,
                 data: f2l_3Average
             },
             {
-                label: 'Pair 4 Average Of 1000',
+                label: `Pair 4 Average Of ${Const.WindowSize}`,
                 data: f2l_4Average
             },
             {
-                label: 'OLL Average Of 1000',
+                label: `OLL Average Of ${Const.WindowSize}`,
                 data: ollAverage
             },
             {
-                label: 'PLL Average Of 1000',
+                label: `PLL Average Of ${Const.WindowSize}`,
                 data: pllAverage
             }]
         }
@@ -170,8 +171,8 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let checkIfBad = (time: number) => { return time > 20 };
         let checkIfGood = (time: number) => { return time < 15 }
 
-        let movingPercentBad = this.calculateMovingPercentage(this.props.solves.map(x => x.time), 1000, checkIfBad);
-        let movingPercentGood = this.calculateMovingPercentage(this.props.solves.map(x => x.time), 1000, checkIfGood);
+        let movingPercentBad = this.calculateMovingPercentage(this.props.solves.map(x => x.time), Const.WindowSize, checkIfBad);
+        let movingPercentGood = this.calculateMovingPercentage(this.props.solves.map(x => x.time), Const.WindowSize, checkIfGood);
 
         let labels = [];
         for (let i = 1; i <= movingPercentBad.length; i++) {
@@ -185,11 +186,11 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: 'Percentage of good solves over last 1000',
+                label: `Percentage of good solves over last ${Const.WindowSize}`,
                 data: movingPercentGood
             },
             {
-                label: 'Percentage of bad solves over last 1000',
+                label: `Percentage of bad solves over last ${Const.WindowSize}`,
                 data: movingPercentBad
             }]
         }
@@ -198,7 +199,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildHistogramData() {
-        let solves = this.props.solves.map(x => x.time).slice(-1000);
+        let solves = this.props.solves.map(x => x.time).slice(-Const.WindowSize);
 
         let histogram = new Map<number, number>();
 
@@ -220,7 +221,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let data: ChartData<"bar"> = {
             labels: labels,
             datasets: [{
-                label: 'Number of solves by time (of recent 1000)',
+                label: `Number of solves by time (of recent ${Const.WindowSize})`,
                 data: values
             }]
         }
@@ -246,7 +247,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                 I have {this.props.solves.length} solves
                 <div className="row">
                     <div className={"col-lg-4 col-md-4 col-sm-12"}>
-                        <Line data={this.buildAo1000Data()} />
+                        <Line data={this.buildRunningAverageData()} />
                     </div>
                     <div className={"col-lg-4 col-md-4 col-sm-12"}>
                         <Line data={this.buildCrossTurnsData()} />
