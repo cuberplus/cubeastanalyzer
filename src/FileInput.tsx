@@ -27,7 +27,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
     render() {
         return (
-            <div>
+            <div className={"row"}>
                 <br />
                 <form>
                     Upload your cubeast file:

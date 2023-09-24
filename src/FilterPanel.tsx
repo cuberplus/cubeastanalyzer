@@ -152,8 +152,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         }
         return (
             <div>
-                <div style={{ 'margin': 'auto', 'display': 'flex' }}>
-                    <div style={{ 'width': '20%' }}>
+                <div className={"row"}>
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
                         Pick starting cross color
                         <MultiSelect
                             options={[
@@ -171,7 +171,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         />
                     </div>
 
-                    <div style={{ 'width': '20%' }}>
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
                         Pick PLL case
                         <MultiSelect
                             options={[
@@ -205,17 +205,17 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         />
                     </div>
 
-                    <div>
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
                         Pick start date
                         <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
                     </div>
 
-                    <div>
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
                         Pick end date
                         <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
                     </div>
 
-                    <div>
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
                         Include messed up solves?
                         <input
                             type="checkbox"
