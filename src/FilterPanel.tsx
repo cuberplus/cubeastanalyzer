@@ -16,7 +16,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             slowestTime: 1000000,
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red],
             pllCases: ["T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z", "Solved"],
-            includeMistakes: true
+            includeMistakes: false
         },
         chosenColors: [
             { label: CrossColor.White, value: CrossColor.White },
@@ -198,7 +198,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 { label: "Z Perm", value: "Z" },
                                 { label: "Solved", value: "Solved" }
                             ]}
-                            //selectedValues={this.state.filters.crossColors}
                             value={this.state.chosenPLLs}
                             onChange={this.pllChanged.bind(this)}
                             labelledBy="Select"
@@ -219,7 +218,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         Include messed up solves?
                         <input
                             type="checkbox"
-                            checked={true}
                             onChange={this.setMistakes.bind(this)}
                         />
                     </div>
