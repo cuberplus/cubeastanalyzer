@@ -2,9 +2,11 @@ import React from "react";
 import moment from "moment";
 import { MultiSelect } from "react-multi-select-component";
 import DatePicker from "react-datepicker";
-import { CrossColor, FilterPanelProps, FilterPanelState, Filters, Solve } from "./Types";
+import { CrossColor, FilterPanelProps, FilterPanelState, Filters, Solve, StepName } from "./Types";
 import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
+import Select from "react-select";
+import { Option } from "react-multi-select-component"
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -19,6 +21,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             pllCases: ["T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z", "Solved"],
             includeMistakes: false
         },
+        drilldownStep: { label: StepName.Cross, value: StepName.Cross },
         chosenColors: [
             { label: CrossColor.White, value: CrossColor.White },
             { label: CrossColor.Yellow, value: CrossColor.Yellow },
@@ -88,10 +91,13 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
     static getDerivedStateFromProps(nextProps: FilterPanelProps, prevState: FilterPanelState) {
         let newState: FilterPanelState = {
+            // Update with new solves
             allSolves: nextProps.solves,
             filteredSolves: FilterPanel.applyFiltersToSolves(nextProps.solves, prevState.filters),
-            filters: prevState.filters,
 
+            // Leave remaining props the same
+            drilldownStep: prevState.drilldownStep,
+            filters: prevState.filters,
             chosenColors: prevState.chosenColors,
             chosenPLLs: prevState.chosenPLLs
         }
@@ -110,6 +116,12 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
             filters: newFilters,
             chosenColors: selectedList
+        })
+    }
+
+    drilldownStepChanged(newValue: Option | null) {
+        this.setState({
+            drilldownStep: newValue!
         })
     }
 
@@ -244,9 +256,49 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             </div>
                         </div>
 
+                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                            <div className="card info-card">
+                                Which step to drill down?
+                                <Select
+                                    options={[
+                                        { label: StepName.Cross, value: StepName.Cross },
+                                        { label: StepName.F2L_1, value: StepName.F2L_1 },
+                                        { label: StepName.F2L_2, value: StepName.F2L_2 },
+                                        { label: StepName.F2L_3, value: StepName.F2L_3 },
+                                        { label: StepName.F2L_4, value: StepName.F2L_4 },
+                                        { label: StepName.OLL, value: StepName.OLL },
+                                        { label: StepName.PLL, value: StepName.PLL },
+
+                                    ]}
+                                    value={this.state.drilldownStep}
+                                    onChange={this.drilldownStepChanged.bind(this)}
+                                />
+                            </div>
+                        </div>
+
                         <ChartPanel solves={this.state.filteredSolves} />
 
-                        <StepDrilldown steps={this.state.filteredSolves.map(x => x.steps.oll)} stepName="OLL" />
+                        <StepDrilldown steps={this.state.filteredSolves.map(x => {
+                            switch (this.state.drilldownStep.value) {
+                                case StepName.Cross:
+                                    return x.steps.cross;
+                                case StepName.F2L_1:
+                                    return x.steps.f2l_1;
+                                case StepName.F2L_2:
+                                    return x.steps.f2l_2;
+                                case StepName.F2L_3:
+                                    return x.steps.f2l_3;
+                                case StepName.F2L_4:
+                                    return x.steps.f2l_4;
+                                case StepName.OLL:
+                                    return x.steps.oll;
+                                case StepName.PLL:
+                                    return x.steps.pll;
+                                default:
+                                    console.log("invalid step picked" + this.state.drilldownStep.value);
+                                    return x.steps.cross;
+                            }
+                        })} stepName={this.state.drilldownStep.label} />
 
                     </div>
 

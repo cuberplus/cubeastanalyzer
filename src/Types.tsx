@@ -75,6 +75,7 @@ export interface FilterPanelState {
     filters: Filters,
 
     // Objects required for filter objects to work
+    drilldownStep: Option,
     chosenColors: Option[]
     chosenPLLs: Option[]
 }
