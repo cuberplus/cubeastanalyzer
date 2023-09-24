@@ -166,6 +166,29 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     obj.steps.pll.case = item.at(index)!;
                     break;
 
+
+                case "step_0_turns_per_second":
+                    obj.steps.cross.tps = Number(item.at(index));
+                    break;
+                case "step_1_turns_per_second":
+                    obj.steps.f2l_1.tps = Number(item.at(index));
+                    break;
+                case "step_2_turns_per_second":
+                    obj.steps.f2l_2.tps = Number(item.at(index));
+                    break;
+                case "step_3_turns_per_second":
+                    obj.steps.f2l_3.tps = Number(item.at(index));
+                    break;
+                case "step_4_turns_per_second":
+                    obj.steps.f2l_4.tps = Number(item.at(index));
+                    break;
+                case "step_5_turns_per_second":
+                    obj.steps.oll.tps = Number(item.at(index));
+                    break;
+                case "step_6_turns_per_second":
+                    obj.steps.pll.tps = Number(item.at(index));
+                    break;
+
                 default:
                 //console.log(key + " is an unused column");
             }
