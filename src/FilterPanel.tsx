@@ -27,6 +27,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: CrossColor.Green, value: CrossColor.Green },
         ],
         chosenPLLs: [
+            { label: "Solved", value: "Solved" },
             { label: "T Perm", value: "T" },
             { label: "V Perm", value: "V" },
             { label: "Aa Perm", value: "Aa" },
@@ -47,8 +48,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: "Nb Perm", value: "Nb" },
             { label: "H Perm", value: "H" },
             { label: "E Perm", value: "E" },
-            { label: "Z Perm", value: "Z" },
-            { label: "Solved", value: "Solved" }
+            { label: "Z Perm", value: "Z" }
         ]
     }
 
@@ -175,6 +175,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         Pick PLL case
                         <MultiSelect
                             options={[
+                                { label: "Solved", value: "Solved" },
                                 { label: "T Perm", value: "T" },
                                 { label: "V Perm", value: "V" },
                                 { label: "Aa Perm", value: "Aa" },
@@ -195,8 +196,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 { label: "Nb Perm", value: "Nb" },
                                 { label: "H Perm", value: "H" },
                                 { label: "E Perm", value: "E" },
-                                { label: "Z Perm", value: "Z" },
-                                { label: "Solved", value: "Solved" }
+                                { label: "Z Perm", value: "Z" }
                             ]}
                             value={this.state.chosenPLLs}
                             onChange={this.pllChanged.bind(this)}
