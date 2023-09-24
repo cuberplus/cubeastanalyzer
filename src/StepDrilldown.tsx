@@ -75,6 +75,35 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         return data;
     }
 
+    buildRecognitionExecutionData() {
+        let recognitionAverage = calculateMovingAverage(this.props.steps.map(x => x.recognitionTime), Const.WindowSize);
+        let executionAverage = calculateMovingAverage(this.props.steps.map(x => x.executionTime), Const.WindowSize);
+
+
+        let labels = [];
+        for (let i = 1; i <= recognitionAverage.length; i++) {
+            labels.push(i.toString())
+        };
+
+        recognitionAverage = reduceDataset(recognitionAverage);
+        executionAverage = reduceDataset(executionAverage);
+
+        labels = reduceDataset(labels);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: `Average recognition time of ${this.props.stepName} Of ${Const.WindowSize}`,
+                data: recognitionAverage
+            }, {
+                label: `Average execution time of ${this.props.stepName} Of ${Const.WindowSize}`,
+                data: executionAverage
+            }]
+        }
+
+        return data;
+    }
+
     buildHistogramData() {
         let solves = this.props.steps.map(x => x.time).slice(-Const.WindowSize);
 
@@ -134,6 +163,9 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
                     </div>
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRunningTpsData()} options={LineOptions} />
+                    </div>
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Line data={this.buildRecognitionExecutionData()} options={LineOptions} />
                     </div>
                 </div>
 

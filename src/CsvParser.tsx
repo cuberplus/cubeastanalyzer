@@ -189,8 +189,55 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     obj.steps.pll.tps = Number(item.at(index));
                     break;
 
+
+
+                case "step_0_recognition_time":
+                    obj.steps.cross.recognitionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_1_recognition_time":
+                    obj.steps.f2l_1.recognitionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_2_recognition_time":
+                    obj.steps.f2l_2.recognitionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_3_recognition_time":
+                    obj.steps.f2l_3.recognitionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_4_recognition_time":
+                    obj.steps.f2l_4.recognitionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_5_recognition_time":
+                    obj.steps.oll.recognitionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_6_recognition_time":
+                    obj.steps.pll.recognitionTime = Number(item.at(index)) / 1000;
+                    break;
+
+
+                case "step_0_execution_time":
+                    obj.steps.cross.executionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_1_execution_time":
+                    obj.steps.f2l_1.executionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_2_execution_time":
+                    obj.steps.f2l_2.executionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_3_execution_time":
+                    obj.steps.f2l_3.executionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_4_execution_time":
+                    obj.steps.f2l_4.executionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_5_execution_time":
+                    obj.steps.oll.executionTime = Number(item.at(index)) / 1000;
+                    break;
+                case "step_6_execution_time":
+                    obj.steps.pll.executionTime = Number(item.at(index)) / 1000;
+                    break;
+
                 default:
-                //console.log(key + " is an unused column");
+                //console.log(key + " is an unused column");    
             }
         });
         return obj;
