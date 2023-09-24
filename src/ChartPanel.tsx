@@ -9,29 +9,6 @@ import "./Style.css";
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
 
-
-    buildCrossTurnsData() {
-        let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.cross.turns), Const.WindowSize);
-
-        let labels = [];
-        for (let i = 1; i <= movingAverage.length; i++) {
-            labels.push(i.toString())
-        };
-
-        movingAverage = reduceDataset(movingAverage);
-        labels = reduceDataset(labels);
-
-        let data: ChartData<"line"> = {
-            labels,
-            datasets: [{
-                label: `Number of cross turns (ao${Const.WindowSize})`,
-                data: movingAverage
-            }]
-        }
-
-        return data;
-    }
-
     buildRunningAverageData() {
         let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.time), Const.WindowSize);
 
@@ -194,9 +171,6 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                 <div className="row">
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRunningAverageData()} options={LineOptions} />
-                    </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
-                        <Line data={this.buildCrossTurnsData()} options={LineOptions} />
                     </div>
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Bar data={this.buildHistogramData()} options={BarOptions} />
