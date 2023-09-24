@@ -4,6 +4,7 @@ import { MultiSelect } from "react-multi-select-component";
 import DatePicker from "react-datepicker";
 import { CrossColor, FilterPanelProps, FilterPanelState, Filters, Solve } from "./Types";
 import { ChartPanel } from "./ChartPanel";
+import { StepDrilldown } from "./StepDrilldown";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -242,7 +243,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 />
                             </div>
                         </div>
+
                         <ChartPanel solves={this.state.filteredSolves} />
+
+                        <StepDrilldown steps={this.state.filteredSolves.map(x => x.steps.cross)} />
 
                     </div>
 

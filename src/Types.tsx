@@ -94,3 +94,11 @@ export interface ChartPanelProps {
 export interface ChartPanelState {
 
 }
+
+export interface StepDrilldownProps {
+    steps: Step[]
+}
+
+export interface StepDrilldownState {
+
+}

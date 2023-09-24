@@ -3,81 +3,23 @@ import { ChartPanelProps, ChartPanelState, Solve } from "./Types";
 import { Line, Chart, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
 import { Const } from "./Constants";
+import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "./RunningAverageMath";
 import "./Style.css";
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
 
-    calculateMovingAverage(data: number[], window: number): number[] {
-        let result: number[] = [];
-        if (data.length < window) {
-            return result;
-        }
-        let sum = 0;
-        for (let i = 0; i < window; ++i) {
-            sum += data[i];
-        }
-        result.push(sum / window);
-        const steps = data.length - window - 1;
-        for (let i = 0; i < steps; ++i) {
-            sum -= data[i];
-            sum += data[i + window];
-            result.push(sum / window);
-        }
-        return result;
-    };
-
-    calculateMovingPercentage(data: number[], window: number, criteria: (solve: number) => boolean): number[] {
-        let result: number[] = [];
-        if (data.length < window) {
-            return result;
-        }
-
-        let good = 0;
-        for (let i = 0; i < window; ++i) {
-            if (criteria(data[i])) {
-                good++;
-            }
-        }
-        result.push(good / window * 100);
-        const steps = data.length - window - 1;
-        for (let i = 0; i < steps; ++i) {
-            if (criteria(data[i])) {
-                good--;
-            }
-            if (criteria(data[i + window])) {
-                good++;
-            }
-            result.push(good / window * 100);
-        }
-        return result;
-    }
-
-    reduceDataset(values: any[]) {
-        let targetPoints = Const.PointsPerGraph;
-        if (values.length <= targetPoints) {
-            return values;
-        }
-
-        let reducedValues = []
-        let delta = Math.floor(values.length / targetPoints);
-        for (let i = 0; i < values.length; i = i + delta) {
-            reducedValues.push(values[i]);
-        }
-
-        return reducedValues;
-    }
 
     buildCrossTurnsData() {
-        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.turns), Const.WindowSize);
+        let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.cross.turns), Const.WindowSize);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
             labels.push(i.toString())
         };
 
-        movingAverage = this.reduceDataset(movingAverage);
-        labels = this.reduceDataset(labels);
+        movingAverage = reduceDataset(movingAverage);
+        labels = reduceDataset(labels);
 
         let data: ChartData<"line"> = {
             labels,
@@ -91,15 +33,15 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildRunningAverageData() {
-        let movingAverage = this.calculateMovingAverage(this.props.solves.map(x => x.time), Const.WindowSize);
+        let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.time), Const.WindowSize);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
             labels.push(i.toString())
         };
 
-        movingAverage = this.reduceDataset(movingAverage);
-        labels = this.reduceDataset(labels);
+        movingAverage = reduceDataset(movingAverage);
+        labels = reduceDataset(labels);
 
         let data: ChartData<"line"> = {
             labels,
@@ -113,27 +55,27 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildStepAverages() {
-        let crossAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.cross.time), Const.WindowSize);
-        let f2l_1Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_1.time), Const.WindowSize);
-        let f2l_2Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_2.time), Const.WindowSize);
-        let f2l_3Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_3.time), Const.WindowSize);
-        let f2l_4Average = this.calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_4.time), Const.WindowSize);
-        let ollAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.oll.time), Const.WindowSize);
-        let pllAverage = this.calculateMovingAverage(this.props.solves.map(x => x.steps.pll.time), Const.WindowSize);
+        let crossAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.cross.time), Const.WindowSize);
+        let f2l_1Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_1.time), Const.WindowSize);
+        let f2l_2Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_2.time), Const.WindowSize);
+        let f2l_3Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_3.time), Const.WindowSize);
+        let f2l_4Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_4.time), Const.WindowSize);
+        let ollAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.oll.time), Const.WindowSize);
+        let pllAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.pll.time), Const.WindowSize);
 
         let labels = [];
         for (let i = 1; i <= crossAverage.length; i++) {
             labels.push(i.toString())
         };
 
-        labels = this.reduceDataset(labels);
-        crossAverage = this.reduceDataset(crossAverage);
-        f2l_1Average = this.reduceDataset(f2l_1Average);
-        f2l_2Average = this.reduceDataset(f2l_2Average);
-        f2l_3Average = this.reduceDataset(f2l_3Average);
-        f2l_4Average = this.reduceDataset(f2l_4Average);
-        ollAverage = this.reduceDataset(ollAverage);
-        pllAverage = this.reduceDataset(pllAverage);
+        labels = reduceDataset(labels);
+        crossAverage = reduceDataset(crossAverage);
+        f2l_1Average = reduceDataset(f2l_1Average);
+        f2l_2Average = reduceDataset(f2l_2Average);
+        f2l_3Average = reduceDataset(f2l_3Average);
+        f2l_4Average = reduceDataset(f2l_4Average);
+        ollAverage = reduceDataset(ollAverage);
+        pllAverage = reduceDataset(pllAverage);
 
         let data: ChartData<"line"> = {
             labels,
@@ -175,17 +117,17 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let checkIfBad = (time: number) => { return time > 20 };
         let checkIfGood = (time: number) => { return time < 15 }
 
-        let movingPercentBad = this.calculateMovingPercentage(this.props.solves.map(x => x.time), Const.WindowSize, checkIfBad);
-        let movingPercentGood = this.calculateMovingPercentage(this.props.solves.map(x => x.time), Const.WindowSize, checkIfGood);
+        let movingPercentBad = calculateMovingPercentage(this.props.solves.map(x => x.time), Const.WindowSize, checkIfBad);
+        let movingPercentGood = calculateMovingPercentage(this.props.solves.map(x => x.time), Const.WindowSize, checkIfGood);
 
         let labels = [];
         for (let i = 1; i <= movingPercentBad.length; i++) {
             labels.push(i.toString())
         };
 
-        movingPercentBad = this.reduceDataset(movingPercentBad);
-        movingPercentGood = this.reduceDataset(movingPercentGood);
-        labels = this.reduceDataset(labels);
+        movingPercentBad = reduceDataset(movingPercentBad);
+        movingPercentGood = reduceDataset(movingPercentGood);
+        labels = reduceDataset(labels);
 
         let data: ChartData<"line"> = {
             labels,
