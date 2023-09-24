@@ -23,7 +23,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: `Number of step turns (ao${Const.WindowSize})`,
+                label: `Number of ${this.props.stepName} turns (ao${Const.WindowSize})`,
                 data: movingAverage
             }]
         }
