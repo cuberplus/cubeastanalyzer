@@ -96,7 +96,8 @@ export interface ChartPanelState {
 }
 
 export interface StepDrilldownProps {
-    steps: Step[]
+    steps: Step[],
+    stepName: string
 }
 
 export interface StepDrilldownState {

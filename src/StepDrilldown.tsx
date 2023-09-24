@@ -45,7 +45,29 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: `Average Of ${Const.WindowSize}`,
+                label: `Average time of ${this.props.stepName} Of ${Const.WindowSize}`,
+                data: movingAverage
+            }]
+        }
+
+        return data;
+    }
+
+    buildRunningTpsData() {
+        let movingAverage = calculateMovingAverage(this.props.steps.map(x => x.tps), Const.WindowSize);
+
+        let labels = [];
+        for (let i = 1; i <= movingAverage.length; i++) {
+            labels.push(i.toString())
+        };
+
+        movingAverage = reduceDataset(movingAverage);
+        labels = reduceDataset(labels);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: `Average tps of ${this.props.stepName} Of ${Const.WindowSize}`,
                 data: movingAverage
             }]
         }
@@ -76,7 +98,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let data: ChartData<"bar"> = {
             labels: labels,
             datasets: [{
-                label: `Number of solves by step time (of recent ${Const.WindowSize})`,
+                label: `Number of solves by ${this.props.stepName} time (of recent ${Const.WindowSize})`,
                 data: values
             }]
         }
@@ -98,7 +120,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         return (
             <div>
                 <div className={"card col-lg-2 col-md-2 col-sm-12"}>
-                    I have {this.props.steps.length} steps
+                    I have {this.props.steps.length} solves with {this.props.stepName} data
                 </div>
                 <div className="row">
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
@@ -107,7 +129,14 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Bar data={this.buildHistogramData()} options={BarOptions} />
                     </div>
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Line data={this.buildStepTurnsData()} options={LineOptions} />
+                    </div>
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Line data={this.buildRunningTpsData()} options={LineOptions} />
+                    </div>
                 </div>
+
             </div>
         )
     }

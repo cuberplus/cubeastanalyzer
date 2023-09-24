@@ -246,7 +246,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
                         <ChartPanel solves={this.state.filteredSolves} />
 
-                        <StepDrilldown steps={this.state.filteredSolves.map(x => x.steps.cross)} />
+                        <StepDrilldown steps={this.state.filteredSolves.map(x => x.steps.pll)} stepName="PLL" />
 
                     </div>
 
