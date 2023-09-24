@@ -3,6 +3,7 @@ import { ChartPanelProps, ChartPanelState, Solve } from "./Types";
 import { Line, Chart, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
 import { Const } from "./Constants";
+import "./Style.css";
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
@@ -236,33 +237,31 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
 
-        let options = {
-            spanGaps: true,
-            datasets: {
-                line: {
-                    pointRadius: 0
-                }
-            }
+        let LineOptions = {
+            spanGaps: true
+        };
+        let BarOptions = {
+
         };
 
         return (
             <div>
                 I have {this.props.solves.length} solves
                 <div className="row">
-                    <div className={"col-lg-6 col-md-6 col-sm-12"}>
-                        <Line data={this.buildRunningAverageData()} options={options} />
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Line data={this.buildRunningAverageData()} options={LineOptions} />
                     </div>
-                    <div className={"col-lg-6 col-md-6 col-sm-12"}>
-                        <Line data={this.buildCrossTurnsData()} options={options} />
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Line data={this.buildCrossTurnsData()} options={LineOptions} />
                     </div>
-                    <div className={"col-lg-6 col-md-6 col-sm-12"}>
-                        <Bar data={this.buildHistogramData()} options={options} />
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Bar data={this.buildHistogramData()} options={BarOptions} />
                     </div>
-                    <div className={"col-lg-6 col-md-6 col-sm-12"}>
-                        <Line data={this.buildGoodBadData()} options={options} />
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Line data={this.buildGoodBadData()} options={LineOptions} />
                     </div>
-                    <div className={"col-lg-6 col-md-6 col-sm-12"}>
-                        <Line data={this.buildStepAverages()} options={options} />
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Line data={this.buildStepAverages()} options={LineOptions} />
                     </div>
                 </div>
             </div>

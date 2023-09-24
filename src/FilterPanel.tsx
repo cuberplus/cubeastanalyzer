@@ -151,81 +151,103 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             console.log(this.state.filteredSolves[0]);
         }
         return (
-            <div>
-                <div className={"row"}>
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        Pick starting cross color
-                        <MultiSelect
-                            options={[
-                                { label: CrossColor.White, value: CrossColor.White },
-                                { label: CrossColor.Yellow, value: CrossColor.Yellow },
-                                { label: CrossColor.Red, value: CrossColor.Red },
-                                { label: CrossColor.Orange, value: CrossColor.Orange },
-                                { label: CrossColor.Blue, value: CrossColor.Blue },
-                                { label: CrossColor.Green, value: CrossColor.Green },
-                            ]}
-                            //selectedValues={this.state.filters.crossColors}
-                            value={this.state.chosenColors}
-                            onChange={this.crossColorsChanged.bind(this)}
-                            labelledBy="Select"
-                        />
-                    </div>
-
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        Pick PLL case
-                        <MultiSelect
-                            options={[
-                                { label: "Solved", value: "Solved" },
-                                { label: "T Perm", value: "T" },
-                                { label: "V Perm", value: "V" },
-                                { label: "Aa Perm", value: "Aa" },
-                                { label: "Ab Perm", value: "Ab" },
-                                { label: "Ga Perm", value: "Ga" },
-                                { label: "Gb Perm", value: "Gb" },
-                                { label: "Gc Perm", value: "Gc" },
-                                { label: "Gd Perm", value: "Gd" },
-                                { label: "Ja Perm", value: "Ja" },
-                                { label: "Jb Perm", value: "Jb" },
-                                { label: "F Perm", value: "F" },
-                                { label: "Y Perm", value: "Y" },
-                                { label: "Ua Perm", value: "Ua" },
-                                { label: "Ub Perm", value: "Ub" },
-                                { label: "Ra Perm", value: "Ra" },
-                                { label: "Rb Perm", value: "Rb" },
-                                { label: "Na Perm", value: "Na" },
-                                { label: "Nb Perm", value: "Nb" },
-                                { label: "H Perm", value: "H" },
-                                { label: "E Perm", value: "E" },
-                                { label: "Z Perm", value: "Z" }
-                            ]}
-                            value={this.state.chosenPLLs}
-                            onChange={this.pllChanged.bind(this)}
-                            labelledBy="Select"
-                        />
-                    </div>
-
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        Pick start date
-                        <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
-                    </div>
-
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        Pick end date
-                        <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
-                    </div>
-
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        Include messed up solves?
-                        <input
-                            type="checkbox"
-                            onChange={this.setMistakes.bind(this)}
-                        />
-                    </div>
+            <main className="body">
+                <div className="pagetitle">
+                    <h1>Cubing Stats</h1>
                 </div>
 
-                <ChartPanel solves={this.state.filteredSolves} />
+                <section className="section dashboard">
 
-            </div>
+                    <div className={"row"}>
+                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                            <div className="card info-card">
+
+                                Pick starting cross color
+                                <MultiSelect
+                                    options={[
+                                        { label: CrossColor.White, value: CrossColor.White },
+                                        { label: CrossColor.Yellow, value: CrossColor.Yellow },
+                                        { label: CrossColor.Red, value: CrossColor.Red },
+                                        { label: CrossColor.Orange, value: CrossColor.Orange },
+                                        { label: CrossColor.Blue, value: CrossColor.Blue },
+                                        { label: CrossColor.Green, value: CrossColor.Green },
+                                    ]}
+                                    //selectedValues={this.state.filters.crossColors}
+                                    value={this.state.chosenColors}
+                                    onChange={this.crossColorsChanged.bind(this)}
+                                    labelledBy="Select"
+                                />
+                            </div>
+                        </div>
+
+                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                            <div className="card info-card">
+
+                                Pick PLL case
+                                <MultiSelect
+                                    options={[
+                                        { label: "Solved", value: "Solved" },
+                                        { label: "T Perm", value: "T" },
+                                        { label: "V Perm", value: "V" },
+                                        { label: "Aa Perm", value: "Aa" },
+                                        { label: "Ab Perm", value: "Ab" },
+                                        { label: "Ga Perm", value: "Ga" },
+                                        { label: "Gb Perm", value: "Gb" },
+                                        { label: "Gc Perm", value: "Gc" },
+                                        { label: "Gd Perm", value: "Gd" },
+                                        { label: "Ja Perm", value: "Ja" },
+                                        { label: "Jb Perm", value: "Jb" },
+                                        { label: "F Perm", value: "F" },
+                                        { label: "Y Perm", value: "Y" },
+                                        { label: "Ua Perm", value: "Ua" },
+                                        { label: "Ub Perm", value: "Ub" },
+                                        { label: "Ra Perm", value: "Ra" },
+                                        { label: "Rb Perm", value: "Rb" },
+                                        { label: "Na Perm", value: "Na" },
+                                        { label: "Nb Perm", value: "Nb" },
+                                        { label: "H Perm", value: "H" },
+                                        { label: "E Perm", value: "E" },
+                                        { label: "Z Perm", value: "Z" }
+                                    ]}
+                                    value={this.state.chosenPLLs}
+                                    onChange={this.pllChanged.bind(this)}
+                                    labelledBy="Select"
+                                />
+                            </div>
+                        </div>
+
+                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                            <div className="card info-card">
+
+                                Pick start date
+                                <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
+                            </div>
+                        </div>
+
+                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                            <div className="card info-card">
+
+                                Pick end date
+                                <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
+                            </div>
+                        </div>
+
+                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                            <div className="card info-card">
+
+                                Include messed up solves?
+                                <input
+                                    type="checkbox"
+                                    onChange={this.setMistakes.bind(this)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <ChartPanel solves={this.state.filteredSolves} />
+                </section>
+
+            </main>
         )
     }
 }
