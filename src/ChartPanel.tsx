@@ -246,7 +246,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
         return (
             <div>
-                I have {this.props.solves.length} solves
+                <div className={"card col-lg-2 col-md-2 col-sm-12"}>
+                    I have {this.props.solves.length} solves
+                </div>
                 <div className="row">
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRunningAverageData()} options={LineOptions} />

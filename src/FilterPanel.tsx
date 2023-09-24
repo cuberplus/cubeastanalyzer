@@ -242,9 +242,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 />
                             </div>
                         </div>
+                        <ChartPanel solves={this.state.filteredSolves} />
+
                     </div>
 
-                    <ChartPanel solves={this.state.filteredSolves} />
                 </section>
 
             </main>
