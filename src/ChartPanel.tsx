@@ -122,12 +122,12 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildHistogramData() {
-        let solves = this.props.solves.map(x => x.time).slice(-Const.WindowSize);
+        let recentSolves = this.props.solves.map(x => x.time).slice(-Const.WindowSize);
 
         let histogram = new Map<number, number>();
 
-        for (let i = 0; i < solves.length; i++) {
-            let val: number = Math.trunc(solves[i]);
+        for (let i = 0; i < recentSolves.length; i++) {
+            let val: number = Math.trunc(recentSolves[i]);
             if (!histogram.get(val)) {
                 histogram.set(val, 0);
             }
@@ -152,6 +152,18 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
+    caclulate90thPercentile(): number {
+        let recentSolves = this.props.solves.map(x => x.time).slice(-Const.WindowSize);
+
+        let sortedSolves = recentSolves.sort((a, b) => {
+            return a - b;
+        })
+
+        let total = .9 * sortedSolves.length;
+
+        return Math.ceil(sortedSolves[total]);
+    }
+
     render() {
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
@@ -165,8 +177,13 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
         return (
             <div>
-                <div className={"card col-lg-2 col-md-2 col-sm-12"}>
-                    I have {this.props.solves.length} solves
+                <div className="row">
+                    <div className={"card col-lg-2 col-md-2 col-sm-12"}>
+                        I have {this.props.solves.length} solves
+                    </div>
+                    <div className={"card col-lg-2 col-md-2 col-sm-12"}>
+                        90% of your solves are below {this.caclulate90thPercentile()} seconds.
+                    </div>
                 </div>
                 <div className="row">
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>

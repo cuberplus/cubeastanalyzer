@@ -60,7 +60,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         let filteredSolves: Solve[] = [];
 
         // TODO: add short-circuit logic here
-        // TODO: add more filters as I need them
         allSolves.forEach(x => {
             let passesFilters: boolean = true;
 
@@ -166,7 +165,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         return (
             <main className="body">
                 <div className="pagetitle">
-                    <h1>Cubing Stats</h1>
+                    <h1>Cubeast Analyzer</h1>
                 </div>
 
                 <section className="section dashboard">

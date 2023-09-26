@@ -60,11 +60,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
     let formedArr = rest.map((item) => {
         let obj = GetEmptySolve();
 
-        // TODO: read in step data (time, turns, execution, inspection, tps, moves, case (g perm or whatever))
-        // read in solution?
-
         keys.forEach((key, index) => {
-            // TODO: need this for every column
             switch (key) {
                 case "time":
                     obj.time = Number(item.at(index)) / 1000;
