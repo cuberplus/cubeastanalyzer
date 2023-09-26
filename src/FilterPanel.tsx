@@ -8,6 +8,7 @@ import { StepDrilldown } from "./StepDrilldown";
 import Select from "react-select";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "./RunningAverageMath";
+import "./Style.css";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {

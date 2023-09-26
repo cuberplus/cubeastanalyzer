@@ -3,6 +3,7 @@ import { FileInputProps, FileInputState, Solve } from "./Types";
 import { parseCsv } from "./CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "./SampleData"
+import "./Style.css";
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [] };
@@ -34,7 +35,6 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                         <div className="pagetitle col-lg-2 col-md-2 col-sm-6">
                             <h1>Cubeast Analyzer</h1>
                         </div>
-                        <br />
 
                         <div className="col-lg-6 col-md-6 col-sm-6">
                             <form>
