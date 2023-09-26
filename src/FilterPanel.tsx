@@ -7,6 +7,7 @@ import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import Select from "react-select";
 import { Option } from "react-multi-select-component"
+import { calculate90thPercentile } from "./RunningAverageMath";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -275,6 +276,20 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             </div>
                         </div>
 
+                    </div>
+
+                    <div className={"row"}>
+                        <div className={"card col-lg-2 col-md-2 col-sm-12"}>
+                            You have {this.state.allSolves.length} solves before filtering, and {this.state.filteredSolves.length} after
+                        </div>
+                        <div className={"card col-lg-2 col-md-2 col-sm-12"}>
+                            90% of your solves are below {calculate90thPercentile(this.props.solves.map(x => x.time))} seconds.
+                        </div>
+                    </div>
+
+                    <div className={"row"} >
+
+
                         <ChartPanel solves={this.state.filteredSolves} />
 
                         <StepDrilldown steps={this.state.filteredSolves.map(x => {
@@ -303,7 +318,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
                 </section>
 
-            </main>
+            </main >
         )
     }
 }

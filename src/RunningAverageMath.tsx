@@ -1,5 +1,18 @@
 import { Const } from "./Constants";
 
+
+export function calculate90thPercentile(data: number[]): number {
+    let recentSolves = data.slice(-Const.WindowSize);
+
+    let sortedSolves = recentSolves.sort((a, b) => {
+        return a - b;
+    })
+
+    let total = .9 * sortedSolves.length;
+
+    return Math.ceil(sortedSolves[total]);
+}
+
 export function calculateMovingAverage(data: number[], window: number): number[] {
     let result: number[] = [];
     if (data.length < window) {
