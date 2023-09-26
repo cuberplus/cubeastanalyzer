@@ -287,30 +287,42 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
                     <div className={"row"} >
 
-
-                        <ChartPanel solves={this.state.filteredSolves} />
-
-                        <StepDrilldown steps={this.state.filteredSolves.map(x => {
-                            switch (this.state.drilldownStep.value) {
-                                case StepName.Cross:
-                                    return x.steps.cross;
-                                case StepName.F2L_1:
-                                    return x.steps.f2l_1;
-                                case StepName.F2L_2:
-                                    return x.steps.f2l_2;
-                                case StepName.F2L_3:
-                                    return x.steps.f2l_3;
-                                case StepName.F2L_4:
-                                    return x.steps.f2l_4;
-                                case StepName.OLL:
-                                    return x.steps.oll;
-                                case StepName.PLL:
-                                    return x.steps.pll;
-                                default:
-                                    console.log("invalid step picked" + this.state.drilldownStep.value);
-                                    return x.steps.cross;
-                            }
-                        })} stepName={this.state.drilldownStep.label} />
+                        <ul className="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
+                            <li className="nav-item flex-fill" role="presentation">
+                                <button className="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-justified" type="button" role="tab" aria-controls="home" aria-selected="true">All Steps</button>
+                            </li>
+                            <li className="nav-item flex-fill" role="presentation">
+                                <button className="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-justified" type="button" role="tab" aria-controls="profile" aria-selected="false">Step Drilldown</button>
+                            </li>
+                        </ul>
+                        <div className="tab-content pt-2" id="myTabjustifiedContent">
+                            <div className="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
+                                <ChartPanel solves={this.state.filteredSolves} />
+                            </div>
+                            <div className="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
+                                <StepDrilldown steps={this.state.filteredSolves.map(x => {
+                                    switch (this.state.drilldownStep.value) {
+                                        case StepName.Cross:
+                                            return x.steps.cross;
+                                        case StepName.F2L_1:
+                                            return x.steps.f2l_1;
+                                        case StepName.F2L_2:
+                                            return x.steps.f2l_2;
+                                        case StepName.F2L_3:
+                                            return x.steps.f2l_3;
+                                        case StepName.F2L_4:
+                                            return x.steps.f2l_4;
+                                        case StepName.OLL:
+                                            return x.steps.oll;
+                                        case StepName.PLL:
+                                            return x.steps.pll;
+                                        default:
+                                            console.log("invalid step picked" + this.state.drilldownStep.value);
+                                            return x.steps.cross;
+                                    }
+                                })} stepName={this.state.drilldownStep.label} />
+                            </div>
+                        </div>
 
                     </div>
 

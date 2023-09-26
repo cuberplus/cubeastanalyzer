@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { FileInput } from './FileInput';
 import "./Style.css";
 
