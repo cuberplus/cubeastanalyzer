@@ -8,6 +8,7 @@ import { StepDrilldown } from "./StepDrilldown";
 import Select from "react-select";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "./RunningAverageMath";
+import { Tabs, Tab } from 'react-bootstrap';
 import "./Style.css";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
@@ -55,7 +56,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: "H Perm", value: "H" },
             { label: "E Perm", value: "E" },
             { label: "Z Perm", value: "Z" }
-        ]
+        ],
+        tabKey: 1
     }
 
     static applyFiltersToSolves(allSolves: Solve[], filters: Filters): Solve[] {
@@ -100,7 +102,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             drilldownStep: prevState.drilldownStep,
             filters: prevState.filters,
             chosenColors: prevState.chosenColors,
-            chosenPLLs: prevState.chosenPLLs
+            chosenPLLs: prevState.chosenPLLs,
+            tabKey: prevState.tabKey
         }
 
         return newState;
@@ -157,6 +160,11 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         console.log("event is ", event)
         newFilters.includeMistakes = event.target.checked;
         this.setState({ filters: newFilters });
+    }
+
+
+    tabSelect(key: any) {
+        this.setState({ tabKey: key })
     }
 
     render() {
@@ -287,19 +295,14 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
                     <div className={"row"} >
 
-                        <ul className="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
-                            <li className="nav-item flex-fill" role="presentation">
-                                <button className="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-justified" type="button" role="tab" aria-controls="home" aria-selected="true">All Steps</button>
-                            </li>
-                            <li className="nav-item flex-fill" role="presentation">
-                                <button className="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-justified" type="button" role="tab" aria-controls="profile" aria-selected="false">Step Drilldown</button>
-                            </li>
-                        </ul>
-                        <div className="tab-content pt-2" id="myTabjustifiedContent">
-                            <div className="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
+                        <Tabs
+                            activeKey={this.state.tabKey}
+                            onSelect={this.tabSelect.bind(this)}
+                        >
+                            <Tab eventKey={1} title="All Steps">
                                 <ChartPanel solves={this.state.filteredSolves} />
-                            </div>
-                            <div className="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
+                            </Tab>
+                            <Tab eventKey={2} title="Step Drilldown">
                                 <StepDrilldown steps={this.state.filteredSolves.map(x => {
                                     switch (this.state.drilldownStep.value) {
                                         case StepName.Cross:
@@ -321,8 +324,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                             return x.steps.cross;
                                     }
                                 })} stepName={this.state.drilldownStep.label} />
-                            </div>
-                        </div>
+                            </Tab>
+                        </Tabs>
 
                     </div>
 

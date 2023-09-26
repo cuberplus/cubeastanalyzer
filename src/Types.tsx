@@ -76,8 +76,9 @@ export interface FilterPanelState {
 
     // Objects required for filter objects to work
     drilldownStep: Option,
-    chosenColors: Option[]
-    chosenPLLs: Option[]
+    chosenColors: Option[],
+    chosenPLLs: Option[],
+    tabKey: number
 }
 
 export interface FileInputProps {
