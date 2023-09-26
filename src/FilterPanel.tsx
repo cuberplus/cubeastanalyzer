@@ -165,9 +165,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         }
         return (
             <main className="body">
-                <div className="pagetitle">
-                    <h1>Cubeast Analyzer</h1>
-                </div>
 
                 <section className="section dashboard">
 

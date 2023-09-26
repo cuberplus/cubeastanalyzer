@@ -29,18 +29,28 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         return (
             <div>
                 <header className={"header"}>
-                    <br />
-                    <form>
-                        Upload your cubeast file:
-                        <input type="file" id="uploaded_data" accept=".csv" />
-                        <button type="button" onClick={() => {
-                            this.showFileData();
-                        }}>Display My Stats!</button>
-                        <button type="button" onClick={() => {
-                            this.showTestData();
-                        }}>Display Test Stats!</button>
-                    </form>
+
+                    <div className="row">
+                        <div className="pagetitle col-lg-2 col-md-2 col-sm-6">
+                            <h1>Cubeast Analyzer</h1>
+                        </div>
+                        <br />
+
+                        <div className="col-lg-6 col-md-6 col-sm-6">
+                            <form>
+                                Upload your cubeast file:
+                                <input type="file" id="uploaded_data" accept=".csv" />
+                                <button type="button" onClick={() => {
+                                    this.showFileData();
+                                }}>Display My Stats!</button>
+                                <button type="button" onClick={() => {
+                                    this.showTestData();
+                                }}>Display Test Stats!</button>
+                            </form>
+                        </div>
+                    </div>
                 </header>
+
 
                 <FilterPanel solves={this.state.solves} />
             </div>
