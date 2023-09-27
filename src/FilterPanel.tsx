@@ -185,10 +185,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     }
 
     render() {
-        console.log("my lengths are ", this.state.allSolves.length, " ", this.state.filteredSolves.length)
-        if (this.state.filteredSolves.length > 0) {
-            console.log(this.state.filteredSolves[0]);
-        }
         return (
             <main className="body">
 
@@ -256,10 +252,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 Choose slowest and fastest solves to keep
                                 <div className="row">
                                     <div className="form-outline col-6" >
-                                        <input min="0" max="300" type="number" id="fastestSolve" className="form-control" onChange={this.setFastestSolve.bind(this)} />
+                                        <input min="0" max="300" type="number" id="fastestSolve" className="form-control" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
                                     </div>
                                     <div className="form-outline col-6" >
-                                        <input min="0" max="300" type="number" id="slowestSolve" className="form-control" onChange={this.setSlowestSolve.bind(this)} />
+                                        <input min="0" max="300" type="number" id="slowestSolve" className="form-control" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
                                     </div>
                                 </div>
                             </div>
@@ -287,6 +283,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 Include messed up solves?
                                 <input
                                     type="checkbox"
+                                    checked={this.state.filters.includeMistakes}
                                     onChange={this.setMistakes.bind(this)}
                                 />
                             </div>
