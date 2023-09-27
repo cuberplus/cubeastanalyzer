@@ -33,7 +33,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
     buildStepPercentages() {
 
-        let labels = ['Cross', 'F2L Pair 1', 'F2L Pair 2', 'F2L Pair 3', 'F2L Pair 4', 'OLL', 'PLL'];
+        let labels = ['OLL', 'PLL', 'Cross', 'F2L', 'F2L', 'F2L', 'F2L'];
 
         let cross = 0;
         let f2l_1 = 0;
@@ -53,22 +53,33 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             oll += recentSolves[i].steps.oll.time;
             pll += recentSolves[i].steps.pll.time;
         }
+        let f2l = f2l_1 + f2l_2 + f2l_3 + f2l_4;
         let total = cross + f2l_1 + f2l_2 + f2l_3 + f2l_4 + oll + pll;
-        let values = [
+        let values1 = [
+            100 * oll / total,
+            100 * pll / total,
             100 * cross / total,
             100 * f2l_1 / total,
             100 * f2l_2 / total,
             100 * f2l_3 / total,
-            100 * f2l_4 / total,
+            100 * f2l_4 / total
+        ];
+        let values2 = [
             100 * oll / total,
-            100 * pll / total
+            100 * pll / total,
+            100 * cross / total,
+            100 * f2l / total
         ];
 
+        // TODO: make the colors consistent
         let data: ChartData<"doughnut"> = {
             labels: labels,
             datasets: [{
                 label: `Percent of solve each step takes (of recent ${Const.WindowSize})`,
-                data: values
+                data: values1
+            }, {
+                normalized: false,
+                data: values2
             }]
         }
 
