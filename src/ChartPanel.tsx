@@ -1,6 +1,6 @@
 import React from "react";
 import { ChartPanelProps, ChartPanelState, Solve } from "./Types";
-import { Line, Chart, Bar } from 'react-chartjs-2';
+import { Line, Chart, Bar, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
 import { Const } from "./Constants";
 import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "./RunningAverageMath";
@@ -25,6 +25,50 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             datasets: [{
                 label: `Average Of ${Const.WindowSize}`,
                 data: movingAverage
+            }]
+        }
+
+        return data;
+    }
+
+    buildStepPercentages() {
+
+        let labels = ['Cross', 'F2L Pair 1', 'F2L Pair 2', 'F2L Pair 3', 'F2L Pair 4', 'OLL', 'PLL'];
+
+        let cross = 0;
+        let f2l_1 = 0;
+        let f2l_2 = 0;
+        let f2l_3 = 0;
+        let f2l_4 = 0;
+        let oll = 0;
+        let pll = 0;
+
+        let recentSolves = this.props.solves.slice(-Const.WindowSize);
+        for (let i = 0; i < recentSolves.length; i++) {
+            cross += recentSolves[i].steps.cross.time;
+            f2l_1 += recentSolves[i].steps.f2l_1.time;
+            f2l_2 += recentSolves[i].steps.f2l_2.time;
+            f2l_3 += recentSolves[i].steps.f2l_3.time;
+            f2l_4 += recentSolves[i].steps.f2l_4.time;
+            oll += recentSolves[i].steps.oll.time;
+            pll += recentSolves[i].steps.pll.time;
+        }
+        let total = cross + f2l_1 + f2l_2 + f2l_3 + f2l_4 + oll + pll;
+        let values = [
+            100 * cross / total,
+            100 * f2l_1 / total,
+            100 * f2l_2 / total,
+            100 * f2l_3 / total,
+            100 * f2l_4 / total,
+            100 * oll / total,
+            100 * pll / total
+        ];
+
+        let data: ChartData<"doughnut"> = {
+            labels: labels,
+            datasets: [{
+                label: `Percent of solve each step takes (of recent ${Const.WindowSize})`,
+                data: values
             }]
         }
 
@@ -162,6 +206,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let BarOptions = {
 
         };
+        let DoughnutOptions = {
+
+        };
 
         return (
             <div>
@@ -177,6 +224,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                     </div>
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildStepAverages()} options={LineOptions} />
+                    </div>
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Doughnut data={this.buildStepPercentages()} options={DoughnutOptions} />
                     </div>
                 </div>
             </div>
