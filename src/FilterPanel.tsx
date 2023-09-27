@@ -19,7 +19,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             startDate: moment.utc("1700-01-01").toDate(),
             endDate: moment.utc("2300-01-01").toDate(),
             fastestTime: 0,
-            slowestTime: 1000000,
+            slowestTime: 300,
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red],
             pllCases: ["T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z", "Solved"],
             includeMistakes: false
@@ -79,6 +79,13 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             if (filters.pllCases.indexOf(x.steps.pll.case) < 0) {
                 passesFilters = false;
             }
+            if (filters.slowestTime < x.time) {
+                passesFilters = false;
+            }
+            if (filters.fastestTime > x.time) {
+                passesFilters = false;
+            }
+
 
             // TODO: this is a bad way of filtering out mistakes
             if (!filters.includeMistakes && x.time > 30) {
@@ -155,13 +162,23 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         this.setState({ filters: newFilters })
     }
 
+    setSlowestSolve(event: React.ChangeEvent<HTMLInputElement>) {
+        let newFilters: Filters = this.state.filters;
+        newFilters.slowestTime = parseInt(event.target.value);
+        this.setState({ filters: newFilters })
+    }
+
+    setFastestSolve(event: React.ChangeEvent<HTMLInputElement>) {
+        let newFilters: Filters = this.state.filters;
+        newFilters.fastestTime = parseInt(event.target.value);
+        this.setState({ filters: newFilters })
+    }
+
     setMistakes(event: React.ChangeEvent<HTMLInputElement>) {
         let newFilters: Filters = this.state.filters;
-        console.log("event is ", event)
         newFilters.includeMistakes = event.target.checked;
         this.setState({ filters: newFilters });
     }
-
 
     tabSelect(key: any) {
         this.setState({ tabKey: key })
@@ -191,7 +208,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                         { label: CrossColor.Blue, value: CrossColor.Blue },
                                         { label: CrossColor.Green, value: CrossColor.Green },
                                     ]}
-                                    //selectedValues={this.state.filters.crossColors}
                                     value={this.state.chosenColors}
                                     onChange={this.crossColorsChanged.bind(this)}
                                     labelledBy="Select"
@@ -232,6 +248,20 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                     onChange={this.pllChanged.bind(this)}
                                     labelledBy="Select"
                                 />
+                            </div>
+                        </div>
+
+                        <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                            <div className="card info-card">
+                                Choose slowest and fastest solves to keep
+                                <div className="row">
+                                    <div className="form-outline col-6" >
+                                        <input min="0" max="300" type="number" id="fastestSolve" className="form-control" onChange={this.setFastestSolve.bind(this)} />
+                                    </div>
+                                    <div className="form-outline col-6" >
+                                        <input min="0" max="300" type="number" id="slowestSolve" className="form-control" onChange={this.setSlowestSolve.bind(this)} />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
