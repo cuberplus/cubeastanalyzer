@@ -22,7 +22,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             slowestTime: 300,
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red],
             pllCases: ["T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z", "Solved"],
-            includeMistakes: false
+            includeMistakes: true
         },
         drilldownStep: { label: StepName.Cross, value: StepName.Cross },
         chosenColors: [
