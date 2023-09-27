@@ -32,10 +32,14 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                 <header className={"header"}>
 
                     <div className="row">
-                        <div className="pagetitle col-lg-2 col-md-2 col-sm-6">
+                        <div className="pagetitle col-12">
                             <h1>Cubeast Analyzer</h1>
                         </div>
+                    </div>
+                </header>
 
+                <div className="row">
+                    <div className="card info-card">
                         <div className="col-lg-6 col-md-6 col-sm-6">
                             <form>
                                 Upload your cubeast file:
@@ -49,7 +53,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                             </form>
                         </div>
                     </div>
-                </header>
+                </div>
 
 
                 <FilterPanel solves={this.state.solves} />
