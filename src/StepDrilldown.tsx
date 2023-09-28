@@ -197,6 +197,17 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
             }
         };
 
+
+        let caseChart: JSX.Element = (<></>);
+
+        if (this.props.stepName == StepName.OLL || this.props.stepName == StepName.PLL) {
+            caseChart = (
+                <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    <Bar data={this.buildCaseData()} options={BarOptions} />
+                </div>
+            )
+        }
+
         return (
             <div>
                 <div className="row">
@@ -215,9 +226,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRecognitionExecutionData()} options={LineOptions} />
                     </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
-                        <Bar data={this.buildCaseData()} options={BarOptions} />
-                    </div>
+                    {caseChart}
                 </div>
 
             </div>
