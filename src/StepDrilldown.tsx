@@ -144,12 +144,14 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
             return data;
         }
 
+        let solves = this.props.steps.slice(-Const.WindowSize);
+
         let caseTimes: { [id: string]: number[] } = {};
-        for (let i = 0; i < this.props.steps.length; i++) {
-            if (!(this.props.steps[i].case in caseTimes)) {
-                caseTimes[this.props.steps[i].case] = [];
+        for (let i = 0; i < solves.length; i++) {
+            if (!(solves[i].case in caseTimes)) {
+                caseTimes[solves[i].case] = [];
             }
-            caseTimes[this.props.steps[i].case].push(this.props.steps[i].time)
+            caseTimes[solves[i].case].push(solves[i].time)
         }
 
         let cases: { label: string, time: number }[] = []
@@ -199,7 +201,6 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
 
 
         let caseChart: JSX.Element = (<></>);
-
         if (this.props.stepName == StepName.OLL || this.props.stepName == StepName.PLL) {
             caseChart = (
                 <div className={"card col-lg-6 col-md-6 col-sm-12"}>
