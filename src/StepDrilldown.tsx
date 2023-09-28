@@ -146,35 +146,48 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
 
         let solves = this.props.steps.slice(-Const.WindowSize);
 
-        let caseTimes: { [id: string]: number[] } = {};
+        let caseTimes: { [id: string]: { recognitionTime: number, executionTime: number }[] } = {};
         for (let i = 0; i < solves.length; i++) {
             if (!(solves[i].case in caseTimes)) {
                 caseTimes[solves[i].case] = [];
             }
-            caseTimes[solves[i].case].push(solves[i].time)
+            caseTimes[solves[i].case].push({
+                recognitionTime: solves[i].recognitionTime,
+                executionTime: solves[i].executionTime
+            });
         }
 
-        let cases: { label: string, time: number }[] = []
+        let cases: { label: string, recognitionTime: number, executionTime: number }[] = []
         for (let key in caseTimes) {
-            let average: number = caseTimes[key].reduce((a, b) => a + b) / caseTimes[key].length;
+            let recognitionTimes = caseTimes[key].map(x => x.recognitionTime);
+            let executionTimes = caseTimes[key].map(x => x.executionTime);
+
+            let averageRecognition: number = recognitionTimes.reduce((a, b) => a + b) / recognitionTimes.length;
+            let averageExecution: number = executionTimes.reduce((a, b) => a + b) / executionTimes.length;
+
             cases.push({
                 label: key,
-                time: average
+                executionTime: averageExecution,
+                recognitionTime: averageRecognition
             })
         }
 
         cases.sort((a, b) => {
-            return b.time - a.time;
+            return (b.recognitionTime + b.executionTime) - (a.recognitionTime + a.executionTime);
         })
 
         let labels = cases.map(x => "Case: " + x.label);
-        let values = cases.map(x => x.time)
+        let recognitionValues = cases.map(x => x.recognitionTime)
+        let executionValues = cases.map(x => x.executionTime)
 
         let data: ChartData<"bar"> = {
             labels: labels,
             datasets: [{
-                label: `Average time for each case`,
-                data: values
+                label: `Average recognition time for each case in past ${Const.WindowSize} solves`,
+                data: recognitionValues
+            }, {
+                label: `Average execution time for each case in past ${Const.WindowSize} solves`,
+                data: executionValues
             }]
         }
 
@@ -191,11 +204,14 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let BarOptions = {
             scales: {
                 x: {
+                    stacked: true,
                     ticks: {
                         autoSkip: false
                     }
+                },
+                y: {
+                    stacked: true
                 }
-
             }
         };
 
