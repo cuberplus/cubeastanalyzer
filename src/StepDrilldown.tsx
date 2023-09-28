@@ -1,5 +1,5 @@
 import React from "react";
-import { StepDrilldownProps, StepDrilldownState, Step } from "./Types";
+import { StepDrilldownProps, StepDrilldownState, Step, StepName } from "./Types";
 import { Line, Chart, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
 import { Const } from "./Constants";
@@ -135,6 +135,50 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         return data;
     }
 
+    buildCaseData() {
+        if (this.props.stepName != StepName.OLL && this.props.stepName != StepName.PLL) {
+            let data: ChartData<"bar"> = {
+                labels: [],
+                datasets: []
+            }
+            return data;
+        }
+
+        let caseTimes: { [id: string]: number[] } = {};
+        for (let i = 0; i < this.props.steps.length; i++) {
+            if (!(this.props.steps[i].case in caseTimes)) {
+                caseTimes[this.props.steps[i].case] = [];
+            }
+            caseTimes[this.props.steps[i].case].push(this.props.steps[i].time)
+        }
+
+        let cases: { label: string, time: number }[] = []
+        for (let key in caseTimes) {
+            let average: number = caseTimes[key].reduce((a, b) => a + b) / caseTimes[key].length;
+            cases.push({
+                label: key,
+                time: average
+            })
+        }
+
+        cases.sort((a, b) => {
+            return b.time - a.time;
+        })
+
+        let labels = cases.map(x => "Case: " + x.label);
+        let values = cases.map(x => x.time)
+
+        let data: ChartData<"bar"> = {
+            labels: labels,
+            datasets: [{
+                label: `Average time for each case`,
+                data: values
+            }]
+        }
+
+        return data;
+    }
+
     render() {
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
@@ -143,7 +187,14 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
             spanGaps: true
         };
         let BarOptions = {
+            scales: {
+                x: {
+                    ticks: {
+                        autoSkip: false
+                    }
+                }
 
+            }
         };
 
         return (
@@ -163,6 +214,9 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
                     </div>
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRecognitionExecutionData()} options={LineOptions} />
+                    </div>
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Bar data={this.buildCaseData()} options={BarOptions} />
                     </div>
                 </div>
 
