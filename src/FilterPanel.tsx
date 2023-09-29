@@ -267,7 +267,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             </div>
                         </div>
 
-                        <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
                             <div className="card info-card">
                                 Choose sliding window size
                                 <input min="5" max="10000" type="number" id="windowSize" className="form-control" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
