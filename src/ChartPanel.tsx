@@ -10,6 +10,8 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     state: ChartPanelState = { solves: [] };
 
     buildRunningAverageData() {
+        let movingRecognition = calculateMovingAverage(this.props.solves.map(x => x.recognitionTime), this.props.windowSize);
+        let movingExecution = calculateMovingAverage(this.props.solves.map(x => x.executionTime), this.props.windowSize);
         let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.time), this.props.windowSize);
 
         let labels = [];
@@ -18,12 +20,22 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         };
 
         movingAverage = reduceDataset(movingAverage);
+        movingExecution = reduceDataset(movingExecution);
+        movingRecognition = reduceDataset(movingRecognition);
         labels = reduceDataset(labels);
 
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: `Average Of ${this.props.windowSize}`,
+                label: `Average Recognition Of ${this.props.windowSize}`,
+                data: movingRecognition
+            },
+            {
+                label: `Average Execution Of ${this.props.windowSize}`,
+                data: movingExecution
+            },
+            {
+                label: `Average Time Of ${this.props.windowSize}`,
                 data: movingAverage
             }]
         }
