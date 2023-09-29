@@ -3,6 +3,7 @@ import { FileInputProps, FileInputState, Solve } from "../Helpers/Types";
 import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
+import { Button } from "react-bootstrap";
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [] };
@@ -43,12 +44,12 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                             <form>
                                 Upload your cubeast file:
                                 <input type="file" id="uploaded_data" accept=".csv" />
-                                <button type="button" onClick={() => {
+                                <Button type="button" onClick={() => {
                                     this.showFileData();
-                                }}>Display My Stats!</button>
-                                <button type="button" onClick={() => {
+                                }}>Display My Stats!</Button>
+                                <Button type="button" onClick={() => {
                                     this.showTestData();
-                                }}>Display Test Stats!</button>
+                                }}>Display Test Stats!</Button>
                             </form>
                         </div>
                     </div>
