@@ -24,7 +24,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             pllCases: ["T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z", "Solved"],
             includeMistakes: true
         },
-        drilldownStep: { label: StepName.Cross, value: StepName.Cross },
+        drilldownStep: { label: StepName.PLL, value: StepName.PLL },
         chosenColors: [
             { label: CrossColor.White, value: CrossColor.White },
             { label: CrossColor.Yellow, value: CrossColor.Yellow },
@@ -57,7 +57,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: "E Perm", value: "E" },
             { label: "Z Perm", value: "Z" }
         ],
-        tabKey: 1
+        tabKey: 1,
+        windowSize: 500
     }
 
     static applyFiltersToSolves(allSolves: Solve[], filters: Filters): Solve[] {
@@ -110,7 +111,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             filters: prevState.filters,
             chosenColors: prevState.chosenColors,
             chosenPLLs: prevState.chosenPLLs,
-            tabKey: prevState.tabKey
+            tabKey: prevState.tabKey,
+            windowSize: prevState.windowSize
         }
 
         return newState;
@@ -172,6 +174,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         let newFilters: Filters = this.state.filters;
         newFilters.fastestTime = parseInt(event.target.value);
         this.setState({ filters: newFilters })
+    }
+
+    setWindowSize(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({ windowSize: parseInt(event.target.value) })
     }
 
     setMistakes(event: React.ChangeEvent<HTMLInputElement>) {
@@ -261,9 +267,16 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             </div>
                         </div>
 
+                        <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                            <div className="card info-card">
+                                Choose sliding window size
+                                <input min="5" max="10000" type="number" id="windowSize" className="form-control" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
+
+                            </div>
+                        </div>
+
                         <div className={"col-lg-2 col-md-2 col-sm-6"}>
                             <div className="card info-card">
-
                                 Pick start date
                                 <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
                             </div>
@@ -316,7 +329,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             You have {this.state.allSolves.length} solves before filtering, and {this.state.filteredSolves.length} after
                         </div>
                         <div className={"card col-lg-2 col-md-2 col-sm-12"}>
-                            90% of your solves are below {calculate90thPercentile(this.props.solves.map(x => x.time))} seconds.
+                            90% of your last 1000 solves are below {calculate90thPercentile(this.props.solves.map(x => x.time), 1000)} seconds.
                         </div>
                     </div>
 
@@ -327,10 +340,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             onSelect={this.tabSelect.bind(this)}
                         >
                             <Tab eventKey={1} title="All Steps">
-                                <ChartPanel solves={this.state.filteredSolves} />
+                                <ChartPanel windowSize={this.state.windowSize} solves={this.state.filteredSolves} />
                             </Tab>
                             <Tab eventKey={2} title="Step Drilldown">
-                                <StepDrilldown steps={this.state.filteredSolves.map(x => {
+                                <StepDrilldown windowSize={this.state.windowSize} steps={this.state.filteredSolves.map(x => {
                                     switch (this.state.drilldownStep.value) {
                                         case StepName.Cross:
                                             return x.steps.cross;

@@ -10,7 +10,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
     state: StepDrilldownState = { steps: [] };
 
     buildStepTurnsData() {
-        let movingAverage = calculateMovingAverage(this.props.steps.map(x => x.turns), Const.WindowSize);
+        let movingAverage = calculateMovingAverage(this.props.steps.map(x => x.turns), this.props.windowSize);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
@@ -23,7 +23,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: `Number of ${this.props.stepName} turns (ao${Const.WindowSize})`,
+                label: `Number of ${this.props.stepName} turns (ao${this.props.windowSize})`,
                 data: movingAverage
             }]
         }
@@ -32,7 +32,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
     }
 
     buildRunningAverageData() {
-        let movingAverage = calculateMovingAverage(this.props.steps.map(x => x.time), Const.WindowSize);
+        let movingAverage = calculateMovingAverage(this.props.steps.map(x => x.time), this.props.windowSize);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
@@ -45,7 +45,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: `Average time of ${this.props.stepName} Of ${Const.WindowSize}`,
+                label: `Average time of ${this.props.stepName} Of ${this.props.windowSize}`,
                 data: movingAverage
             }]
         }
@@ -54,7 +54,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
     }
 
     buildRunningTpsData() {
-        let movingAverage = calculateMovingAverage(this.props.steps.map(x => x.tps), Const.WindowSize);
+        let movingAverage = calculateMovingAverage(this.props.steps.map(x => x.tps), this.props.windowSize);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
@@ -67,7 +67,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: `Average tps of ${this.props.stepName} Of ${Const.WindowSize}`,
+                label: `Average tps of ${this.props.stepName} Of ${this.props.windowSize}`,
                 data: movingAverage
             }]
         }
@@ -76,8 +76,8 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
     }
 
     buildRecognitionExecutionData() {
-        let recognitionAverage = calculateMovingAverage(this.props.steps.map(x => x.recognitionTime), Const.WindowSize);
-        let executionAverage = calculateMovingAverage(this.props.steps.map(x => x.executionTime), Const.WindowSize);
+        let recognitionAverage = calculateMovingAverage(this.props.steps.map(x => x.recognitionTime), this.props.windowSize);
+        let executionAverage = calculateMovingAverage(this.props.steps.map(x => x.executionTime), this.props.windowSize);
 
 
         let labels = [];
@@ -93,10 +93,10 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: `Average recognition time of ${this.props.stepName} Of ${Const.WindowSize}`,
+                label: `Average recognition time of ${this.props.stepName} Of ${this.props.windowSize}`,
                 data: recognitionAverage
             }, {
-                label: `Average execution time of ${this.props.stepName} Of ${Const.WindowSize}`,
+                label: `Average execution time of ${this.props.stepName} Of ${this.props.windowSize}`,
                 data: executionAverage
             }]
         }
@@ -105,7 +105,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
     }
 
     buildHistogramData() {
-        let solves = this.props.steps.map(x => x.time).slice(-Const.WindowSize);
+        let solves = this.props.steps.map(x => x.time).slice(-this.props.windowSize);
 
         let histogram = new Map<number, number>();
 
@@ -127,7 +127,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let data: ChartData<"bar"> = {
             labels: labels,
             datasets: [{
-                label: `Number of solves by ${this.props.stepName} time (of recent ${Const.WindowSize})`,
+                label: `Number of solves by ${this.props.stepName} time (of recent ${this.props.windowSize})`,
                 data: values
             }]
         }
@@ -144,7 +144,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
             return data;
         }
 
-        let solves = this.props.steps.slice(-Const.WindowSize);
+        let solves = this.props.steps.slice(-this.props.windowSize);
 
         let caseTimes: { [id: string]: { recognitionTime: number, executionTime: number }[] } = {};
         for (let i = 0; i < solves.length; i++) {
@@ -183,10 +183,10 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let data: ChartData<"bar"> = {
             labels: labels,
             datasets: [{
-                label: `Average recognition time for each case in past ${Const.WindowSize} solves`,
+                label: `Average recognition time for each case in past ${this.props.windowSize} solves`,
                 data: recognitionValues
             }, {
-                label: `Average execution time for each case in past ${Const.WindowSize} solves`,
+                label: `Average execution time for each case in past ${this.props.windowSize} solves`,
                 data: executionValues
             }]
         }

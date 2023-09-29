@@ -78,7 +78,8 @@ export interface FilterPanelState {
     drilldownStep: Option,
     chosenColors: Option[],
     chosenPLLs: Option[],
-    tabKey: number
+    tabKey: number,
+    windowSize: number
 }
 
 export interface FileInputProps {
@@ -90,6 +91,7 @@ export interface FileInputState {
 }
 
 export interface ChartPanelProps {
+    windowSize: number,
     solves: Solve[]
 }
 
@@ -98,6 +100,7 @@ export interface ChartPanelState {
 }
 
 export interface StepDrilldownProps {
+    windowSize: number,
     steps: Step[],
     stepName: string
 }

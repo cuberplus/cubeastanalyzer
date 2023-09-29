@@ -10,7 +10,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     state: ChartPanelState = { solves: [] };
 
     buildRunningAverageData() {
-        let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.time), Const.WindowSize);
+        let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.time), this.props.windowSize);
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
@@ -23,7 +23,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: `Average Of ${Const.WindowSize}`,
+                label: `Average Of ${this.props.windowSize}`,
                 data: movingAverage
             }]
         }
@@ -43,7 +43,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let oll = 0;
         let pll = 0;
 
-        let recentSolves = this.props.solves.slice(-Const.WindowSize);
+        let recentSolves = this.props.solves.slice(-this.props.windowSize);
         for (let i = 0; i < recentSolves.length; i++) {
             cross += recentSolves[i].steps.cross.time;
             f2l_1 += recentSolves[i].steps.f2l_1.time;
@@ -75,7 +75,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let data: ChartData<"doughnut"> = {
             labels: labels,
             datasets: [{
-                label: `Percent of solve each step takes (of recent ${Const.WindowSize})`,
+                label: `Percent of solve each step takes (of recent ${this.props.windowSize})`,
                 data: values1
             }, {
                 normalized: false,
@@ -87,13 +87,13 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildStepAverages() {
-        let crossAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.cross.time), Const.WindowSize);
-        let f2l_1Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_1.time), Const.WindowSize);
-        let f2l_2Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_2.time), Const.WindowSize);
-        let f2l_3Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_3.time), Const.WindowSize);
-        let f2l_4Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_4.time), Const.WindowSize);
-        let ollAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.oll.time), Const.WindowSize);
-        let pllAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.pll.time), Const.WindowSize);
+        let crossAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.cross.time), this.props.windowSize);
+        let f2l_1Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_1.time), this.props.windowSize);
+        let f2l_2Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_2.time), this.props.windowSize);
+        let f2l_3Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_3.time), this.props.windowSize);
+        let f2l_4Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_4.time), this.props.windowSize);
+        let ollAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.oll.time), this.props.windowSize);
+        let pllAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.pll.time), this.props.windowSize);
 
         let labels = [];
         for (let i = 1; i <= crossAverage.length; i++) {
@@ -112,31 +112,31 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: `Cross Average Of ${Const.WindowSize}`,
+                label: `Cross Average Of ${this.props.windowSize}`,
                 data: crossAverage
             },
             {
-                label: `Pair 1 Average Of ${Const.WindowSize}`,
+                label: `Pair 1 Average Of ${this.props.windowSize}`,
                 data: f2l_1Average
             },
             {
-                label: `Pair 2 Average Of ${Const.WindowSize}`,
+                label: `Pair 2 Average Of ${this.props.windowSize}`,
                 data: f2l_2Average
             },
             {
-                label: `Pair 3 Average Of ${Const.WindowSize}`,
+                label: `Pair 3 Average Of ${this.props.windowSize}`,
                 data: f2l_3Average
             },
             {
-                label: `Pair 4 Average Of ${Const.WindowSize}`,
+                label: `Pair 4 Average Of ${this.props.windowSize}`,
                 data: f2l_4Average
             },
             {
-                label: `OLL Average Of ${Const.WindowSize}`,
+                label: `OLL Average Of ${this.props.windowSize}`,
                 data: ollAverage
             },
             {
-                label: `PLL Average Of ${Const.WindowSize}`,
+                label: `PLL Average Of ${this.props.windowSize}`,
                 data: pllAverage
             }]
         }
@@ -149,8 +149,8 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let checkIfBad = (time: number) => { return time > 20 };
         let checkIfGood = (time: number) => { return time < 15 }
 
-        let movingPercentBad = calculateMovingPercentage(this.props.solves.map(x => x.time), Const.WindowSize, checkIfBad);
-        let movingPercentGood = calculateMovingPercentage(this.props.solves.map(x => x.time), Const.WindowSize, checkIfGood);
+        let movingPercentBad = calculateMovingPercentage(this.props.solves.map(x => x.time), this.props.windowSize, checkIfBad);
+        let movingPercentGood = calculateMovingPercentage(this.props.solves.map(x => x.time), this.props.windowSize, checkIfGood);
 
         let labels = [];
         for (let i = 1; i <= movingPercentBad.length; i++) {
@@ -164,11 +164,11 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let data: ChartData<"line"> = {
             labels,
             datasets: [{
-                label: `Percentage of good solves over last ${Const.WindowSize}`,
+                label: `Percentage of good solves over last ${this.props.windowSize}`,
                 data: movingPercentGood
             },
             {
-                label: `Percentage of bad solves over last ${Const.WindowSize}`,
+                label: `Percentage of bad solves over last ${this.props.windowSize}`,
                 data: movingPercentBad
             }]
         }
@@ -177,7 +177,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildHistogramData() {
-        let recentSolves = this.props.solves.map(x => x.time).slice(-Const.WindowSize);
+        let recentSolves = this.props.solves.map(x => x.time).slice(-this.props.windowSize);
 
         let histogram = new Map<number, number>();
 
@@ -199,7 +199,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let data: ChartData<"bar"> = {
             labels: labels,
             datasets: [{
-                label: `Number of solves by time (of recent ${Const.WindowSize})`,
+                label: `Number of solves by time (of recent ${this.props.windowSize})`,
                 data: values
             }]
         }

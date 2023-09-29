@@ -1,8 +1,8 @@
 import { Const } from "./Constants";
 
 
-export function calculate90thPercentile(data: number[]): number {
-    let recentSolves = data.slice(-Const.WindowSize);
+export function calculate90thPercentile(data: number[], window: number): number {
+    let recentSolves = data.slice(-window);
 
     let sortedSolves = recentSolves.sort((a, b) => {
         return a - b;
