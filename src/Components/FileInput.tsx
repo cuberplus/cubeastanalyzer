@@ -54,7 +54,6 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                     </div>
                 </div>
 
-
                 <FilterPanel solves={this.state.solves} />
             </div>
         )
