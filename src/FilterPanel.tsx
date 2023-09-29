@@ -191,139 +191,145 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     }
 
     render() {
-        return (
-            <main className="body">
 
-                <section className="section dashboard">
+        let filters: JSX.Element = (<></>);
+        if (this.state.allSolves.length > 0) {
+            filters = (
+                <div className={"row"}>
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                        <div className="card info-card">
 
-                    <div className={"row"}>
-                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                            <div className="card info-card">
-
-                                Pick starting cross color
-                                <MultiSelect
-                                    options={[
-                                        { label: CrossColor.White, value: CrossColor.White },
-                                        { label: CrossColor.Yellow, value: CrossColor.Yellow },
-                                        { label: CrossColor.Red, value: CrossColor.Red },
-                                        { label: CrossColor.Orange, value: CrossColor.Orange },
-                                        { label: CrossColor.Blue, value: CrossColor.Blue },
-                                        { label: CrossColor.Green, value: CrossColor.Green },
-                                    ]}
-                                    value={this.state.chosenColors}
-                                    onChange={this.crossColorsChanged.bind(this)}
-                                    labelledBy="Select"
-                                />
-                            </div>
+                            Pick starting cross color
+                            <MultiSelect
+                                options={[
+                                    { label: CrossColor.White, value: CrossColor.White },
+                                    { label: CrossColor.Yellow, value: CrossColor.Yellow },
+                                    { label: CrossColor.Red, value: CrossColor.Red },
+                                    { label: CrossColor.Orange, value: CrossColor.Orange },
+                                    { label: CrossColor.Blue, value: CrossColor.Blue },
+                                    { label: CrossColor.Green, value: CrossColor.Green },
+                                ]}
+                                value={this.state.chosenColors}
+                                onChange={this.crossColorsChanged.bind(this)}
+                                labelledBy="Select"
+                            />
                         </div>
+                    </div>
 
-                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                            <div className="card info-card">
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                        <div className="card info-card">
 
-                                Pick PLL case
-                                <MultiSelect
-                                    options={[
-                                        { label: "Solved", value: "Solved" },
-                                        { label: "T Perm", value: "T" },
-                                        { label: "V Perm", value: "V" },
-                                        { label: "Aa Perm", value: "Aa" },
-                                        { label: "Ab Perm", value: "Ab" },
-                                        { label: "Ga Perm", value: "Ga" },
-                                        { label: "Gb Perm", value: "Gb" },
-                                        { label: "Gc Perm", value: "Gc" },
-                                        { label: "Gd Perm", value: "Gd" },
-                                        { label: "Ja Perm", value: "Ja" },
-                                        { label: "Jb Perm", value: "Jb" },
-                                        { label: "F Perm", value: "F" },
-                                        { label: "Y Perm", value: "Y" },
-                                        { label: "Ua Perm", value: "Ua" },
-                                        { label: "Ub Perm", value: "Ub" },
-                                        { label: "Ra Perm", value: "Ra" },
-                                        { label: "Rb Perm", value: "Rb" },
-                                        { label: "Na Perm", value: "Na" },
-                                        { label: "Nb Perm", value: "Nb" },
-                                        { label: "H Perm", value: "H" },
-                                        { label: "E Perm", value: "E" },
-                                        { label: "Z Perm", value: "Z" }
-                                    ]}
-                                    value={this.state.chosenPLLs}
-                                    onChange={this.pllChanged.bind(this)}
-                                    labelledBy="Select"
-                                />
-                            </div>
+                            Pick PLL case
+                            <MultiSelect
+                                options={[
+                                    { label: "Solved", value: "Solved" },
+                                    { label: "T Perm", value: "T" },
+                                    { label: "V Perm", value: "V" },
+                                    { label: "Aa Perm", value: "Aa" },
+                                    { label: "Ab Perm", value: "Ab" },
+                                    { label: "Ga Perm", value: "Ga" },
+                                    { label: "Gb Perm", value: "Gb" },
+                                    { label: "Gc Perm", value: "Gc" },
+                                    { label: "Gd Perm", value: "Gd" },
+                                    { label: "Ja Perm", value: "Ja" },
+                                    { label: "Jb Perm", value: "Jb" },
+                                    { label: "F Perm", value: "F" },
+                                    { label: "Y Perm", value: "Y" },
+                                    { label: "Ua Perm", value: "Ua" },
+                                    { label: "Ub Perm", value: "Ub" },
+                                    { label: "Ra Perm", value: "Ra" },
+                                    { label: "Rb Perm", value: "Rb" },
+                                    { label: "Na Perm", value: "Na" },
+                                    { label: "Nb Perm", value: "Nb" },
+                                    { label: "H Perm", value: "H" },
+                                    { label: "E Perm", value: "E" },
+                                    { label: "Z Perm", value: "Z" }
+                                ]}
+                                value={this.state.chosenPLLs}
+                                onChange={this.pllChanged.bind(this)}
+                                labelledBy="Select"
+                            />
                         </div>
+                    </div>
 
-                        <div className={"col-lg-4 col-md-4 col-sm-12"}>
-                            <div className="card info-card">
-                                Choose slowest and fastest solves to keep
-                                <div className="row">
-                                    <div className="form-outline col-6" >
-                                        <input min="0" max="300" type="number" id="fastestSolve" className="form-control" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
-                                    </div>
-                                    <div className="form-outline col-6" >
-                                        <input min="0" max="300" type="number" id="slowestSolve" className="form-control" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
-                                    </div>
+                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
+                        <div className="card info-card">
+                            Choose slowest and fastest solves to keep
+                            <div className="row">
+                                <div className="form-outline col-6" >
+                                    <input min="0" max="300" type="number" id="fastestSolve" className="form-control" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
+                                </div>
+                                <div className="form-outline col-6" >
+                                    <input min="0" max="300" type="number" id="slowestSolve" className="form-control" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
                                 </div>
                             </div>
                         </div>
-
-                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                            <div className="card info-card">
-                                Choose sliding window size
-                                <input min="5" max="10000" type="number" id="windowSize" className="form-control" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
-
-                            </div>
-                        </div>
-
-                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                            <div className="card info-card">
-                                Pick start date
-                                <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
-                            </div>
-                        </div>
-
-                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                            <div className="card info-card">
-
-                                Pick end date
-                                <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
-                            </div>
-                        </div>
-
-                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                            <div className="card info-card">
-
-                                Include messed up solves?
-                                <input
-                                    type="checkbox"
-                                    checked={this.state.filters.includeMistakes}
-                                    onChange={this.setMistakes.bind(this)}
-                                />
-                            </div>
-                        </div>
-
-                        <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                            <div className="card info-card">
-                                Which step to drill down?
-                                <Select
-                                    options={[
-                                        { label: StepName.Cross, value: StepName.Cross },
-                                        { label: StepName.F2L_1, value: StepName.F2L_1 },
-                                        { label: StepName.F2L_2, value: StepName.F2L_2 },
-                                        { label: StepName.F2L_3, value: StepName.F2L_3 },
-                                        { label: StepName.F2L_4, value: StepName.F2L_4 },
-                                        { label: StepName.OLL, value: StepName.OLL },
-                                        { label: StepName.PLL, value: StepName.PLL },
-
-                                    ]}
-                                    value={this.state.drilldownStep}
-                                    onChange={this.drilldownStepChanged.bind(this)}
-                                />
-                            </div>
-                        </div>
-
                     </div>
 
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                        <div className="card info-card">
+                            Choose sliding window size
+                            <input min="5" max="10000" type="number" id="windowSize" className="form-control" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
+
+                        </div>
+                    </div>
+
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                        <div className="card info-card">
+                            Pick start date
+                            <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
+                        </div>
+                    </div>
+
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                        <div className="card info-card">
+
+                            Pick end date
+                            <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
+                        </div>
+                    </div>
+
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                        <div className="card info-card">
+
+                            Include messed up solves?
+                            <input
+                                type="checkbox"
+                                checked={this.state.filters.includeMistakes}
+                                onChange={this.setMistakes.bind(this)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
+                        <div className="card info-card">
+                            Which step to drill down?
+                            <Select
+                                options={[
+                                    { label: StepName.Cross, value: StepName.Cross },
+                                    { label: StepName.F2L_1, value: StepName.F2L_1 },
+                                    { label: StepName.F2L_2, value: StepName.F2L_2 },
+                                    { label: StepName.F2L_3, value: StepName.F2L_3 },
+                                    { label: StepName.F2L_4, value: StepName.F2L_4 },
+                                    { label: StepName.OLL, value: StepName.OLL },
+                                    { label: StepName.PLL, value: StepName.PLL },
+
+                                ]}
+                                value={this.state.drilldownStep}
+                                onChange={this.drilldownStepChanged.bind(this)}
+                            />
+                        </div>
+                    </div>
+
+                </div>
+            )
+        }
+
+
+        let analysis: JSX.Element = (<></>)
+        if (this.state.allSolves.length > 0) {
+            analysis = (
+                <div>
                     <div className={"row"}>
                         <div className={"card col-lg-2 col-md-2 col-sm-12"}>
                             You have {this.state.allSolves.length} solves before filtering, and {this.state.filteredSolves.length} after
@@ -334,7 +340,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </div>
 
                     <div className={"row"} >
-
                         <Tabs
                             activeKey={this.state.tabKey}
                             onSelect={this.tabSelect.bind(this)}
@@ -366,11 +371,17 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 })} stepName={this.state.drilldownStep.label} />
                             </Tab>
                         </Tabs>
-
                     </div>
+                </div>
+            );
+        }
 
+        return (
+            <main className="body">
+                <section className="section dashboard">
+                    {filters}
+                    {analysis}
                 </section>
-
             </main >
         )
     }
