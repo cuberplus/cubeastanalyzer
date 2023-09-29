@@ -1,9 +1,8 @@
 import React from "react";
-import { FileInputProps, FileInputState, Solve } from "./Types";
-import { parseCsv } from "./CsvParser";
+import { FileInputProps, FileInputState, Solve } from "../Helpers/Types";
+import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
-import { GetDemoData } from "./SampleData"
-import "./Style.css";
+import { GetDemoData } from "../Helpers/SampleData"
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [] };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { FileInput } from './FileInput';
-import "./Style.css";
+import "../CSS/Style.css";
 
 function App() {
 

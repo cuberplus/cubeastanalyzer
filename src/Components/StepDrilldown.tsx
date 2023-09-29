@@ -1,10 +1,8 @@
 import React from "react";
-import { StepDrilldownProps, StepDrilldownState, Step, StepName } from "./Types";
+import { StepDrilldownProps, StepDrilldownState, Step, StepName } from "../Helpers/Types";
 import { Line, Chart, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
-import { Const } from "./Constants";
-import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "./RunningAverageMath";
-import "./Style.css";
+import { calculateMovingAverage, reduceDataset } from "../Helpers/RunningAverageMath";
 
 export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrilldownState> {
     state: StepDrilldownState = { steps: [] };

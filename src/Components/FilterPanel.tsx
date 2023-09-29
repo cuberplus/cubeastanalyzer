@@ -2,14 +2,13 @@ import React from "react";
 import moment from "moment";
 import { MultiSelect } from "react-multi-select-component";
 import DatePicker from "react-datepicker";
-import { CrossColor, FilterPanelProps, FilterPanelState, Filters, Solve, StepName } from "./Types";
+import { CrossColor, FilterPanelProps, FilterPanelState, Filters, Solve, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import Select from "react-select";
 import { Option } from "react-multi-select-component"
-import { calculate90thPercentile } from "./RunningAverageMath";
+import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
 import { Tabs, Tab } from 'react-bootstrap';
-import "./Style.css";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
