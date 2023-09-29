@@ -10,8 +10,6 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     state: ChartPanelState = { solves: [] };
 
     buildRunningAverageData() {
-        let movingRecognition = calculateMovingAverage(this.props.solves.map(x => x.recognitionTime), this.props.windowSize);
-        let movingExecution = calculateMovingAverage(this.props.solves.map(x => x.executionTime), this.props.windowSize);
         let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.time), this.props.windowSize);
 
         let labels = [];
@@ -20,6 +18,28 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         };
 
         movingAverage = reduceDataset(movingAverage);
+        labels = reduceDataset(labels);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: `Average Time Of ${this.props.windowSize}`,
+                data: movingAverage
+            }]
+        }
+
+        return data;
+    }
+
+    buildRunningRecognitionExecution() {
+        let movingRecognition = calculateMovingAverage(this.props.solves.map(x => x.recognitionTime), this.props.windowSize);
+        let movingExecution = calculateMovingAverage(this.props.solves.map(x => x.executionTime), this.props.windowSize);
+
+        let labels = [];
+        for (let i = 1; i <= movingRecognition.length; i++) {
+            labels.push(i.toString())
+        };
+
         movingExecution = reduceDataset(movingExecution);
         movingRecognition = reduceDataset(movingRecognition);
         labels = reduceDataset(labels);
@@ -33,10 +53,6 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             {
                 label: `Average Execution Of ${this.props.windowSize}`,
                 data: movingExecution
-            },
-            {
-                label: `Average Time Of ${this.props.windowSize}`,
-                data: movingAverage
             }]
         }
 
@@ -238,6 +254,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                 <div className="row">
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRunningAverageData()} options={LineOptions} />
+                    </div>
+                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                        <Line data={this.buildRunningRecognitionExecution()} options={LineOptions} />
                     </div>
                     <div className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Bar data={this.buildHistogramData()} options={BarOptions} />
