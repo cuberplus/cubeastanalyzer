@@ -8,7 +8,7 @@ import { StepDrilldown } from "./StepDrilldown";
 import Select from "react-select";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
-import { Tabs, Tab } from 'react-bootstrap';
+import { Tabs, Tab, FormControl } from 'react-bootstrap';
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -190,14 +190,12 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     }
 
     render() {
-
         let filters: JSX.Element = (<></>);
         if (this.state.allSolves.length > 0) {
             filters = (
                 <div className={"row"}>
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
                         <div className="card info-card">
-
                             Pick starting cross color
                             <MultiSelect
                                 options={[
@@ -217,7 +215,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
                         <div className="card info-card">
-
                             Pick PLL case
                             <MultiSelect
                                 options={[
@@ -256,10 +253,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             Choose slowest and fastest solves to keep
                             <div className="row">
                                 <div className="form-outline col-6" >
-                                    <input min="0" max="300" type="number" id="fastestSolve" className="form-control" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
+                                    <FormControl min="0" max="300" type="number" id="fastestSolve" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
                                 </div>
                                 <div className="form-outline col-6" >
-                                    <input min="0" max="300" type="number" id="slowestSolve" className="form-control" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
+                                    <FormControl min="0" max="300" type="number" id="slowestSolve" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
                                 </div>
                             </div>
                         </div>
@@ -268,7 +265,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
                         <div className="card info-card">
                             Choose sliding window size
-                            <input min="5" max="10000" type="number" id="windowSize" className="form-control" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
+                            <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
 
                         </div>
                     </div>
