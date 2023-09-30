@@ -8,7 +8,7 @@ import { StepDrilldown } from "./StepDrilldown";
 import Select from "react-select";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
-import { Tabs, Tab, FormControl, Card } from 'react-bootstrap';
+import { Tabs, Tab, FormControl, Card, Row } from 'react-bootstrap';
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -193,7 +193,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         let filters: JSX.Element = (<></>);
         if (this.state.allSolves.length > 0) {
             filters = (
-                <div className={"row"}>
+                <Row>
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
                         <Card className="card info-card">
                             Pick starting cross color
@@ -314,7 +314,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             />
                         </Card>
                     </div>
-                </div>
+                </Row>
             )
         }
 
@@ -323,16 +323,16 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (this.state.allSolves.length > 0) {
             analysis = (
                 <div>
-                    <div className={"row"}>
+                    <Row>
                         <Card className={"card col-lg-2 col-md-2 col-sm-12"}>
                             You have {this.state.allSolves.length} solves before filtering, and {this.state.filteredSolves.length} after
                         </Card>
                         <Card className={"card col-lg-2 col-md-2 col-sm-12"}>
                             90% of your last 1000 solves are below {calculate90thPercentile(this.props.solves.map(x => x.time), 1000)} seconds.
                         </Card>
-                    </div>
+                    </Row>
 
-                    <div className={"row"} >
+                    <Row>
                         <Tabs
                             activeKey={this.state.tabKey}
                             onSelect={this.tabSelect.bind(this)}
@@ -364,7 +364,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 })} stepName={this.state.drilldownStep.label} />
                             </Tab>
                         </Tabs>
-                    </div>
+                    </Row>
                 </div>
             );
         }

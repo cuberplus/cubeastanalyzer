@@ -3,7 +3,7 @@ import { StepDrilldownProps, StepDrilldownState, Step, StepName } from "../Helpe
 import { Line, Chart, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
 import { calculateMovingAverage, reduceDataset } from "../Helpers/RunningAverageMath";
-import { Card } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
 
 export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrilldownState> {
     state: StepDrilldownState = { steps: [] };
@@ -226,7 +226,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
 
         return (
             <div>
-                <div className="row">
+                <Row className="row">
                     <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRunningAverageData()} options={LineOptions} />
                     </Card>
@@ -243,7 +243,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
                         <Line data={this.buildRecognitionExecutionData()} options={LineOptions} />
                     </Card>
                     {caseChart}
-                </div>
+                </Row>
             </div>
         )
     }
