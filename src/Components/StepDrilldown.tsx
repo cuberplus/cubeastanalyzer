@@ -225,26 +225,24 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         }
 
         return (
-            <div>
-                <Row className="row">
-                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
-                        <Line data={this.buildRunningAverageData()} options={LineOptions} />
-                    </Card>
-                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
-                        <Bar data={this.buildHistogramData()} options={BarOptions} />
-                    </Card>
-                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
-                        <Line data={this.buildStepTurnsData()} options={LineOptions} />
-                    </Card>
-                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
-                        <Line data={this.buildRunningTpsData()} options={LineOptions} />
-                    </Card>
-                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
-                        <Line data={this.buildRecognitionExecutionData()} options={LineOptions} />
-                    </Card>
-                    {caseChart}
-                </Row>
-            </div>
+            <Row className="row">
+                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    <Line data={this.buildRunningAverageData()} options={LineOptions} />
+                </Card>
+                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    <Bar data={this.buildHistogramData()} options={BarOptions} />
+                </Card>
+                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    <Line data={this.buildStepTurnsData()} options={LineOptions} />
+                </Card>
+                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    <Line data={this.buildRunningTpsData()} options={LineOptions} />
+                </Card>
+                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    <Line data={this.buildRecognitionExecutionData()} options={LineOptions} />
+                </Card>
+                {caseChart}
+            </Row>
         )
     }
 }

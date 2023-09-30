@@ -3,7 +3,7 @@ import { FileInputProps, FileInputState, Solve } from "../Helpers/Types";
 import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
-import { Button, Form, FormControl, Card, Row } from "react-bootstrap";
+import { Button, Form, FormControl, Card, Row, ButtonGroup } from "react-bootstrap";
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [] };
@@ -30,7 +30,6 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         return (
             <div>
                 <header className={"header"}>
-
                     <Row>
                         <div className="pagetitle col-12">
                             <h1>Cubeast Analyzer</h1>
@@ -39,20 +38,21 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                 </header>
 
                 <Row>
-                    <Card className="info-card">
-                        <div className="col-lg-6 col-md-6 col-sm-6">
-                            <Form>
-                                Upload your cubeast file:
-                                <FormControl type="file" id="uploaded_data" accept=".csv" />
-                                <Button type="button" onClick={() => {
-                                    this.showFileData();
-                                }}>Display My Stats!</Button>
-                                <Button type="button" onClick={() => {
-                                    this.showTestData();
-                                }}>Display Test Stats!</Button>
-                            </Form>
-                        </div>
+                    <Card className="info-card col-lg-6 col-md-6 col-sm-6">
+                        <Form>
+                            Upload your cubeast file:
+                            <FormControl type="file" id="uploaded_data" accept=".csv" />
+                        </Form>
                     </Card>
+
+                    <ButtonGroup className="col-lg-6 col-md-6 col-sm-6">
+                        <Button variant="success" onClick={() => {
+                            this.showFileData();
+                        }}>Display My Stats!</Button>
+                        <Button onClick={() => {
+                            this.showTestData();
+                        }}>Display Test Stats!</Button>
+                    </ButtonGroup>
                 </Row>
                 <FilterPanel solves={this.state.solves} />
             </div>
