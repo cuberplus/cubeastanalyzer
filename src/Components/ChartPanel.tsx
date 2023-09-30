@@ -3,6 +3,7 @@ import { ChartPanelProps, ChartPanelState, Solve } from "../Helpers/Types";
 import { Line, Chart, Bar, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
 import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "../Helpers/RunningAverageMath";
+import { Card } from "react-bootstrap";
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
@@ -250,24 +251,24 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return (
             <div>
                 <div className="row">
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRunningAverageData()} options={LineOptions} />
-                    </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    </Card>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRunningRecognitionExecution()} options={LineOptions} />
-                    </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    </Card>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Bar data={this.buildHistogramData()} options={BarOptions} />
-                    </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    </Card>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildGoodBadData()} options={LineOptions} />
-                    </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    </Card>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildStepAverages()} options={LineOptions} />
-                    </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    </Card>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Doughnut data={this.buildStepPercentages()} options={DoughnutOptions} />
-                    </div>
+                    </Card>
                 </div>
             </div>
         )

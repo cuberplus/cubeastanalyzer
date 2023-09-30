@@ -3,7 +3,7 @@ import { FileInputProps, FileInputState, Solve } from "../Helpers/Types";
 import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
-import { Button, Form, FormControl } from "react-bootstrap";
+import { Button, Form, FormControl, Card } from "react-bootstrap";
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [] };
@@ -39,7 +39,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                 </header>
 
                 <div className="row">
-                    <div className="card info-card">
+                    <Card className="info-card">
                         <div className="col-lg-6 col-md-6 col-sm-6">
                             <form>
                                 Upload your cubeast file:
@@ -52,7 +52,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                                 }}>Display Test Stats!</Button>
                             </form>
                         </div>
-                    </div>
+                    </Card>
                 </div>
 
                 <FilterPanel solves={this.state.solves} />

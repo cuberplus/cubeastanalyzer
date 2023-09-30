@@ -8,7 +8,7 @@ import { StepDrilldown } from "./StepDrilldown";
 import Select from "react-select";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
-import { Tabs, Tab, FormControl } from 'react-bootstrap';
+import { Tabs, Tab, FormControl, Card } from 'react-bootstrap';
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -195,7 +195,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             filters = (
                 <div className={"row"}>
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <div className="card info-card">
+                        <Card className="card info-card">
                             Pick starting cross color
                             <MultiSelect
                                 options={[
@@ -210,11 +210,11 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 onChange={this.crossColorsChanged.bind(this)}
                                 labelledBy="Select"
                             />
-                        </div>
+                        </Card>
                     </div>
 
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <div className="card info-card">
+                        <Card className="card info-card">
                             Pick PLL case
                             <MultiSelect
                                 options={[
@@ -245,11 +245,11 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 onChange={this.pllChanged.bind(this)}
                                 labelledBy="Select"
                             />
-                        </div>
+                        </Card>
                     </div>
 
                     <div className={"col-lg-4 col-md-4 col-sm-12"}>
-                        <div className="card info-card">
+                        <Card className="card info-card">
                             Choose slowest and fastest solves to keep
                             <div className="row">
                                 <div className="form-outline col-6" >
@@ -259,46 +259,44 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                     <FormControl min="0" max="300" type="number" id="slowestSolve" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
                                 </div>
                             </div>
-                        </div>
+                        </Card>
                     </div>
 
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <div className="card info-card">
+                        <Card className="card info-card">
                             Choose sliding window size
                             <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
 
-                        </div>
+                        </Card>
                     </div>
 
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <div className="card info-card">
+                        <Card className="card info-card">
                             Pick start date
                             <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
-                        </div>
+                        </Card>
                     </div>
 
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <div className="card info-card">
-
+                        <Card className="card info-card">
                             Pick end date
                             <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
-                        </div>
+                        </Card>
                     </div>
 
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <div className="card info-card">
-
+                        <Card className="card info-card">
                             Include messed up solves?
                             <input
                                 type="checkbox"
                                 checked={this.state.filters.includeMistakes}
                                 onChange={this.setMistakes.bind(this)}
                             />
-                        </div>
+                        </Card>
                     </div>
 
                     <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <div className="card info-card">
+                        <Card className="card info-card">
                             Which step to drill down?
                             <Select
                                 options={[
@@ -314,9 +312,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 value={this.state.drilldownStep}
                                 onChange={this.drilldownStepChanged.bind(this)}
                             />
-                        </div>
+                        </Card>
                     </div>
-
                 </div>
             )
         }
@@ -327,12 +324,12 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             analysis = (
                 <div>
                     <div className={"row"}>
-                        <div className={"card col-lg-2 col-md-2 col-sm-12"}>
+                        <Card className={"card col-lg-2 col-md-2 col-sm-12"}>
                             You have {this.state.allSolves.length} solves before filtering, and {this.state.filteredSolves.length} after
-                        </div>
-                        <div className={"card col-lg-2 col-md-2 col-sm-12"}>
+                        </Card>
+                        <Card className={"card col-lg-2 col-md-2 col-sm-12"}>
                             90% of your last 1000 solves are below {calculate90thPercentile(this.props.solves.map(x => x.time), 1000)} seconds.
-                        </div>
+                        </Card>
                     </div>
 
                     <div className={"row"} >

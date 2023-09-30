@@ -3,6 +3,7 @@ import { StepDrilldownProps, StepDrilldownState, Step, StepName } from "../Helpe
 import { Line, Chart, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
 import { calculateMovingAverage, reduceDataset } from "../Helpers/RunningAverageMath";
+import { Card } from "react-bootstrap";
 
 export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrilldownState> {
     state: StepDrilldownState = { steps: [] };
@@ -217,33 +218,32 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let caseChart: JSX.Element = (<></>);
         if (this.props.stepName == StepName.OLL || this.props.stepName == StepName.PLL) {
             caseChart = (
-                <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                     <Bar data={this.buildCaseData()} options={BarOptions} />
-                </div>
+                </Card>
             )
         }
 
         return (
             <div>
                 <div className="row">
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRunningAverageData()} options={LineOptions} />
-                    </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    </Card>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Bar data={this.buildHistogramData()} options={BarOptions} />
-                    </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    </Card>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildStepTurnsData()} options={LineOptions} />
-                    </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    </Card>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRunningTpsData()} options={LineOptions} />
-                    </div>
-                    <div className={"card col-lg-6 col-md-6 col-sm-12"}>
+                    </Card>
+                    <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
                         <Line data={this.buildRecognitionExecutionData()} options={LineOptions} />
-                    </div>
+                    </Card>
                     {caseChart}
                 </div>
-
             </div>
         )
     }
