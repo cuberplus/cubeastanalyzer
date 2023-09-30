@@ -218,7 +218,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let caseChart: JSX.Element = (<></>);
         if (this.props.stepName == StepName.OLL || this.props.stepName == StepName.PLL) {
             caseChart = (
-                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Bar data={this.buildCaseData()} options={BarOptions} />
                 </Card>
             )
@@ -226,19 +226,19 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
 
         return (
             <Row className="row">
-                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Line data={this.buildRunningAverageData()} options={LineOptions} />
                 </Card>
-                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Bar data={this.buildHistogramData()} options={BarOptions} />
                 </Card>
-                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Line data={this.buildStepTurnsData()} options={LineOptions} />
                 </Card>
-                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Line data={this.buildRunningTpsData()} options={LineOptions} />
                 </Card>
-                <Card className={"card col-lg-6 col-md-6 col-sm-12"}>
+                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Line data={this.buildRecognitionExecutionData()} options={LineOptions} />
                 </Card>
                 {caseChart}

@@ -324,10 +324,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             analysis = (
                 <div>
                     <Row>
-                        <Card className={"card col-lg-2 col-md-2 col-sm-12"}>
+                        <Card className={"col-lg-2 col-md-2 col-sm-12"}>
                             You have {this.state.allSolves.length} solves before filtering, and {this.state.filteredSolves.length} after
                         </Card>
-                        <Card className={"card col-lg-2 col-md-2 col-sm-12"}>
+                        <Card className={"col-lg-2 col-md-2 col-sm-12"}>
                             90% of your last 1000 solves are below {calculate90thPercentile(this.props.solves.map(x => x.time), 1000)} seconds.
                         </Card>
                     </Row>
