@@ -12,7 +12,6 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         let dataset = (document.getElementById("uploaded_data") as HTMLInputElement);
         let files: FileList = dataset.files as FileList;
         let file = files.item(0);
-
         let text = file?.text();
         text?.then((value: string) => {
             let solveList: Solve[] = parseCsv(value, ',');
@@ -46,12 +45,12 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                     </Card>
 
                     <ButtonGroup className="col-lg-6 col-md-6 col-sm-6">
-                        <Button variant="success" onClick={() => {
-                            this.showFileData();
-                        }}>Display My Stats!</Button>
-                        <Button onClick={() => {
-                            this.showTestData();
-                        }}>Display Test Stats!</Button>
+                        <Button variant="success" onClick={() => { this.showFileData(); }}>
+                            Display My Stats!
+                        </Button>
+                        <Button onClick={() => { this.showTestData(); }}>
+                            Display Test Stats!
+                        </Button>
                     </ButtonGroup>
                 </Row>
                 <FilterPanel solves={this.state.solves} />

@@ -79,7 +79,8 @@ export interface FilterPanelState {
     chosenColors: Option[],
     chosenPLLs: Option[],
     tabKey: number,
-    windowSize: number
+    windowSize: number,
+    showFilters: boolean
 }
 
 export interface FileInputProps {

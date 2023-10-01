@@ -8,7 +8,7 @@ import { StepDrilldown } from "./StepDrilldown";
 import Select from "react-select";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
-import { Tabs, Tab, FormControl, Card, Row } from 'react-bootstrap';
+import { Tabs, Tab, FormControl, Card, Row, Offcanvas } from 'react-bootstrap';
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -57,7 +57,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: "Z Perm", value: "Z" }
         ],
         tabKey: 1,
-        windowSize: 500
+        windowSize: 500,
+        showFilters: true,
     }
 
     static applyFiltersToSolves(allSolves: Solve[], filters: Filters): Solve[] {
@@ -111,7 +112,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             chosenColors: prevState.chosenColors,
             chosenPLLs: prevState.chosenPLLs,
             tabKey: prevState.tabKey,
-            windowSize: prevState.windowSize
+            windowSize: prevState.windowSize,
+            showFilters: prevState.showFilters
         }
 
         return newState;
@@ -194,126 +196,110 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (this.state.allSolves.length > 0) {
             filters = (
                 <Row>
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <Card className="card info-card">
-                            Pick starting cross color
-                            <MultiSelect
-                                options={[
-                                    { label: CrossColor.White, value: CrossColor.White },
-                                    { label: CrossColor.Yellow, value: CrossColor.Yellow },
-                                    { label: CrossColor.Red, value: CrossColor.Red },
-                                    { label: CrossColor.Orange, value: CrossColor.Orange },
-                                    { label: CrossColor.Blue, value: CrossColor.Blue },
-                                    { label: CrossColor.Green, value: CrossColor.Green },
-                                ]}
-                                value={this.state.chosenColors}
-                                onChange={this.crossColorsChanged.bind(this)}
-                                labelledBy="Select"
-                            />
-                        </Card>
-                    </div>
+                    <Card className="card info-card">
+                        Pick starting cross color
+                        <MultiSelect
+                            options={[
+                                { label: CrossColor.White, value: CrossColor.White },
+                                { label: CrossColor.Yellow, value: CrossColor.Yellow },
+                                { label: CrossColor.Red, value: CrossColor.Red },
+                                { label: CrossColor.Orange, value: CrossColor.Orange },
+                                { label: CrossColor.Blue, value: CrossColor.Blue },
+                                { label: CrossColor.Green, value: CrossColor.Green },
+                            ]}
+                            value={this.state.chosenColors}
+                            onChange={this.crossColorsChanged.bind(this)}
+                            labelledBy="Select"
+                        />
+                    </Card>
 
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <Card className="card info-card">
-                            Pick PLL case
-                            <MultiSelect
-                                options={[
-                                    { label: "Solved", value: "Solved" },
-                                    { label: "T Perm", value: "T" },
-                                    { label: "V Perm", value: "V" },
-                                    { label: "Aa Perm", value: "Aa" },
-                                    { label: "Ab Perm", value: "Ab" },
-                                    { label: "Ga Perm", value: "Ga" },
-                                    { label: "Gb Perm", value: "Gb" },
-                                    { label: "Gc Perm", value: "Gc" },
-                                    { label: "Gd Perm", value: "Gd" },
-                                    { label: "Ja Perm", value: "Ja" },
-                                    { label: "Jb Perm", value: "Jb" },
-                                    { label: "F Perm", value: "F" },
-                                    { label: "Y Perm", value: "Y" },
-                                    { label: "Ua Perm", value: "Ua" },
-                                    { label: "Ub Perm", value: "Ub" },
-                                    { label: "Ra Perm", value: "Ra" },
-                                    { label: "Rb Perm", value: "Rb" },
-                                    { label: "Na Perm", value: "Na" },
-                                    { label: "Nb Perm", value: "Nb" },
-                                    { label: "H Perm", value: "H" },
-                                    { label: "E Perm", value: "E" },
-                                    { label: "Z Perm", value: "Z" }
-                                ]}
-                                value={this.state.chosenPLLs}
-                                onChange={this.pllChanged.bind(this)}
-                                labelledBy="Select"
-                            />
-                        </Card>
-                    </div>
+                    <Card className="card info-card">
+                        Pick PLL case
+                        <MultiSelect
+                            options={[
+                                { label: "Solved", value: "Solved" },
+                                { label: "T Perm", value: "T" },
+                                { label: "V Perm", value: "V" },
+                                { label: "Aa Perm", value: "Aa" },
+                                { label: "Ab Perm", value: "Ab" },
+                                { label: "Ga Perm", value: "Ga" },
+                                { label: "Gb Perm", value: "Gb" },
+                                { label: "Gc Perm", value: "Gc" },
+                                { label: "Gd Perm", value: "Gd" },
+                                { label: "Ja Perm", value: "Ja" },
+                                { label: "Jb Perm", value: "Jb" },
+                                { label: "F Perm", value: "F" },
+                                { label: "Y Perm", value: "Y" },
+                                { label: "Ua Perm", value: "Ua" },
+                                { label: "Ub Perm", value: "Ub" },
+                                { label: "Ra Perm", value: "Ra" },
+                                { label: "Rb Perm", value: "Rb" },
+                                { label: "Na Perm", value: "Na" },
+                                { label: "Nb Perm", value: "Nb" },
+                                { label: "H Perm", value: "H" },
+                                { label: "E Perm", value: "E" },
+                                { label: "Z Perm", value: "Z" }
+                            ]}
+                            value={this.state.chosenPLLs}
+                            onChange={this.pllChanged.bind(this)}
+                            labelledBy="Select"
+                        />
+                    </Card>
 
-                    <div className={"col-lg-4 col-md-4 col-sm-12"}>
-                        <Card className="card info-card">
-                            Choose slowest and fastest solves to keep
-                            <div className="row">
-                                <div className="form-outline col-6" >
-                                    <FormControl min="0" max="300" type="number" id="fastestSolve" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
-                                </div>
-                                <div className="form-outline col-6" >
-                                    <FormControl min="0" max="300" type="number" id="slowestSolve" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
-                                </div>
+                    <Card className="card info-card">
+                        Choose slowest and fastest solves to keep
+                        <div className="row">
+                            <div className="form-outline col-6" >
+                                <FormControl min="0" max="300" type="number" id="fastestSolve" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
                             </div>
-                        </Card>
-                    </div>
+                            <div className="form-outline col-6" >
+                                <FormControl min="0" max="300" type="number" id="slowestSolve" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
+                            </div>
+                        </div>
+                    </Card>
 
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <Card className="card info-card">
-                            Choose sliding window size
-                            <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
+                    <Card className="card info-card">
+                        Choose sliding window size
+                        <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
 
-                        </Card>
-                    </div>
+                    </Card>
 
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <Card className="card info-card">
-                            Pick start date
-                            <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
-                        </Card>
-                    </div>
+                    <Card className="card info-card">
+                        Pick start date
+                        <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
+                    </Card>
 
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <Card className="card info-card">
-                            Pick end date
-                            <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
-                        </Card>
-                    </div>
+                    <Card className="card info-card">
+                        Pick end date
+                        <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
+                    </Card>
 
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <Card className="card info-card">
-                            Include messed up solves?
-                            <input
-                                type="checkbox"
-                                checked={this.state.filters.includeMistakes}
-                                onChange={this.setMistakes.bind(this)}
-                            />
-                        </Card>
-                    </div>
+                    <Card className="card info-card">
+                        Include messed up solves?
+                        <input
+                            type="checkbox"
+                            checked={this.state.filters.includeMistakes}
+                            onChange={this.setMistakes.bind(this)}
+                        />
+                    </Card>
 
-                    <div className={"col-lg-2 col-md-2 col-sm-6"}>
-                        <Card className="card info-card">
-                            Which step to drill down?
-                            <Select
-                                options={[
-                                    { label: StepName.Cross, value: StepName.Cross },
-                                    { label: StepName.F2L_1, value: StepName.F2L_1 },
-                                    { label: StepName.F2L_2, value: StepName.F2L_2 },
-                                    { label: StepName.F2L_3, value: StepName.F2L_3 },
-                                    { label: StepName.F2L_4, value: StepName.F2L_4 },
-                                    { label: StepName.OLL, value: StepName.OLL },
-                                    { label: StepName.PLL, value: StepName.PLL },
+                    <Card className="card info-card">
+                        Which step to drill down?
+                        <Select
+                            options={[
+                                { label: StepName.Cross, value: StepName.Cross },
+                                { label: StepName.F2L_1, value: StepName.F2L_1 },
+                                { label: StepName.F2L_2, value: StepName.F2L_2 },
+                                { label: StepName.F2L_3, value: StepName.F2L_3 },
+                                { label: StepName.F2L_4, value: StepName.F2L_4 },
+                                { label: StepName.OLL, value: StepName.OLL },
+                                { label: StepName.PLL, value: StepName.PLL },
 
-                                ]}
-                                value={this.state.drilldownStep}
-                                onChange={this.drilldownStepChanged.bind(this)}
-                            />
-                        </Card>
-                    </div>
+                            ]}
+                            value={this.state.drilldownStep}
+                            onChange={this.drilldownStepChanged.bind(this)}
+                        />
+                    </Card>
                 </Row>
             )
         }
@@ -372,7 +358,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         return (
             <main className="body">
                 <section className="section dashboard">
-                    {filters}
+                    <Offcanvas show={this.state.showFilters}>
+                        <h1>Choose which solves to display!</h1>
+                        {filters}
+                    </Offcanvas>
                     {analysis}
                 </section>
             </main >
