@@ -38,19 +38,19 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
                 <br />
 
-                <Row className="col-8">
-                    <Card className="info-card col-6">
+                <Row className="col-lg-8 col-md-12 col-sm-12">
+                    <Card className="info-card col-lg-6 col-md-12 col-sm-12">
                         <Form>
                             Upload your cubeast file:
                             <FormControl type="file" id="uploaded_data" accept=".csv" />
                         </Form>
                     </Card>
 
-                    <ButtonGroup className="col-6">
-                        <Button className="col-7" variant="success" onClick={() => { this.showFileData(); }}>
+                    <ButtonGroup className="col-lg-6 col-md-6 col-sm-12">
+                        <Button className="col-lg-7 col-md-6 col-sm-6" variant="success" onClick={() => { this.showFileData(); }}>
                             Display My Stats!
                         </Button>
-                        <Button className="col-5" onClick={() => { this.showTestData(); }}>
+                        <Button className="col-lg-5 col-md-6 col-sm-6" onClick={() => { this.showTestData(); }}>
                             Display Test Stats!
                         </Button>
                     </ButtonGroup>
