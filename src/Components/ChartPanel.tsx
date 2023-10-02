@@ -3,7 +3,7 @@ import { ChartPanelProps, ChartPanelState, Solve } from "../Helpers/Types";
 import { Line, Chart, Bar, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
 import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "../Helpers/RunningAverageMath";
-import { Card, Row } from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
