@@ -204,6 +204,27 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             filters = (
                 <Col>
                     <Card className="card info-card">
+                        Which step to drill down?
+                        <Select
+                            options={[
+                                { label: StepName.Cross, value: StepName.Cross },
+                                { label: StepName.F2L_1, value: StepName.F2L_1 },
+                                { label: StepName.F2L_2, value: StepName.F2L_2 },
+                                { label: StepName.F2L_3, value: StepName.F2L_3 },
+                                { label: StepName.F2L_4, value: StepName.F2L_4 },
+                                { label: StepName.OLL, value: StepName.OLL },
+                                { label: StepName.PLL, value: StepName.PLL },
+
+                            ]}
+                            value={this.state.drilldownStep}
+                            onChange={this.drilldownStepChanged.bind(this)}
+                        />
+                    </Card>
+
+                    <br />
+                    <br />
+
+                    <Card className="card info-card">
                         Pick starting cross color
                         <MultiSelect
                             options={[
@@ -268,17 +289,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     <Card className="card info-card">
                         Choose sliding window size
                         <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
-
-                    </Card>
-
-                    <Card className="card info-card">
-                        Pick start date
-                        <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
-                    </Card>
-
-                    <Card className="card info-card">
-                        Pick end date
-                        <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
                     </Card>
 
                     <Card className="card info-card">
@@ -291,21 +301,13 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        Which step to drill down?
-                        <Select
-                            options={[
-                                { label: StepName.Cross, value: StepName.Cross },
-                                { label: StepName.F2L_1, value: StepName.F2L_1 },
-                                { label: StepName.F2L_2, value: StepName.F2L_2 },
-                                { label: StepName.F2L_3, value: StepName.F2L_3 },
-                                { label: StepName.F2L_4, value: StepName.F2L_4 },
-                                { label: StepName.OLL, value: StepName.OLL },
-                                { label: StepName.PLL, value: StepName.PLL },
+                        Pick start date
+                        <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
+                    </Card>
 
-                            ]}
-                            value={this.state.drilldownStep}
-                            onChange={this.drilldownStepChanged.bind(this)}
-                        />
+                    <Card className="card info-card">
+                        Pick end date
+                        <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
                     </Card>
                 </Col>
             )
