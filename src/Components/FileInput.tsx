@@ -3,7 +3,7 @@ import { FileInputProps, FileInputState, Solve } from "../Helpers/Types";
 import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
-import { Button, Form, FormControl, Card, Row, ButtonGroup } from "react-bootstrap";
+import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar } from "react-bootstrap";
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [] };
@@ -29,11 +29,11 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         return (
             <div>
                 <header className={"header"}>
-                    <Row>
-                        <div className="pagetitle col-12">
-                            <h1>Cubeast Analyzer</h1>
-                        </div>
-                    </Row>
+                    <Navbar>
+                        <Navbar.Brand>
+                            Cubeast Analyzer
+                        </Navbar.Brand>
+                    </Navbar>
                 </header>
 
                 <br />

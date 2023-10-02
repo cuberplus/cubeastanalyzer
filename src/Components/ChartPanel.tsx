@@ -245,25 +245,25 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
         };
         let DoughnutOptions = {
-
+            maintainAspectRatio: true
         };
 
         return (
             <Row>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningAverageData()} options={LineOptions} />
+                    <Line data={this.buildRunningAverageData()} options={LineOptions} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningRecognitionExecution()} options={LineOptions} />
+                    <Line data={this.buildRunningRecognitionExecution()} options={LineOptions} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Bar data={this.buildHistogramData()} options={BarOptions} />
+                    <Bar data={this.buildHistogramData()} options={BarOptions} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildGoodBadData()} options={LineOptions} />
+                    <Line data={this.buildGoodBadData()} options={LineOptions} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildStepAverages()} options={LineOptions} />
+                    <Line data={this.buildStepAverages()} options={LineOptions} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Doughnut data={this.buildStepPercentages()} options={DoughnutOptions} />

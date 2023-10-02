@@ -219,7 +219,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         if (this.props.stepName == StepName.OLL || this.props.stepName == StepName.PLL) {
             caseChart = (
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Bar data={this.buildCaseData()} options={BarOptions} />
+                    <Bar data={this.buildCaseData()} options={BarOptions} height={200} />
                 </Card>
             )
         }
@@ -227,19 +227,19 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         return (
             <Row className="row">
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningAverageData()} options={LineOptions} />
+                    <Line data={this.buildRunningAverageData()} options={LineOptions} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Bar data={this.buildHistogramData()} options={BarOptions} />
+                    <Bar data={this.buildHistogramData()} options={BarOptions} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildStepTurnsData()} options={LineOptions} />
+                    <Line data={this.buildStepTurnsData()} options={LineOptions} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningTpsData()} options={LineOptions} />
+                    <Line data={this.buildRunningTpsData()} options={LineOptions} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRecognitionExecutionData()} options={LineOptions} />
+                    <Line data={this.buildRecognitionExecutionData()} options={LineOptions} height={200} />
                 </Card>
                 {caseChart}
             </Row>
