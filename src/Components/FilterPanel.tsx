@@ -8,7 +8,7 @@ import { StepDrilldown } from "./StepDrilldown";
 import Select from "react-select";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
-import { Tabs, Tab, FormControl, Card, Row, Offcanvas } from 'react-bootstrap';
+import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button } from 'react-bootstrap';
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -58,7 +58,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         ],
         tabKey: 1,
         windowSize: 500,
-        showFilters: true,
+        showFilters: false,
     }
 
     static applyFiltersToSolves(allSolves: Solve[], filters: Filters): Solve[] {
@@ -188,14 +188,21 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     }
 
     tabSelect(key: any) {
-        this.setState({ tabKey: key })
+        this.setState({ tabKey: key });
+    }
+
+    showFilters() {
+        this.setState({ showFilters: true });
+    }
+    hideFilters() {
+        this.setState({ showFilters: false });
     }
 
     render() {
         let filters: JSX.Element = (<></>);
         if (this.state.allSolves.length > 0) {
             filters = (
-                <Row>
+                <Col>
                     <Card className="card info-card">
                         Pick starting cross color
                         <MultiSelect
@@ -300,7 +307,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             onChange={this.drilldownStepChanged.bind(this)}
                         />
                     </Card>
-                </Row>
+                </Col>
             )
         }
 
@@ -310,6 +317,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             analysis = (
                 <div>
                     <Row>
+                        <Button className={"col-lg-2 col-md-2 col-sm-12"} onClick={this.showFilters.bind(this)}>
+                            Show filters
+                        </Button>
                         <Card className={"col-lg-2 col-md-2 col-sm-12"}>
                             You have {this.state.allSolves.length} solves before filtering, and {this.state.filteredSolves.length} after
                         </Card>
@@ -357,10 +367,14 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
         return (
             <main className="body">
-                <section className="section dashboard">
-                    <Offcanvas show={this.state.showFilters}>
-                        <h1>Choose which solves to display!</h1>
-                        {filters}
+                <section className="dashboard">
+                    <Offcanvas show={this.state.showFilters} onHide={this.hideFilters.bind(this)}>
+                        <Offcanvas.Header closeButton>
+                            <Offcanvas.Title>Choose solves to show!</Offcanvas.Title>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            {filters}
+                        </Offcanvas.Body>
                     </Offcanvas>
                     {analysis}
                 </section>
