@@ -330,6 +330,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         </Card>
                     </Row>
 
+                    <br />
+
                     <Row>
                         <Tabs
                             activeKey={this.state.tabKey}
