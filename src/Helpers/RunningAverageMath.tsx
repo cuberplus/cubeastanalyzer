@@ -65,9 +65,17 @@ export function reduceDataset(values: any[]) {
     }
 
     let reducedValues = []
+    let addedLastElement: boolean = false;
     let delta = Math.floor(values.length / targetPoints);
     for (let i = 0; i < values.length; i = i + delta) {
         reducedValues.push(values[i]);
+        if (i == (values.length - 1)) {
+            addedLastElement = true;
+        }
+    }
+
+    if (!addedLastElement) {
+        reducedValues.push(values[values.length - 1]);
     }
 
     return reducedValues;
