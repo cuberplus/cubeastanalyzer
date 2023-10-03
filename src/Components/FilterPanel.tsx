@@ -1,11 +1,11 @@
 import React from "react";
 import moment from "moment";
-import { MultiSelect } from "react-multi-select-component";
 import DatePicker from "react-datepicker";
+import Select from "react-select";
+import { MultiSelect } from "react-multi-select-component";
 import { CrossColor, FilterPanelProps, FilterPanelState, Filters, Solve, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
-import Select from "react-select";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
 import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button } from 'react-bootstrap';
@@ -39,7 +39,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         tabKey: 1,
         windowSize: 500,
         pointsPerGraph: 100,
-        showFilters: false,
+        showFilters: false
     }
 
     static passesFilters(solve: Solve, filters: Filters) {
@@ -52,10 +52,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (solve.time < filters.fastestTime || solve.time > filters.slowestTime) {
             return false;
         }
-        if (filters.pllCases.indexOf(solve.steps.pll.case) < 0) {
+        if (solve.steps.pll.case != "" && filters.pllCases.indexOf(solve.steps.pll.case) < 0) {
             return false;
         }
-        if (filters.ollCases.indexOf(solve.steps.oll.case) < 0) {
+        if (solve.steps.oll.case != "" && filters.ollCases.indexOf(solve.steps.oll.case) < 0) {
             return false;
         }
         if (filters.slowestTime < solve.time) {
