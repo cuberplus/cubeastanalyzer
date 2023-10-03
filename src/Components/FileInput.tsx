@@ -30,7 +30,6 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
             <div>
                 <header className={"header"}>
                     <Navbar>
-                        <img src="../../public/favicon.png" width="30" height="30" className="d-inline-block align-top" alt="" />
                         <Navbar.Brand>
                             Cubeast Analyzer
                         </Navbar.Brand>
