@@ -1,5 +1,5 @@
 import React from "react";
-import { ChartPanelProps, ChartPanelState, Solve } from "../Helpers/Types";
+import { ChartPanelProps, ChartPanelState } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "../Helpers/RunningAverageMath";
 import { Card, Row } from "react-bootstrap";

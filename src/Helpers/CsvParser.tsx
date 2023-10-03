@@ -69,7 +69,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     obj.date = moment.utc(item.at(index), 'YYYY-MM-DD hh:mm:ss').toDate()
                     break;
                 case "solution_rotation":
-                    if (crossMappings.get(item.at(index)!) == undefined) {
+                    if (crossMappings.get(item.at(index)!) === undefined) {
                         console.log("couldn't parse rotation ", item.at(index));
                     }
                     obj.crossColor = crossMappings.get(item.at(index)!)!

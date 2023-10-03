@@ -1,6 +1,3 @@
-import { Const } from "./Constants";
-
-
 export function calculate90thPercentile(data: number[], window: number): number {
     let recentSolves = data.slice(-window);
 
@@ -69,7 +66,7 @@ export function reduceDataset(values: any[], pointsPerGraph: number) {
     let delta = Math.floor(values.length / targetPoints);
     for (let i = 0; i < values.length; i = i + delta) {
         reducedValues.push(values[i]);
-        if (i == (values.length - 1)) {
+        if (i === (values.length - 1)) {
             addedLastElement = true;
         }
     }

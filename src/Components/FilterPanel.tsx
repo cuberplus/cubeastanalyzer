@@ -52,10 +52,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (solve.time < filters.fastestTime || solve.time > filters.slowestTime) {
             return false;
         }
-        if (solve.steps.pll.case != "" && filters.pllCases.indexOf(solve.steps.pll.case) < 0) {
+        if (solve.steps.pll.case !== "" && filters.pllCases.indexOf(solve.steps.pll.case) < 0) {
             return false;
         }
-        if (solve.steps.oll.case != "" && filters.ollCases.indexOf(solve.steps.oll.case) < 0) {
+        if (solve.steps.oll.case !== "" && filters.ollCases.indexOf(solve.steps.oll.case) < 0) {
             return false;
         }
         if (filters.slowestTime < solve.time) {
