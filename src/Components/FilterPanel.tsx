@@ -9,6 +9,7 @@ import Select from "react-select";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
 import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button } from 'react-bootstrap';
+import { Const } from "../Helpers/Constants";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -20,7 +21,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             fastestTime: 0,
             slowestTime: 300,
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red],
-            pllCases: ["T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z", "Solved"],
+            pllCases: ["Solved", "T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z"],
+            ollCases: Const.OllCases.map(x => x.value),
             includeMistakes: true
         },
         drilldownStep: { label: StepName.PLL, value: StepName.PLL },
@@ -56,6 +58,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: "E Perm", value: "E" },
             { label: "Z Perm", value: "Z" }
         ],
+        chosenOLLs: Const.OllCases,
         tabKey: 1,
         windowSize: 500,
         showFilters: false,
@@ -78,6 +81,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                 passesFilters = false;
             }
             if (filters.pllCases.indexOf(x.steps.pll.case) < 0) {
+                passesFilters = false;
+            }
+            if (filters.ollCases.indexOf(x.steps.oll.case) < 0) {
                 passesFilters = false;
             }
             if (filters.slowestTime < x.time) {
@@ -111,6 +117,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             filters: prevState.filters,
             chosenColors: prevState.chosenColors,
             chosenPLLs: prevState.chosenPLLs,
+            chosenOLLs: prevState.chosenOLLs,
             tabKey: prevState.tabKey,
             windowSize: prevState.windowSize,
             showFilters: prevState.showFilters
@@ -150,6 +157,20 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
             filters: newFilters,
             chosenPLLs: selectedList
+        })
+    }
+
+    ollChanged(selectedList: any[]) {
+        let selectedOlls: string[] = selectedList.map(x => x.value);
+
+        let newFilters: Filters = this.state.filters;
+        newFilters.ollCases = selectedOlls;
+
+
+        this.setState({
+            filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
+            filters: newFilters,
+            chosenOLLs: selectedList
         })
     }
 
@@ -270,6 +291,16 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             ]}
                             value={this.state.chosenPLLs}
                             onChange={this.pllChanged.bind(this)}
+                            labelledBy="Select"
+                        />
+                    </Card>
+
+                    <Card className="card info-card">
+                        Pick OLL case
+                        <MultiSelect
+                            options={Const.OllCases}
+                            value={this.state.chosenOLLs}
+                            onChange={this.ollChanged.bind(this)}
                             labelledBy="Select"
                         />
                     </Card>

@@ -27,6 +27,7 @@ export interface Filters {
     slowestTime: number,
     fastestTime: number,
     pllCases: string[],
+    ollCases: string[],
     includeMistakes: boolean
 }
 
@@ -78,6 +79,7 @@ export interface FilterPanelState {
     drilldownStep: Option,
     chosenColors: Option[],
     chosenPLLs: Option[],
+    chosenOLLs: Option[],
     tabKey: number,
     windowSize: number,
     showFilters: boolean
