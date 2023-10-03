@@ -21,7 +21,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             fastestTime: 0,
             slowestTime: 300,
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red],
-            pllCases: ["Solved", "T", "V", "Aa", "Ab", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "F", "Y", "Ua", "Ub", "Ra", "Rb", "Na", "Nb", "H", "E", "Z"],
+            pllCases: Const.PllCases.map(x => x.value),
             ollCases: Const.OllCases.map(x => x.value),
             includeMistakes: true
         },
@@ -34,30 +34,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: CrossColor.Blue, value: CrossColor.Blue },
             { label: CrossColor.Green, value: CrossColor.Green },
         ],
-        chosenPLLs: [
-            { label: "Solved", value: "Solved" },
-            { label: "T Perm", value: "T" },
-            { label: "V Perm", value: "V" },
-            { label: "Aa Perm", value: "Aa" },
-            { label: "Ab Perm", value: "Ab" },
-            { label: "Ga Perm", value: "Ga" },
-            { label: "Gb Perm", value: "Gb" },
-            { label: "Gc Perm", value: "Gc" },
-            { label: "Gd Perm", value: "Gd" },
-            { label: "Ja Perm", value: "Ja" },
-            { label: "Jb Perm", value: "Jb" },
-            { label: "F Perm", value: "F" },
-            { label: "Y Perm", value: "Y" },
-            { label: "Ua Perm", value: "Ua" },
-            { label: "Ub Perm", value: "Ub" },
-            { label: "Ra Perm", value: "Ra" },
-            { label: "Rb Perm", value: "Rb" },
-            { label: "Na Perm", value: "Na" },
-            { label: "Nb Perm", value: "Nb" },
-            { label: "H Perm", value: "H" },
-            { label: "E Perm", value: "E" },
-            { label: "Z Perm", value: "Z" }
-        ],
+        chosenPLLs: Const.PllCases,
         chosenOLLs: Const.OllCases,
         tabKey: 1,
         windowSize: 500,
@@ -265,30 +242,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     <Card className="card info-card">
                         Pick PLL case
                         <MultiSelect
-                            options={[
-                                { label: "Solved", value: "Solved" },
-                                { label: "T Perm", value: "T" },
-                                { label: "V Perm", value: "V" },
-                                { label: "Aa Perm", value: "Aa" },
-                                { label: "Ab Perm", value: "Ab" },
-                                { label: "Ga Perm", value: "Ga" },
-                                { label: "Gb Perm", value: "Gb" },
-                                { label: "Gc Perm", value: "Gc" },
-                                { label: "Gd Perm", value: "Gd" },
-                                { label: "Ja Perm", value: "Ja" },
-                                { label: "Jb Perm", value: "Jb" },
-                                { label: "F Perm", value: "F" },
-                                { label: "Y Perm", value: "Y" },
-                                { label: "Ua Perm", value: "Ua" },
-                                { label: "Ub Perm", value: "Ub" },
-                                { label: "Ra Perm", value: "Ra" },
-                                { label: "Rb Perm", value: "Rb" },
-                                { label: "Na Perm", value: "Na" },
-                                { label: "Nb Perm", value: "Nb" },
-                                { label: "H Perm", value: "H" },
-                                { label: "E Perm", value: "E" },
-                                { label: "Z Perm", value: "Z" }
-                            ]}
+                            options={Const.PllCases}
                             value={this.state.chosenPLLs}
                             onChange={this.pllChanged.bind(this)}
                             labelledBy="Select"

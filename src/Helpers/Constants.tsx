@@ -2,6 +2,32 @@ import { Option } from "react-multi-select-component";
 
 export class Const {
     static readonly PointsPerGraph: number = 100;
+
+    static readonly PllCases: Option[] = [
+        { label: "Solved", value: "Solved" },
+        { label: "T Perm", value: "T" },
+        { label: "V Perm", value: "V" },
+        { label: "Aa Perm", value: "Aa" },
+        { label: "Ab Perm", value: "Ab" },
+        { label: "Ga Perm", value: "Ga" },
+        { label: "Gb Perm", value: "Gb" },
+        { label: "Gc Perm", value: "Gc" },
+        { label: "Gd Perm", value: "Gd" },
+        { label: "Ja Perm", value: "Ja" },
+        { label: "Jb Perm", value: "Jb" },
+        { label: "F Perm", value: "F" },
+        { label: "Y Perm", value: "Y" },
+        { label: "Ua Perm", value: "Ua" },
+        { label: "Ub Perm", value: "Ub" },
+        { label: "Ra Perm", value: "Ra" },
+        { label: "Rb Perm", value: "Rb" },
+        { label: "Na Perm", value: "Na" },
+        { label: "Nb Perm", value: "Nb" },
+        { label: "H Perm", value: "H" },
+        { label: "E Perm", value: "E" },
+        { label: "Z Perm", value: "Z" }
+    ]
+
     static readonly OllCases: Option[] = [
         { label: "Solved", value: "Solved" },
         { label: "1", value: "1" },
