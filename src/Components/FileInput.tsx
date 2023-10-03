@@ -59,6 +59,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                         Thank you for using Cubeast Analyzer!
 
                         Add steps to download and use CSV file (include link)
+                        <a href="https://app.cubeast.com/exports">Cubeast CSV Exports</a>
 
                         Add explanations for charts???
 
