@@ -51,7 +51,15 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                     <Modal.Header closeButton>
                         <Modal.Title>Cubeast Analyzer</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Thank you for using Cubeast Analyzer!</Modal.Body>
+                    <Modal.Body>
+                        Thank you for using Cubeast Analyzer!
+
+                        Add steps to download and use CSV file (include link)
+
+                        Add explanations for charts???
+
+                        Add suggestions of what to do with this tool
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => { this.closeButtonClicked() }}>
                             Close
