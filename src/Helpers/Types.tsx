@@ -82,6 +82,7 @@ export interface FilterPanelState {
     chosenOLLs: Option[],
     tabKey: number,
     windowSize: number,
+    pointsPerGraph: number,
     showFilters: boolean
 }
 
@@ -95,6 +96,7 @@ export interface FileInputState {
 
 export interface ChartPanelProps {
     windowSize: number,
+    pointsPerGraph: number,
     solves: Solve[]
 }
 
@@ -104,6 +106,7 @@ export interface ChartPanelState {
 
 export interface StepDrilldownProps {
     windowSize: number,
+    pointsPerGraph: number,
     steps: Step[],
     stepName: string
 }

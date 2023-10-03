@@ -1,8 +1,6 @@
 import { Option } from "react-multi-select-component";
 
 export class Const {
-    static readonly PointsPerGraph: number = 100;
-
     static readonly PllCases: Option[] = [
         { label: "Solved", value: "Solved" },
         { label: "T Perm", value: "T" },

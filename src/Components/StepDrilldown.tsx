@@ -16,8 +16,8 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
             labels.push(i.toString())
         };
 
-        movingAverage = reduceDataset(movingAverage);
-        labels = reduceDataset(labels);
+        movingAverage = reduceDataset(movingAverage, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
             labels,
@@ -38,8 +38,8 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
             labels.push(i.toString())
         };
 
-        movingAverage = reduceDataset(movingAverage);
-        labels = reduceDataset(labels);
+        movingAverage = reduceDataset(movingAverage, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
             labels,
@@ -60,8 +60,8 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
             labels.push(i.toString())
         };
 
-        movingAverage = reduceDataset(movingAverage);
-        labels = reduceDataset(labels);
+        movingAverage = reduceDataset(movingAverage, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
             labels,
@@ -84,10 +84,9 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
             labels.push(i.toString())
         };
 
-        recognitionAverage = reduceDataset(recognitionAverage);
-        executionAverage = reduceDataset(executionAverage);
-
-        labels = reduceDataset(labels);
+        recognitionAverage = reduceDataset(recognitionAverage, this.props.pointsPerGraph);
+        executionAverage = reduceDataset(executionAverage, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
             labels,

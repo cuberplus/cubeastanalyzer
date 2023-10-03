@@ -16,8 +16,8 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             labels.push(i.toString())
         };
 
-        movingAverage = reduceDataset(movingAverage);
-        labels = reduceDataset(labels);
+        movingAverage = reduceDataset(movingAverage, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
             labels,
@@ -39,9 +39,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             labels.push(i.toString())
         };
 
-        movingExecution = reduceDataset(movingExecution);
-        movingRecognition = reduceDataset(movingRecognition);
-        labels = reduceDataset(labels);
+        movingExecution = reduceDataset(movingExecution, this.props.pointsPerGraph);
+        movingRecognition = reduceDataset(movingRecognition, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
             labels,
@@ -127,14 +127,14 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             labels.push(i.toString())
         };
 
-        labels = reduceDataset(labels);
-        crossAverage = reduceDataset(crossAverage);
-        f2l_1Average = reduceDataset(f2l_1Average);
-        f2l_2Average = reduceDataset(f2l_2Average);
-        f2l_3Average = reduceDataset(f2l_3Average);
-        f2l_4Average = reduceDataset(f2l_4Average);
-        ollAverage = reduceDataset(ollAverage);
-        pllAverage = reduceDataset(pllAverage);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
+        crossAverage = reduceDataset(crossAverage, this.props.pointsPerGraph);
+        f2l_1Average = reduceDataset(f2l_1Average, this.props.pointsPerGraph);
+        f2l_2Average = reduceDataset(f2l_2Average, this.props.pointsPerGraph);
+        f2l_3Average = reduceDataset(f2l_3Average, this.props.pointsPerGraph);
+        f2l_4Average = reduceDataset(f2l_4Average, this.props.pointsPerGraph);
+        ollAverage = reduceDataset(ollAverage, this.props.pointsPerGraph);
+        pllAverage = reduceDataset(pllAverage, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
             labels,
@@ -184,9 +184,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             labels.push(i.toString())
         };
 
-        movingPercentBad = reduceDataset(movingPercentBad);
-        movingPercentGood = reduceDataset(movingPercentGood);
-        labels = reduceDataset(labels);
+        movingPercentBad = reduceDataset(movingPercentBad, this.props.pointsPerGraph);
+        movingPercentGood = reduceDataset(movingPercentGood, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
             labels,

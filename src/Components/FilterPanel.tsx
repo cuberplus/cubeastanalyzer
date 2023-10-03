@@ -38,6 +38,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         chosenOLLs: Const.OllCases,
         tabKey: 1,
         windowSize: 500,
+        pointsPerGraph: 100,
         showFilters: false,
     }
 
@@ -97,6 +98,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             chosenOLLs: prevState.chosenOLLs,
             tabKey: prevState.tabKey,
             windowSize: prevState.windowSize,
+            pointsPerGraph: prevState.pointsPerGraph,
             showFilters: prevState.showFilters
         }
 
@@ -177,6 +179,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
     setWindowSize(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ windowSize: parseInt(event.target.value) })
+    }
+
+    setPointsPerGraph(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({ pointsPerGraph: parseInt(event.target.value) })
     }
 
     setMistakes(event: React.ChangeEvent<HTMLInputElement>) {
@@ -281,6 +287,11 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
+                        Choose points per graph
+                        <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.pointsPerGraph} onChange={this.setPointsPerGraph.bind(this)} />
+                    </Card>
+
+                    <Card className="card info-card">
                         Include messed up solves?
                         <input
                             type="checkbox"
@@ -324,10 +335,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             onSelect={this.tabSelect.bind(this)}
                         >
                             <Tab eventKey={1} title="All Steps">
-                                <ChartPanel windowSize={this.state.windowSize} solves={this.state.filteredSolves} />
+                                <ChartPanel windowSize={this.state.windowSize} solves={this.state.filteredSolves} pointsPerGraph={this.state.pointsPerGraph} />
                             </Tab>
                             <Tab eventKey={2} title="Step Drilldown">
-                                <StepDrilldown windowSize={this.state.windowSize} steps={this.state.filteredSolves.map(x => {
+                                <StepDrilldown windowSize={this.state.windowSize} pointsPerGraph={this.state.pointsPerGraph} steps={this.state.filteredSolves.map(x => {
                                     switch (this.state.drilldownStep.value) {
                                         case StepName.Cross:
                                             return x.steps.cross;

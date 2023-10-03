@@ -58,8 +58,8 @@ export function calculateMovingPercentage(data: number[], window: number, criter
     return result;
 }
 
-export function reduceDataset(values: any[]) {
-    let targetPoints = Const.PointsPerGraph;
+export function reduceDataset(values: any[], pointsPerGraph: number) {
+    let targetPoints = pointsPerGraph;
     if (values.length <= targetPoints) {
         return values;
     }
