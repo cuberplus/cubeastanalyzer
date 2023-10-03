@@ -47,7 +47,11 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                     </Navbar>
                 </header>
 
-                <Modal show={this.state.showHelpModal} onHide={() => { this.closeButtonClicked() }}>
+                <Modal
+                    show={this.state.showHelpModal}
+                    onHide={() => { this.closeButtonClicked() }}
+                    size="lg"
+                >
                     <Modal.Header closeButton>
                         <Modal.Title>Cubeast Analyzer</Modal.Title>
                     </Modal.Header>
