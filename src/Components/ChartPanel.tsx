@@ -1,9 +1,11 @@
 import React from "react";
 import { ChartPanelProps, ChartPanelState, Solve } from "../Helpers/Types";
-import { Line, Chart, Bar, Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, ChartData, LineElement, PointElement, LinearScale, Title, CategoryScale, ChartOptions } from 'chart.js/auto';
+import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "../Helpers/RunningAverageMath";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
+const Line = require('react-chartjs-2').Line
+const Bar = require('react-chartjs-2').Bar
+const Doughnut = require('react-chartjs-2').Doughnut
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
