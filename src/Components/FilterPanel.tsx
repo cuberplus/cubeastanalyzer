@@ -110,7 +110,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         let newFilters: Filters = this.state.filters;
         newFilters.crossColors = selectedColors;
 
-
         this.setState({
             filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
             filters: newFilters,
@@ -130,7 +129,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         let newFilters: Filters = this.state.filters;
         newFilters.pllCases = selectedPlls;
 
-
         this.setState({
             filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
             filters: newFilters,
@@ -143,7 +141,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
         let newFilters: Filters = this.state.filters;
         newFilters.ollCases = selectedOlls;
-
 
         this.setState({
             filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
