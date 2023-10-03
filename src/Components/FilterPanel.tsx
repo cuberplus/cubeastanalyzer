@@ -222,6 +222,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     <br />
                     <br />
 
+                    <Card className={""}>
+                        Showing {this.state.filteredSolves.length}/{this.state.allSolves.length} solves
+                    </Card>
+
                     <Card className="card info-card">
                         Pick starting cross color
                         <MultiSelect
@@ -307,9 +311,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         <Button className={"col-lg-2 col-md-2 col-sm-12"} onClick={this.showFilters.bind(this)}>
                             Show filters
                         </Button>
-                        <Card className={"col-lg-2 col-md-2 col-sm-12"}>
-                            You have {this.state.allSolves.length} solves before filtering, and {this.state.filteredSolves.length} after
-                        </Card>
                         <Card className={"col-lg-2 col-md-2 col-sm-12"}>
                             90% of your last 1000 solves are below {calculate90thPercentile(this.props.solves.map(x => x.time), 1000)} seconds.
                         </Card>
