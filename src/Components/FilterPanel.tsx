@@ -42,42 +42,41 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         showFilters: false,
     }
 
+    static passesFilters(solve: Solve, filters: Filters) {
+        if (filters.crossColors.indexOf(solve.crossColor) < 0) {
+            return false;
+        }
+        if (solve.date < filters.startDate || solve.date > filters.endDate) {
+            return false;
+        }
+        if (solve.time < filters.fastestTime || solve.time > filters.slowestTime) {
+            return false;
+        }
+        if (filters.pllCases.indexOf(solve.steps.pll.case) < 0) {
+            return false;
+        }
+        if (filters.ollCases.indexOf(solve.steps.oll.case) < 0) {
+            return false;
+        }
+        if (filters.slowestTime < solve.time) {
+            return false;
+        }
+        if (filters.fastestTime > solve.time) {
+            return false;
+        }
+
+        // TODO: this is a bad way of filtering out mistakes
+        if (!filters.includeMistakes && solve.time > 30) {
+            return false;
+        }
+
+        return true;
+    }
+
     static applyFiltersToSolves(allSolves: Solve[], filters: Filters): Solve[] {
         let filteredSolves: Solve[] = [];
-
-        // TODO: add short-circuit logic here
         allSolves.forEach(x => {
-            let passesFilters: boolean = true;
-
-            if (filters.crossColors.indexOf(x.crossColor) < 0) {
-                passesFilters = false;
-            }
-            if (x.date < filters.startDate || x.date > filters.endDate) {
-                passesFilters = false;
-            }
-            if (x.time < filters.fastestTime || x.time > filters.slowestTime) {
-                passesFilters = false;
-            }
-            if (filters.pllCases.indexOf(x.steps.pll.case) < 0) {
-                passesFilters = false;
-            }
-            if (filters.ollCases.indexOf(x.steps.oll.case) < 0) {
-                passesFilters = false;
-            }
-            if (filters.slowestTime < x.time) {
-                passesFilters = false;
-            }
-            if (filters.fastestTime > x.time) {
-                passesFilters = false;
-            }
-
-
-            // TODO: this is a bad way of filtering out mistakes
-            if (!filters.includeMistakes && x.time > 30) {
-                passesFilters = false;
-            }
-
-            if (passesFilters) {
+            if (this.passesFilters(x, filters)) {
                 filteredSolves.push(x);
             }
         })
