@@ -244,6 +244,18 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
+                        Choose slowest and fastest solves to keep
+                        <div className="row">
+                            <div className="form-outline col-6" >
+                                <FormControl min="0" max="300" type="number" id="fastestSolve" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
+                            </div>
+                            <div className="form-outline col-6" >
+                                <FormControl min="0" max="300" type="number" id="slowestSolve" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="card info-card">
                         Pick PLL case
                         <MultiSelect
                             options={Const.PllCases}
@@ -261,18 +273,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             onChange={this.ollChanged.bind(this)}
                             labelledBy="Select"
                         />
-                    </Card>
-
-                    <Card className="card info-card">
-                        Choose slowest and fastest solves to keep
-                        <div className="row">
-                            <div className="form-outline col-6" >
-                                <FormControl min="0" max="300" type="number" id="fastestSolve" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
-                            </div>
-                            <div className="form-outline col-6" >
-                                <FormControl min="0" max="300" type="number" id="slowestSolve" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
-                            </div>
-                        </div>
                     </Card>
 
                     <Card className="card info-card">
