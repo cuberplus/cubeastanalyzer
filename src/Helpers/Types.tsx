@@ -91,7 +91,8 @@ export interface FileInputProps {
 }
 
 export interface FileInputState {
-    solves: Solve[]
+    solves: Solve[],
+    showHelpModal: boolean
 }
 
 export interface ChartPanelProps {

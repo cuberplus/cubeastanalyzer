@@ -3,10 +3,10 @@ import { FileInputProps, FileInputState, Solve } from "../Helpers/Types";
 import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
-import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar } from "react-bootstrap";
+import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar, Modal } from "react-bootstrap";
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
-    state: FileInputState = { solves: [] };
+    state: FileInputState = { solves: [], showHelpModal: false };
 
     showFileData() {
         let dataset = (document.getElementById("uploaded_data") as HTMLInputElement);
@@ -25,6 +25,14 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         this.setState({ solves: solveList });
     }
 
+    helpButtonClicked() {
+        this.setState({ showHelpModal: true });
+    }
+
+    closeButtonClicked() {
+        this.setState({ showHelpModal: false });
+    }
+
     render() {
         return (
             <div>
@@ -33,8 +41,23 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                         <Navbar.Brand>
                             Cubeast Analyzer
                         </Navbar.Brand>
+                        <Button onClick={() => { this.helpButtonClicked() }}>
+                            Help
+                        </Button>
                     </Navbar>
                 </header>
+
+                <Modal show={this.state.showHelpModal} onHide={() => { this.closeButtonClicked() }}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Cubeast Analyzer</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Thank you for using Cubeast Analyzer!</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => { this.closeButtonClicked() }}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
 
                 <br />
 
