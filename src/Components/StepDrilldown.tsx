@@ -228,6 +228,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Line data={this.buildRunningAverageData()} options={LineOptions} height={200} />
                 </Card>
+                {caseChart}
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Bar data={this.buildHistogramData()} options={BarOptions} height={200} />
                 </Card>
@@ -240,7 +241,6 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Line data={this.buildRecognitionExecutionData()} options={LineOptions} height={200} />
                 </Card>
-                {caseChart}
             </Row>
         )
     }
