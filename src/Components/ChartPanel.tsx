@@ -30,6 +30,50 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
+    buildRunningTpsData() {
+        let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.tps), this.props.windowSize);
+
+        let labels = [];
+        for (let i = 1; i <= movingAverage.length; i++) {
+            labels.push(i.toString())
+        };
+
+        movingAverage = reduceDataset(movingAverage, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: `Average TPS Of ${this.props.windowSize}`,
+                data: movingAverage
+            }]
+        }
+
+        return data;
+    }
+
+    buildRunningTurnsData() {
+        let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.turns), this.props.windowSize);
+
+        let labels = [];
+        for (let i = 1; i <= movingAverage.length; i++) {
+            labels.push(i.toString())
+        };
+
+        movingAverage = reduceDataset(movingAverage, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: `Average Turns Of ${this.props.windowSize}`,
+                data: movingAverage
+            }]
+        }
+
+        return data;
+    }
+
     buildRunningRecognitionExecution() {
         let movingRecognition = calculateMovingAverage(this.props.solves.map(x => x.recognitionTime), this.props.windowSize);
         let movingExecution = calculateMovingAverage(this.props.solves.map(x => x.executionTime), this.props.windowSize);
@@ -258,6 +302,12 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Bar data={this.buildHistogramData()} options={BarOptions} height={200} />
+                </Card>
+                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
+                    <Line data={this.buildRunningTpsData()} options={LineOptions} height={200} />
+                </Card>
+                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
+                    <Line data={this.buildRunningTurnsData()} options={LineOptions} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
                     <Line data={this.buildGoodBadData()} options={LineOptions} height={200} />
