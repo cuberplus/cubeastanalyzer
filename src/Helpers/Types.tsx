@@ -88,7 +88,8 @@ export interface FilterPanelState {
     tabKey: number,
     windowSize: number,
     pointsPerGraph: number,
-    showFilters: boolean
+    showFilters: boolean,
+    showAlert: boolean
 }
 
 export interface FileInputProps {

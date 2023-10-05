@@ -8,7 +8,7 @@ import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
-import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
@@ -39,7 +39,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         tabKey: 1,
         windowSize: 500,
         pointsPerGraph: 100,
-        showFilters: false
+        showFilters: false,
+        showAlert: true
     }
 
     static passesFilters(solve: Solve, filters: Filters) {
@@ -98,7 +99,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             tabKey: prevState.tabKey,
             windowSize: prevState.windowSize,
             pointsPerGraph: prevState.pointsPerGraph,
-            showFilters: prevState.showFilters
+            showFilters: prevState.showFilters,
+            showAlert: prevState.showAlert
         }
 
         return newState;
@@ -194,8 +196,13 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     showFilters() {
         this.setState({ showFilters: true });
     }
+
     hideFilters() {
         this.setState({ showFilters: false });
+    }
+
+    hideAlert() {
+        this.setState({ showAlert: false });
     }
 
     createTooltip(description: string) {
@@ -352,6 +359,16 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             </Card>
                         </OverlayTrigger>
                     </Row >
+
+                    <Alert show={this.state.showAlert && (this.state.allSolves.length < this.state.windowSize)} variant={"warning"}>
+                        <Alert.Heading>Warning: Not Enough Solves</Alert.Heading>
+                        Your number of solves is less than your sliding window size. Try decreasing the Sliding Window Size or do more solves and export them again!
+                        <div className="d-flex justify-content-end">
+                            <Button onClick={() => this.hideAlert()} variant="warning">
+                                Close
+                            </Button>
+                        </div>
+                    </Alert>
 
                     <br />
 
