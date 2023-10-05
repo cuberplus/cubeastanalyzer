@@ -295,7 +295,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
                     <Card className="card info-card">
                         <OverlayTrigger placement="bottom" overlay={this.createTooltip("Choose which OLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips.")}>
-                            <h6>Pick OLL case</h6>
+                            <h6>OLL cases</h6>
                         </OverlayTrigger>
                         <MultiSelect
                             options={Const.OllCases}
