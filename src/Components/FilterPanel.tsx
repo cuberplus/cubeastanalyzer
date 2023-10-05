@@ -8,7 +8,7 @@ import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
-import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button } from 'react-bootstrap';
+import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
@@ -198,13 +198,24 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         this.setState({ showFilters: false });
     }
 
+    createTooltip(description: string) {
+        const tooltip = (
+            <Tooltip id="tooltip">
+                {description}
+            </Tooltip>
+        );
+        return tooltip;
+    }
+
     render() {
         let filters: JSX.Element = (<></>);
         if (this.state.allSolves.length > 0) {
             filters = (
                 <Col>
                     <Card className="card info-card">
-                        Which step to drill down?
+                        <OverlayTrigger placement="right" overlay={this.createTooltip("This dropdown lets you choose which step to see more information about. This only affects data in the 'Step Drilldown' tab.")}>
+                            <h6>Which step to drill down?</h6>
+                        </OverlayTrigger>
                         <Select
                             options={[
                                 { label: StepName.Cross, value: StepName.Cross },
@@ -225,11 +236,15 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     <br />
 
                     <Card className={""}>
-                        Showing {this.state.filteredSolves.length}/{this.state.allSolves.length} solves
+                        <OverlayTrigger placement="right" overlay={this.createTooltip("If you notice that not all your solves are appearing, even when no filters are chosen, either those solves are corrupt, or cubeast exported a comma in its CSV incorrectly.")}>
+                            <h6>Showing {this.state.filteredSolves.length}/{this.state.allSolves.length} solves</h6>
+                        </OverlayTrigger>
                     </Card>
 
                     <Card className="card info-card">
-                        Pick starting cross color
+                        <OverlayTrigger placement="right" overlay={this.createTooltip("The starting cross color")}>
+                            <h6>Pick starting cross color</h6>
+                        </OverlayTrigger>
                         <MultiSelect
                             options={[
                                 { label: CrossColor.White, value: CrossColor.White },
@@ -246,7 +261,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        Choose slowest and fastest solves to keep
+                        <h6>Choose slowest and fastest solves to keep</h6>
                         <div className="row">
                             <div className="form-outline col-6" >
                                 <FormControl min="0" max="300" type="number" id="fastestSolve" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
@@ -258,7 +273,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        Pick PLL case
+                        <h6>Pick PLL case</h6>
                         <MultiSelect
                             options={Const.PllCases}
                             value={this.state.chosenPLLs}
@@ -268,7 +283,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        Pick OLL case
+                        <h6>Pick OLL case</h6>
                         <MultiSelect
                             options={Const.OllCases}
                             value={this.state.chosenOLLs}
@@ -278,17 +293,17 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        Choose sliding window size
+                        <h6>Choose sliding window size</h6>
                         <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
                     </Card>
 
                     <Card className="card info-card">
-                        Choose points per graph
+                        <h6>Choose points per graph</h6>
                         <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.pointsPerGraph} onChange={this.setPointsPerGraph.bind(this)} />
                     </Card>
 
                     <Card className="card info-card">
-                        Include messed up solves?
+                        <h6>Include messed up solves?</h6>
                         <input
                             type="checkbox"
                             checked={this.state.filters.includeMistakes}
@@ -297,12 +312,12 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        Pick start date
+                        <h6>Pick start date</h6>
                         <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
                     </Card>
 
                     <Card className="card info-card">
-                        Pick end date
+                        <h6>Pick end date</h6>
                         <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
                     </Card>
                 </Col>
