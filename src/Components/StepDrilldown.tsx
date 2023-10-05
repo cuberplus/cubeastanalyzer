@@ -201,7 +201,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         if (this.props.stepName === StepName.OLL || this.props.stepName === StepName.PLL) {
             caseChart = (
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Bar data={this.buildCaseData()} options={createOptions(ChartType.Bar, "Average Recognition Time and Execution Time per Case")} height={200} />
+                    <Bar data={this.buildCaseData()} options={createOptions(ChartType.Bar, "Average Recognition Time and Execution Time per Case", "Solve Number", "Time (s)")} height={200} />
                 </Card>
             )
         }
@@ -209,20 +209,20 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         return (
             <Row className="row">
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time per Case")} height={200} />
+                    <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time per Case", "Solve Number", "Time (s)")} height={200} />
                 </Card>
                 {caseChart}
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long This Step Took")} height={200} />
+                    <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long This Step Took", "Time (s)", "Count")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildStepTurnsData()} options={createOptions(ChartType.Line, "Average Number of Turns this Step Takes")} height={200} />
+                    <Line data={this.buildStepTurnsData()} options={createOptions(ChartType.Line, "Average Number of Turns this Step Takes", "Solve Number", "Turns")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second for this Step")} height={200} />
+                    <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second for this Step", "Solve Number", "Turns Per Second")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRecognitionExecutionData()} options={createOptions(ChartType.Line, "Average Recognition and Execution Time for this Step")} height={200} />
+                    <Line data={this.buildRecognitionExecutionData()} options={createOptions(ChartType.Line, "Average Recognition and Execution Time for this Step", "Solve Number", "Time (s)")} height={200} />
                 </Card>
             </Row>
         )

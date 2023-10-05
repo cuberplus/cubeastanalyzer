@@ -1,25 +1,56 @@
 import { ChartType } from "./Types";
 
-export function createOptions(chartType: ChartType, chartTitle: string) {
-    let options: any = {};
+export function createOptions(chartType: ChartType, chartTitle: string, xAxis: string, yAxis: string) {
+    let genericOptions: any = {
+        plugins: {
+            title: {
+                display: true,
+                text: chartTitle
+            }
+        }
+    };
+
+    let chartOptions: any = {};
 
     switch (chartType) {
         case ChartType.Line:
-            options = {
-                spanGaps: true
+            chartOptions = {
+                spanGaps: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: xAxis
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: yAxis
+                        }
+                    }
+                }
             };
             break;
 
         case ChartType.Bar:
-            options = {
+            chartOptions = {
                 scales: {
                     x: {
+                        title: {
+                            display: true,
+                            text: xAxis
+                        },
                         stacked: true,
                         ticks: {
                             autoSkip: false
                         }
                     },
                     y: {
+                        title: {
+                            display: true,
+                            text: yAxis
+                        },
                         stacked: true
                     }
                 }
@@ -27,7 +58,7 @@ export function createOptions(chartType: ChartType, chartTitle: string) {
             break;
 
         case ChartType.Doughnut:
-            options = {
+            chartOptions = {
                 maintainAspectRatio: true
             }
             break;
@@ -35,14 +66,6 @@ export function createOptions(chartType: ChartType, chartTitle: string) {
             console.log("Unknown chart type: " + chartType)
     }
 
-    console.log("Title is " + chartTitle)
 
-    options.plugins = {
-        title: {
-            display: true,
-            text: chartTitle
-        }
-    }
-
-    return options;
+    return { ...chartOptions, ...genericOptions };
 }
