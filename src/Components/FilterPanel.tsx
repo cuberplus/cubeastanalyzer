@@ -242,8 +242,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        <OverlayTrigger placement="right" overlay={this.createTooltip("The starting cross color")}>
-                            <h6>Pick starting cross color</h6>
+                        <OverlayTrigger placement="right" overlay={this.createTooltip("Pick the starting cross color")}>
+                            <h6>Cross Color</h6>
                         </OverlayTrigger>
                         <MultiSelect
                             options={[
@@ -261,7 +261,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        <h6>Choose slowest and fastest solves to keep</h6>
+                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose slowest and fastest solves to keep")}>
+                            <h6>Solve Times</h6>
+                        </OverlayTrigger>
                         <div className="row">
                             <div className="form-outline col-6" >
                                 <FormControl min="0" max="300" type="number" id="fastestSolve" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
@@ -273,7 +275,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        <h6>Pick PLL case</h6>
+                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose which PLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips.")}>
+                            <h6>PLL cases</h6>
+                        </OverlayTrigger>
                         <MultiSelect
                             options={Const.PllCases}
                             value={this.state.chosenPLLs}
@@ -283,7 +287,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        <h6>Pick OLL case</h6>
+                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose which OLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips.")}>
+                            <h6>Pick OLL case</h6>
+                        </OverlayTrigger>
                         <MultiSelect
                             options={Const.OllCases}
                             value={this.state.chosenOLLs}
@@ -293,17 +299,23 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        <h6>Choose sliding window size</h6>
+                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose the sliding window size. For example, the default is to show the average of 500 solves, over time. If you see no data, you should try lowering this value.")}>
+                            <h6>Sliding Window Size</h6>
+                        </OverlayTrigger>
                         <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
                     </Card>
 
                     <Card className="card info-card">
-                        <h6>Choose points per graph</h6>
+                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose how many points to show on each chart. If this value is set too high, you may see performance issues.")}>
+                            <h6>Points Per Graph</h6>
+                        </OverlayTrigger>
                         <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.pointsPerGraph} onChange={this.setPointsPerGraph.bind(this)} />
                     </Card>
 
                     <Card className="card info-card">
-                        <h6>Include messed up solves?</h6>
+                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose whether to keep messed up solves. Currently, this just filters out solves over 30 seconds. This will likely change in the future.")}>
+                            <h6>Include Messed Up Solves</h6>
+                        </OverlayTrigger>
                         <input
                             type="checkbox"
                             checked={this.state.filters.includeMistakes}
