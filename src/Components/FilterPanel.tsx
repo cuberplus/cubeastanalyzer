@@ -220,7 +220,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             filters = (
                 <Col>
                     <Card className="card info-card">
-                        <OverlayTrigger placement="right" overlay={this.createTooltip("This dropdown lets you choose which step to see more information about. This only affects data in the 'Step Drilldown' tab.")}>
+                        <OverlayTrigger placement="top" overlay={this.createTooltip("This dropdown lets you choose which step to see more information about. This only affects data in the 'Step Drilldown' tab.")}>
                             <h6>Which step to drill down?</h6>
                         </OverlayTrigger>
                         <Select
@@ -243,13 +243,13 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     <br />
 
                     <Card className={""}>
-                        <OverlayTrigger placement="right" overlay={this.createTooltip("If you notice that not all your solves are appearing, even when no filters are chosen, either those solves are corrupt, or cubeast exported a comma in its CSV incorrectly.")}>
+                        <OverlayTrigger placement="top" overlay={this.createTooltip("If you notice that not all your solves are appearing, even when no filters are chosen, either those solves are corrupt, or cubeast exported a comma in its CSV incorrectly.")}>
                             <h6>Showing {this.state.filteredSolves.length}/{this.state.allSolves.length} solves</h6>
                         </OverlayTrigger>
                     </Card>
 
                     <Card className="card info-card">
-                        <OverlayTrigger placement="right" overlay={this.createTooltip("Pick the starting cross color")}>
+                        <OverlayTrigger placement="top" overlay={this.createTooltip("Pick the starting cross color")}>
                             <h6>Cross Color</h6>
                         </OverlayTrigger>
                         <MultiSelect
@@ -268,7 +268,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose slowest and fastest solves to keep")}>
+                        <OverlayTrigger placement="top" overlay={this.createTooltip("Choose slowest and fastest solves to keep")}>
                             <h6>Solve Times</h6>
                         </OverlayTrigger>
                         <div className="row">
@@ -282,7 +282,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose which PLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips.")}>
+                        <OverlayTrigger placement="top" overlay={this.createTooltip("Choose which PLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips.")}>
                             <h6>PLL cases</h6>
                         </OverlayTrigger>
                         <MultiSelect
@@ -294,7 +294,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose which OLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips.")}>
+                        <OverlayTrigger placement="top" overlay={this.createTooltip("Choose which OLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips.")}>
                             <h6>Pick OLL case</h6>
                         </OverlayTrigger>
                         <MultiSelect
@@ -306,21 +306,21 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Card>
 
                     <Card className="card info-card">
-                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose the sliding window size. For example, the default is to show the average of 500 solves, over time. If you see no data, you should try lowering this value.")}>
+                        <OverlayTrigger placement="top" overlay={this.createTooltip("Choose the sliding window size. For example, the default is to show the average of 500 solves, over time. If you see no data, you should try lowering this value.")}>
                             <h6>Sliding Window Size</h6>
                         </OverlayTrigger>
                         <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
                     </Card>
 
                     <Card className="card info-card">
-                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose how many points to show on each chart. If this value is set too high, you may see performance issues.")}>
+                        <OverlayTrigger placement="top" overlay={this.createTooltip("Choose how many points to show on each chart. If this value is set too high, you may see performance issues.")}>
                             <h6>Points Per Graph</h6>
                         </OverlayTrigger>
                         <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.pointsPerGraph} onChange={this.setPointsPerGraph.bind(this)} />
                     </Card>
 
                     <Card className="card info-card">
-                        <OverlayTrigger placement="right" overlay={this.createTooltip("Choose whether to keep messed up solves. Currently, this just filters out solves over 30 seconds. This will likely change in the future.")}>
+                        <OverlayTrigger placement="top" overlay={this.createTooltip("Choose whether to keep messed up solves. Currently, this just filters out solves over 30 seconds. This will likely change in the future.")}>
                             <h6>Include Messed Up Solves</h6>
                         </OverlayTrigger>
                         <input
@@ -353,7 +353,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         <Button className={"col-lg-2 col-md-2 col-sm-12"} onClick={this.showFilters.bind(this)}>
                             Show filters
                         </Button>
-                        <OverlayTrigger placement="right" overlay={this.createTooltip(`This means that of the past ${numSolves} solves, 90% of them were below the shown time, rounded up to the nearest second. This is a very high definition of Sub-X, but if you tell someone this number, you will be able to meet that number with 90% certainty.`)}>
+                        <OverlayTrigger placement="top" overlay={this.createTooltip(`This means that of the past ${numSolves} solves, 90% of them were below the shown time, rounded up to the nearest second. This is a very high definition of Sub-X, but if you tell someone this number, you will be able to meet that number with 90% certainty.`)}>
                             < Card className={"col-lg-2 col-md-2 col-sm-12"} >
                                 You are Sub-{calculate90thPercentile(this.props.solves.map(x => x.time), numSolves)}.
                             </Card>
