@@ -8,7 +8,7 @@ export function calculate90thPercentile(data: number[], window: number): number 
         return a - b;
     })
 
-    let idx = .9 * sortedSolves.length;
+    let idx = Math.floor(.9 * sortedSolves.length);
 
     return Math.ceil(sortedSolves[idx]);
 }
