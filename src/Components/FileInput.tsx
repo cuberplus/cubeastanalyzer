@@ -4,7 +4,6 @@ import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
 import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar, Modal } from "react-bootstrap";
-import { Tooltip } from 'react-tooltip';
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [], showHelpModal: false };
@@ -42,9 +41,8 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                         <Navbar.Brand>
                             Cubeast Analyzer
                         </Navbar.Brand>
-                        <Button data-tooltip-id="tooltip-1" data-tooltip-content="Hello world!" onClick={() => { this.helpButtonClicked() }}>
+                        <Button onClick={() => { this.helpButtonClicked() }}>
                             Help
-                            <Tooltip id="tooltip-1" />
                         </Button>
                     </Navbar>
                 </header>
