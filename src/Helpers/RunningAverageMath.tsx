@@ -1,13 +1,16 @@
 export function calculate90thPercentile(data: number[], window: number): number {
-    let recentSolves = data.slice(-window);
+    let recentSolves = data;
+    if (data.length > window) {
+        recentSolves = data.slice(-window);
+    }
 
     let sortedSolves = recentSolves.sort((a, b) => {
         return a - b;
     })
 
-    let total = .9 * sortedSolves.length;
+    let idx = .9 * sortedSolves.length;
 
-    return Math.ceil(sortedSolves[total]);
+    return Math.ceil(sortedSolves[idx]);
 }
 
 export function calculateMovingAverage(data: number[], window: number): number[] {
