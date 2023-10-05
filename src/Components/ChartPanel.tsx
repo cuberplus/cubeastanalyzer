@@ -1,7 +1,8 @@
 import React from "react";
-import { ChartPanelProps, ChartPanelState } from "../Helpers/Types";
+import { ChartPanelProps, ChartPanelState, ChartType } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "../Helpers/RunningAverageMath";
+import { createOptions } from "../Helpers/ChartHelpers";
 import { Card, Row } from "react-bootstrap";
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 
@@ -282,41 +283,31 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
 
-        let LineOptions = {
-            spanGaps: true
-        };
-        let BarOptions = {
-
-        };
-        let DoughnutOptions = {
-            maintainAspectRatio: true
-        };
-
         return (
             <Row>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningAverageData()} options={LineOptions} height={200} />
+                    <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningRecognitionExecution()} options={LineOptions} height={200} />
+                    <Line data={this.buildRunningRecognitionExecution()} options={createOptions(ChartType.Line, "Average Recognition and Execution")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Bar data={this.buildHistogramData()} options={BarOptions} height={200} />
+                    <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long They Took")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningTpsData()} options={LineOptions} height={200} />
+                    <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningTurnsData()} options={LineOptions} height={200} />
+                    <Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Average Turns")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildGoodBadData()} options={LineOptions} height={200} />
+                    <Line data={this.buildGoodBadData()} options={createOptions(ChartType.Line, "Percentage of 'Good' and 'Bad' Solves")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildStepAverages()} options={LineOptions} height={200} />
+                    <Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Doughnut data={this.buildStepPercentages()} options={DoughnutOptions} />
+                    <Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took")} />
                 </Card>
             </Row>
         )

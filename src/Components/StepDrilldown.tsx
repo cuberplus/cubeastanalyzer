@@ -1,7 +1,8 @@
 import React from "react";
-import { StepDrilldownProps, StepDrilldownState, StepName } from "../Helpers/Types";
+import { StepDrilldownProps, StepDrilldownState, StepName, ChartType } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateMovingAverage, reduceDataset } from "../Helpers/RunningAverageMath";
+import { createOptions } from "../Helpers/ChartHelpers";
 import { Card, Row } from "react-bootstrap";
 import { Line, Bar } from 'react-chartjs-2';
 
@@ -196,29 +197,11 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
 
-        let LineOptions = {
-            spanGaps: true
-        };
-        let BarOptions = {
-            scales: {
-                x: {
-                    stacked: true,
-                    ticks: {
-                        autoSkip: false
-                    }
-                },
-                y: {
-                    stacked: true
-                }
-            }
-        };
-
-
         let caseChart: JSX.Element = (<></>);
         if (this.props.stepName === StepName.OLL || this.props.stepName === StepName.PLL) {
             caseChart = (
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Bar data={this.buildCaseData()} options={BarOptions} height={200} />
+                    <Bar data={this.buildCaseData()} options={createOptions(ChartType.Bar, "Average Recognition Time and Execution Time per Case")} height={200} />
                 </Card>
             )
         }
@@ -226,20 +209,20 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         return (
             <Row className="row">
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningAverageData()} options={LineOptions} height={200} />
+                    <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time per Case")} height={200} />
                 </Card>
                 {caseChart}
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Bar data={this.buildHistogramData()} options={BarOptions} height={200} />
+                    <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long This Step Took")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildStepTurnsData()} options={LineOptions} height={200} />
+                    <Line data={this.buildStepTurnsData()} options={createOptions(ChartType.Line, "Average Number of Turns this Step Takes")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningTpsData()} options={LineOptions} height={200} />
+                    <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second for this Step")} height={200} />
                 </Card>
                 <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRecognitionExecutionData()} options={LineOptions} height={200} />
+                    <Line data={this.buildRecognitionExecutionData()} options={createOptions(ChartType.Line, "Average Recognition and Execution Time for this Step")} height={200} />
                 </Card>
             </Row>
         )

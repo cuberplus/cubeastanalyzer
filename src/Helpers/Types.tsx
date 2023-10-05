@@ -17,7 +17,12 @@ export enum StepName {
     F2L_4 = 'F2L_4',
     OLL = 'OLL',
     PLL = 'PLL',
+}
 
+export enum ChartType {
+    Line = 'Line',
+    Bar = 'Bar',
+    Doughnut = "Doughnut"
 }
 
 export interface Filters {
