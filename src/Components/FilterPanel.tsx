@@ -339,16 +339,19 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
         let analysis: JSX.Element = (<></>)
         if (this.state.allSolves.length > 0) {
+            let numSolves = Math.min(1000, this.props.solves.length);
             analysis = (
                 <div>
                     <Row>
                         <Button className={"col-lg-2 col-md-2 col-sm-12"} onClick={this.showFilters.bind(this)}>
                             Show filters
                         </Button>
-                        <Card className={"col-lg-2 col-md-2 col-sm-12"}>
-                            90% of your last 1000 solves are below {calculate90thPercentile(this.props.solves.map(x => x.time), 1000)} seconds.
-                        </Card>
-                    </Row>
+                        <OverlayTrigger placement="right" overlay={this.createTooltip(`This means that of the past ${numSolves} solves, 90% of them were below the shown time, rounded up to the nearest second. This is a very high definition of Sub-X, but if you tell someone this number, you will be able to meet that number with 90% certainty.`)}>
+                            < Card className={"col-lg-2 col-md-2 col-sm-12"} >
+                                You are Sub-{calculate90thPercentile(this.props.solves.map(x => x.time), numSolves)}.
+                            </Card>
+                        </OverlayTrigger>
+                    </Row >
 
                     <br />
 
@@ -385,7 +388,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             </Tab>
                         </Tabs>
                     </Row>
-                </div>
+                </div >
             );
         }
 
