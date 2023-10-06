@@ -41,7 +41,8 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                         <Navbar.Brand>
                             Cubeast Analyzer
                         </Navbar.Brand>
-                        <Button onClick={() => { this.helpButtonClicked() }}>
+                        <Button className="me-auto"
+                            onClick={() => { this.helpButtonClicked() }}>
                             Help
                         </Button>
                     </Navbar>
