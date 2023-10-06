@@ -3,7 +3,7 @@ import { StepDrilldownProps, StepDrilldownState, StepName, ChartType } from "../
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateMovingAverage, reduceDataset } from "../Helpers/RunningAverageMath";
 import { createOptions } from "../Helpers/ChartHelpers";
-import { Card, Row } from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 import { Line, Bar } from 'react-chartjs-2';
 
 export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrilldownState> {
@@ -200,30 +200,34 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         let caseChart: JSX.Element = (<></>);
         if (this.props.stepName === StepName.OLL || this.props.stepName === StepName.PLL) {
             caseChart = (
-                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
+                <Card>
                     <Bar data={this.buildCaseData()} options={createOptions(ChartType.Bar, "Average Recognition Time and Execution Time per Case", "Solve Number", "Time (s)")} height={200} />
                 </Card>
             )
         }
 
         return (
-            <Row className="row">
-                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time per Case", "Solve Number", "Time (s)")} height={200} />
-                </Card>
-                {caseChart}
-                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long This Step Took", "Time (s)", "Count")} height={200} />
-                </Card>
-                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildStepTurnsData()} options={createOptions(ChartType.Line, "Average Number of Turns this Step Takes", "Solve Number", "Turns")} height={200} />
-                </Card>
-                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second for this Step", "Solve Number", "Turns Per Second")} height={200} />
-                </Card>
-                <Card className={"col-lg-6 col-md-6 col-sm-12"}>
-                    <Line data={this.buildRecognitionExecutionData()} options={createOptions(ChartType.Line, "Average Recognition and Execution Time for this Step", "Solve Number", "Time (s)")} height={200} />
-                </Card>
+            <Row className="m-3 gx-3">
+                <Col>
+                    <Card>
+                        <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time per Case", "Solve Number", "Time (s)")} height={200} />
+                    </Card>
+                    {caseChart}
+                    <Card>
+                        <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long This Step Took", "Time (s)", "Count")} height={200} />
+                    </Card>
+                </Col>
+                <Col>
+                    <Card>
+                        <Line data={this.buildStepTurnsData()} options={createOptions(ChartType.Line, "Average Number of Turns this Step Takes", "Solve Number", "Turns")} height={200} />
+                    </Card>
+                    <Card>
+                        <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second for this Step", "Solve Number", "Turns Per Second")} height={200} />
+                    </Card>
+                    <Card>
+                        <Line data={this.buildRecognitionExecutionData()} options={createOptions(ChartType.Line, "Average Recognition and Execution Time for this Step", "Solve Number", "Time (s)")} height={200} />
+                    </Card>
+                </Col>
             </Row>
         )
     }
