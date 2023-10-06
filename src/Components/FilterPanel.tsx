@@ -349,15 +349,21 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             let numSolves = Math.min(1000, this.props.solves.length);
             analysis = (
                 <div>
-                    <Row className="m-2">
-                        <Button className={"col-lg-2 col-md-2 col-sm-12"} onClick={this.showFilters.bind(this)}>
-                            Show filters
-                        </Button>
-                        <OverlayTrigger placement="bottom" overlay={this.createTooltip(`This means that of the past ${numSolves} solves, 90% of them were below the shown time, rounded up to the nearest second. This is a very high definition of Sub-X, but if you tell someone this number, you will be able to meet that number with 90% certainty.`)}>
-                            < Card className={"col-lg-2 col-md-2 col-sm-12"} >
-                                You are Sub-{calculate90thPercentile(this.props.solves.map(x => x.time), numSolves)}.
-                            </Card>
-                        </OverlayTrigger>
+                    <Row className="col-lg-6 col-md-6 col-sm-12">
+                        <Col className="m-2">
+                            <Button onClick={this.showFilters.bind(this)}>
+                                Show filters
+                            </Button>
+                        </Col>
+                        <Col className="m-2">
+                            <OverlayTrigger placement="bottom" overlay={this.createTooltip(`This means that of the past ${numSolves} solves, 90% of them were below the shown time, rounded up to the nearest second. This is a very high definition of Sub-X, but if you tell someone this number, you will be able to meet that number with 90% certainty.`)}>
+                                <Card>
+                                    <h5>
+                                        You are Sub-{calculate90thPercentile(this.props.solves.map(x => x.time), numSolves)}.
+                                    </h5>
+                                </Card>
+                            </OverlayTrigger>
+                        </Col>
                     </Row >
 
                     <Alert show={this.state.showAlert && (this.state.allSolves.length < this.state.windowSize)} variant={"warning"}>
@@ -378,30 +384,37 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             onSelect={this.tabSelect.bind(this)}
                         >
                             <Tab eventKey={1} title="All Steps">
-                                <ChartPanel windowSize={this.state.windowSize} solves={this.state.filteredSolves} pointsPerGraph={this.state.pointsPerGraph} />
+                                <ChartPanel
+                                    windowSize={this.state.windowSize}
+                                    solves={this.state.filteredSolves}
+                                    pointsPerGraph={this.state.pointsPerGraph} />
                             </Tab>
                             <Tab eventKey={2} title="Step Drilldown">
-                                <StepDrilldown windowSize={this.state.windowSize} pointsPerGraph={this.state.pointsPerGraph} steps={this.state.filteredSolves.map(x => {
-                                    switch (this.state.drilldownStep.value) {
-                                        case StepName.Cross:
-                                            return x.steps.cross;
-                                        case StepName.F2L_1:
-                                            return x.steps.f2l_1;
-                                        case StepName.F2L_2:
-                                            return x.steps.f2l_2;
-                                        case StepName.F2L_3:
-                                            return x.steps.f2l_3;
-                                        case StepName.F2L_4:
-                                            return x.steps.f2l_4;
-                                        case StepName.OLL:
-                                            return x.steps.oll;
-                                        case StepName.PLL:
-                                            return x.steps.pll;
-                                        default:
-                                            console.log("Invalid step picked" + this.state.drilldownStep.value);
-                                            return x.steps.cross;
-                                    }
-                                })} stepName={this.state.drilldownStep.label} />
+                                <StepDrilldown
+                                    windowSize={this.state.windowSize}
+                                    pointsPerGraph={this.state.pointsPerGraph}
+                                    stepName={this.state.drilldownStep.label}
+                                    steps={this.state.filteredSolves.map(x => {
+                                        switch (this.state.drilldownStep.value) {
+                                            case StepName.Cross:
+                                                return x.steps.cross;
+                                            case StepName.F2L_1:
+                                                return x.steps.f2l_1;
+                                            case StepName.F2L_2:
+                                                return x.steps.f2l_2;
+                                            case StepName.F2L_3:
+                                                return x.steps.f2l_3;
+                                            case StepName.F2L_4:
+                                                return x.steps.f2l_4;
+                                            case StepName.OLL:
+                                                return x.steps.oll;
+                                            case StepName.PLL:
+                                                return x.steps.pll;
+                                            default:
+                                                console.log("Invalid step picked" + this.state.drilldownStep.value);
+                                                return x.steps.cross;
+                                        }
+                                    })} />
                             </Tab>
                         </Tabs>
                     </Row>
