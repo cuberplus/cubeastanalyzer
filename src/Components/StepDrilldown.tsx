@@ -207,7 +207,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
         }
 
         return (
-            <Row className="m-3 gx-3">
+            <Row className="m-2 gx-2">
                 <Col>
                     <Card>
                         <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time per Case", "Solve Number", "Time (s)")} height={200} />

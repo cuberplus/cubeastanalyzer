@@ -284,7 +284,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         ChartJS.register(CategoryScale);
 
         return (
-            <Row className="m-3 gx-3">
+            <Row className="m-2 gx-2">
                 <Col>
                     <Card>
                         <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time", "Solve Number", "Time")} height={200} />
