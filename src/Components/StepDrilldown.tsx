@@ -209,6 +209,8 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
             )
         }
 
+        // TODO: try hardcoded heights
+
         return (
             <Row className="m-2">
                 <Col className="col-12 col-lg-6">

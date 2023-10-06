@@ -15,6 +15,7 @@ export function createOptions(chartType: ChartType, chartTitle: string, xAxis: s
     switch (chartType) {
         case ChartType.Line:
             chartOptions = {
+                maintainAspectRatio: false,
                 spanGaps: true,
                 scales: {
                     x: {
