@@ -284,32 +284,44 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         ChartJS.register(CategoryScale);
 
         return (
-            <Row className="m-2 gx-2">
-                <Col className="col-lg-6 col-md-12 col-sm-12">
-                    <Card>
+            <Row className="m-2">
+                <Col className="col-lg-6">
+                    <Card className="m-2">
                         <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time", "Solve Number", "Time")} />
                     </Card>
-                    <Card>
+                </Col>
+                <Col className="col-lg-6">
+                    <Card className="m-2">
                         <Line data={this.buildRunningRecognitionExecution()} options={createOptions(ChartType.Line, "Average Recognition and Execution", "Solve Number", "Time")} />
                     </Card>
-                    <Card>
+                </Col>
+                <Col className="col-lg-6">
+                    <Card className="m-2">
                         <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long They Took", "Time (s)", "Count")} />
                     </Card>
-                    <Card>
+                </Col>
+                <Col className="col-lg-6">
+                    <Card className="m-2">
                         <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second", "Solve Number", "Time (s)")} />
                     </Card>
                 </Col>
-                <Col className="col-lg-6 col-md-12 col-sm-12">
-                    <Card>
+                <Col className="col-lg-6">
+                    <Card className="m-2">
                         <Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Average Turns", "Solve Number", "Turns")} />
                     </Card>
-                    <Card>
+                </Col>
+                <Col className="col-lg-6">
+                    <Card className="m-2">
                         <Line data={this.buildGoodBadData()} options={createOptions(ChartType.Line, "Percentage of 'Good' and 'Bad' Solves", "Solve Number", "Percentage")} />
                     </Card>
-                    <Card>
+                </Col>
+                <Col className="col-lg-6">
+                    <Card className="m-2">
                         <Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />
                     </Card>
-                    <Card>
+                </Col>
+                <Col className="col-lg-6">
+                    <Card className="m-2">
                         <Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />
                     </Card>
                 </Col>
