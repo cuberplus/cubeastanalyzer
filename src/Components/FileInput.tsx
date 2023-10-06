@@ -3,7 +3,7 @@ import { FileInputProps, FileInputState, Solve } from "../Helpers/Types";
 import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
-import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar, Modal } from "react-bootstrap";
+import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar, Modal, Container } from "react-bootstrap";
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [], showHelpModal: false };
@@ -98,25 +98,23 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
                 <br />
 
-                <Row className="m-2 col-lg-8 col-md-12 col-sm-12">
+                <Row className="m-2">
                     <Card className="info-card col-lg-6 col-md-12 col-sm-12">
-                        <Form>
+                        <Form className="m-2">
                             Upload your Cubeast CSV file:
                             <FormControl type="file" id="uploaded_data" accept=".csv" />
                         </Form>
+                        <ButtonGroup className="m-2">
+                            <Button className="col-7" variant="success" onClick={() => { this.showFileData(); }}>
+                                Display My Stats!
+                            </Button>
+                            <Button className="col-5" onClick={() => { this.showTestData(); }}>
+                                Display Test Stats!
+                            </Button>
+                        </ButtonGroup>
                     </Card>
 
-                    <ButtonGroup className="col-lg-6 col-md-6 col-sm-12">
-                        <Button className="col-lg-7 col-md-6 col-sm-6" variant="success" onClick={() => { this.showFileData(); }}>
-                            Display My Stats!
-                        </Button>
-                        <Button className="col-lg-5 col-md-6 col-sm-6" onClick={() => { this.showTestData(); }}>
-                            Display Test Stats!
-                        </Button>
-                    </ButtonGroup>
                 </Row>
-
-                <br />
 
                 <FilterPanel solves={this.state.solves} />
             </div >
