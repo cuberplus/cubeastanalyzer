@@ -379,7 +379,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     <br />
 
                     <Row>
-                        <Tabs className="m-2"
+                        <Tabs
                             activeKey={this.state.tabKey}
                             onSelect={this.tabSelect.bind(this)}
                         >
