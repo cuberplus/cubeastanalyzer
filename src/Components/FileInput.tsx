@@ -105,10 +105,10 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                             <FormControl type="file" id="uploaded_data" accept=".csv" />
                         </Form>
                         <ButtonGroup className="m-2">
-                            <Button className="col-7" variant="success" onClick={() => { this.showFileData(); }}>
+                            <Button className="col-8" variant="success" onClick={() => { this.showFileData(); }}>
                                 Display My Stats!
                             </Button>
-                            <Button className="col-5" onClick={() => { this.showTestData(); }}>
+                            <Button className="col-4" onClick={() => { this.showTestData(); }}>
                                 Display Test Stats!
                             </Button>
                         </ButtonGroup>
