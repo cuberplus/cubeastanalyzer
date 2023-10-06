@@ -285,7 +285,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
         return (
             <Row className="m-2 gx-2">
-                <Col>
+                <Col className="col-lg-6 col-md-12 col-sm-12">
                     <Card>
                         <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time", "Solve Number", "Time")} height={200} />
                     </Card>
@@ -299,7 +299,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                         <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second", "Solve Number", "Time (s)")} height={200} />
                     </Card>
                 </Col>
-                <Col>
+                <Col className="col-lg-6 col-md-12 col-sm-12">
                     <Card>
                         <Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Average Turns", "Solve Number", "Turns")} height={200} />
                     </Card>

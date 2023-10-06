@@ -208,7 +208,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
 
         return (
             <Row className="m-2 gx-2">
-                <Col>
+                <Col className="col-lg-6 col-md-12 col-sm-12">
                     <Card>
                         <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time per Case", "Solve Number", "Time (s)")} height={200} />
                     </Card>
@@ -217,7 +217,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
                         <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long This Step Took", "Time (s)", "Count")} height={200} />
                     </Card>
                 </Col>
-                <Col>
+                <Col className="col-lg-6 col-md-12 col-sm-12">
                     <Card>
                         <Line data={this.buildStepTurnsData()} options={createOptions(ChartType.Line, "Average Number of Turns this Step Takes", "Solve Number", "Turns")} height={200} />
                     </Card>
