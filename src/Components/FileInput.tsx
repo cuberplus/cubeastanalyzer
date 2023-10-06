@@ -63,21 +63,21 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
                         To use Cubeast Analyzer, start by <a href="https://app.cubeast.com/log/solves">exporting your solves as a CSV</a>
                         <br />
-                        <a href="https://app.cubeast.com/log/solves"><img className="col-6" src={require("../Assets/CubeastCsv.png")}></img></a>
+                        <a href="https://app.cubeast.com/log/solves"><img className="col-8" src={require("../Assets/CubeastCsv.png")}></img></a>
 
                         <br />
                         <br />
 
                         Once your solves are exported, <a href="https://app.cubeast.com/exports">download them from Cubeast</a>
                         <br />
-                        <a href="https://app.cubeast.com/exports"><img className="col-6" src={require("../Assets/CubeastDownload.png")}></img></a>
+                        <a href="https://app.cubeast.com/exports"><img className="col-8" src={require("../Assets/CubeastDownload.png")}></img></a>
 
                         <br />
                         <br />
 
                         Finally upload them to Cubeast Analyzer and display your stats!
                         <br />
-                        <img className="col-6" src={require("../Assets/AnalyzerSteps.png")}></img>
+                        <img className="col-8" src={require("../Assets/AnalyzerSteps.png")}></img>
 
                         <br />
                         <br />
