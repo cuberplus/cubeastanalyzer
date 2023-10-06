@@ -98,7 +98,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
                 <br />
 
-                <Row className="col-lg-8 col-md-12 col-sm-12">
+                <Row className="m-2 col-lg-8 col-md-12 col-sm-12">
                     <Card className="info-card col-lg-6 col-md-12 col-sm-12">
                         <Form>
                             Upload your Cubeast CSV file:

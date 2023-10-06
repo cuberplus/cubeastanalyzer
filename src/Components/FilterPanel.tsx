@@ -349,7 +349,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             let numSolves = Math.min(1000, this.props.solves.length);
             analysis = (
                 <div>
-                    <Row>
+                    <Row className="m-2">
                         <Button className={"col-lg-2 col-md-2 col-sm-12"} onClick={this.showFilters.bind(this)}>
                             Show filters
                         </Button>
@@ -373,7 +373,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     <br />
 
                     <Row>
-                        <Tabs
+                        <Tabs className="m-2"
                             activeKey={this.state.tabKey}
                             onSelect={this.tabSelect.bind(this)}
                         >
@@ -398,7 +398,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                         case StepName.PLL:
                                             return x.steps.pll;
                                         default:
-                                            console.log("invalid step picked" + this.state.drilldownStep.value);
+                                            console.log("Invalid step picked" + this.state.drilldownStep.value);
                                             return x.steps.cross;
                                     }
                                 })} stepName={this.state.drilldownStep.label} />
