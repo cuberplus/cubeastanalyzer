@@ -4,6 +4,7 @@ import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
 import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar, Modal, Container } from "react-bootstrap";
+import { HelpPanel } from "./HelpPanel";
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [], showHelpModal: false };
@@ -41,61 +42,14 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                         <Navbar.Brand>
                             Cubeast Analyzer
                         </Navbar.Brand>
-                        <Button className="me-auto"
+                        <Button
                             onClick={() => { this.helpButtonClicked() }}>
                             Help
                         </Button>
                     </Navbar>
                 </header>
 
-                <Modal
-                    show={this.state.showHelpModal}
-                    onHide={() => { this.closeButtonClicked() }}
-                    size="xl"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>Cubeast Analyzer</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        Thank you for using Cubeast Analyzer!
-
-                        <br />
-                        <br />
-
-                        To use Cubeast Analyzer, start by <a href="https://app.cubeast.com/log/solves">exporting your solves as a CSV</a>
-                        <br />
-                        <a href="https://app.cubeast.com/log/solves"><img className="col-8" src={require("../Assets/CubeastCsv.png")}></img></a>
-
-                        <br />
-                        <br />
-
-                        Once your solves are exported, <a href="https://app.cubeast.com/exports">download them from Cubeast</a>
-                        <br />
-                        <a href="https://app.cubeast.com/exports"><img className="col-8" src={require("../Assets/CubeastDownload.png")}></img></a>
-
-                        <br />
-                        <br />
-
-                        Finally upload them to Cubeast Analyzer and display your stats!
-                        <br />
-                        <img className="col-8" src={require("../Assets/AnalyzerSteps.png")}></img>
-
-                        <br />
-                        <br />
-
-
-                        Make sure to get actionable data out of this tool! To do so, I'd suggest messing around with the tool until you figure out these: <br />
-                        1 - What is causing the worst 10% of your solves? <br />
-                        2 - What is your slowest step, and what is your slowest case? <br />
-                        3 - What makes your good solves different from your bad solves? <br />
-
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => { this.closeButtonClicked() }}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <HelpPanel showHelpPanel={this.state.showHelpModal} onCloseHandler={() => this.closeButtonClicked()} />
 
                 <br />
 

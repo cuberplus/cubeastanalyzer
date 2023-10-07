@@ -121,3 +121,12 @@ export interface StepDrilldownProps {
 export interface StepDrilldownState {
 
 }
+
+export interface HelpPanelProps {
+    showHelpPanel: boolean,
+    onCloseHandler: any
+}
+
+export interface HelpPanelState {
+
+}
