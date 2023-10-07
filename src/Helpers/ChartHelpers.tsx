@@ -1,11 +1,13 @@
-import { Card, Col } from "react-bootstrap";
+import { Card, Col, Ratio } from "react-bootstrap";
 import { ChartType } from "./Types";
 
 export function buildChartHtml(chart: JSX.Element): JSX.Element {
     return (
         <Col className="col-12 col-lg-6">
             <Card className="m-2">
-                {chart}
+                <Ratio aspectRatio="4x3">
+                    {chart}
+                </Ratio>
             </Card>
         </Col>
     )
@@ -13,6 +15,7 @@ export function buildChartHtml(chart: JSX.Element): JSX.Element {
 
 export function createOptions(chartType: ChartType, chartTitle: string, xAxis: string, yAxis: string) {
     let genericOptions: any = {
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
@@ -26,7 +29,6 @@ export function createOptions(chartType: ChartType, chartTitle: string, xAxis: s
     switch (chartType) {
         case ChartType.Line:
             chartOptions = {
-                maintainAspectRatio: false,
                 spanGaps: true,
                 scales: {
                     x: {
@@ -71,7 +73,6 @@ export function createOptions(chartType: ChartType, chartTitle: string, xAxis: s
 
         case ChartType.Doughnut:
             chartOptions = {
-                maintainAspectRatio: true
             }
             break;
         default:
