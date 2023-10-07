@@ -217,7 +217,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     createFilterHtml(filter: JSX.Element, title: string, tooltip: string): JSX.Element {
         return (
             <Col>
-                <Card className="card info-card">
+                <Card className="card info-card p-2">
                     <OverlayTrigger placement="top" overlay={this.createTooltip(tooltip)}>
                         <h6>{title}</h6>
                     </OverlayTrigger>
@@ -338,13 +338,13 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     {this.createFilterHtml(
                         <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />,
                         "Pick Start Date",
-                        ""
+                        "Choose start date"
                     )}
 
                     {this.createFilterHtml(
                         <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />,
                         "Pick End Date",
-                        ""
+                        "Choose end date"
                     )}
                 </Container>
             )
