@@ -4,7 +4,7 @@ import { ChartType } from "./Types";
 export function buildChartHtml(chart: JSX.Element): JSX.Element {
     return (
         <Col className="col-12 col-lg-6">
-            <Card className="p-3">
+            <Card className="p-2">
                 <Ratio aspectRatio="4x3">
                     {chart}
                 </Ratio>
