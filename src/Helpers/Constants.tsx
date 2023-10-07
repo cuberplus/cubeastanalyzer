@@ -1,4 +1,5 @@
 import { Option } from "react-multi-select-component";
+import { CrossColor } from "./Types";
 
 export class Const {
     static readonly PllCases: Option[] = [
@@ -86,4 +87,15 @@ export class Const {
         { label: "56", value: "56" },
         { label: "57", value: "57" }
     ]
+
+    static readonly crossMappings = new Map<string, CrossColor>(
+        [
+            ['DB', CrossColor.White],
+            ['BU', CrossColor.Green],
+            ['FU', CrossColor.Blue],
+            ['UF', CrossColor.Yellow],
+            ['LU', CrossColor.Red],
+            ['RU', CrossColor.Orange],
+        ]
+    );
 }

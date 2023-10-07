@@ -1,15 +1,6 @@
+import { Const } from "./Constants";
 import { Solve, Step, CrossColor } from "./Types";
 import moment from 'moment';
-
-// TODO: finish this mapping, move to constants file
-let crossMappings = new Map<string, CrossColor>();
-crossMappings.set('DB', CrossColor.White);
-crossMappings.set('BU', CrossColor.Green);
-crossMappings.set('FU', CrossColor.Blue);
-crossMappings.set('UF', CrossColor.Yellow);
-crossMappings.set('LU', CrossColor.Red);
-crossMappings.set('RU', CrossColor.Orange);
-
 
 export function GetEmptyStep() {
     let step: Step = {
@@ -69,10 +60,10 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     obj.date = moment.utc(item.at(index), 'YYYY-MM-DD hh:mm:ss').toDate()
                     break;
                 case "solution_rotation":
-                    if (crossMappings.get(item.at(index)!) === undefined) {
+                    if (Const.crossMappings.get(item.at(index)!) === undefined) {
                         console.log("couldn't parse rotation ", item.at(index));
                     }
-                    obj.crossColor = crossMappings.get(item.at(index)!)!
+                    obj.crossColor = Const.crossMappings.get(item.at(index)!)!
                     break;
                 case "scramble":
                     obj.scramble = item.at(index)!;
