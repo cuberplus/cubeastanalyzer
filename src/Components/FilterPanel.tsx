@@ -357,12 +357,12 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             analysis = (
                 <div>
                     <Row className="col-lg-6 col-md-6 col-sm-12">
-                        <Col className="m-2">
+                        <Col>
                             <Button onClick={this.showFilters.bind(this)}>
                                 Show filters
                             </Button>
                         </Col>
-                        <Col className="m-2">
+                        <Col>
                             <OverlayTrigger placement="bottom" overlay={this.createTooltip(`This means that of the past ${numSolves} solves, 90% of them were below the shown time, rounded up to the nearest second. This is a very high definition of Sub-X, but if you tell someone this number, you will be able to meet that number with 90% certainty.`)}>
                                 <Card>
                                     <h5>

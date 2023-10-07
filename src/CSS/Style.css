@@ -1233,3 +1233,7 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+.container-fluid {
+  max-width: 95% !important;
+}

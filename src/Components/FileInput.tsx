@@ -51,24 +51,26 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
                 <HelpPanel showHelpPanel={this.state.showHelpModal} onCloseHandler={() => this.closeButtonClicked()} />
 
-                <Row className="m-2">
-                    <Card className="info-card col-lg-6 col-md-12 col-sm-12">
-                        <Form className="m-2">
-                            <h3>Upload your Cubeast CSV file:</h3>
-                            <FormControl type="file" id="uploaded_data" accept=".csv" />
-                        </Form>
-                        <ButtonGroup className="m-2">
-                            <Button className="col-8" variant="success" onClick={() => { this.showFileData(); }}>
-                                Display My Stats!
-                            </Button>
-                            <Button className="col-4" onClick={() => { this.showTestData(); }}>
-                                Display Test Stats!
-                            </Button>
-                        </ButtonGroup>
-                    </Card>
-                </Row>
+                <Container className="container-fluid">
+                    <Row className="m-2">
+                        <Card className="info-card col-lg-6 col-md-12 col-sm-12">
+                            <Form className="m-2">
+                                <h3>Upload your Cubeast CSV file:</h3>
+                                <FormControl type="file" id="uploaded_data" accept=".csv" />
+                            </Form>
+                            <ButtonGroup className="m-2">
+                                <Button className="col-8" variant="success" onClick={() => { this.showFileData(); }}>
+                                    Display My Stats!
+                                </Button>
+                                <Button className="col-4" onClick={() => { this.showTestData(); }}>
+                                    Display Test Stats!
+                                </Button>
+                            </ButtonGroup>
+                        </Card>
+                    </Row>
 
-                <FilterPanel solves={this.state.solves} />
+                    <FilterPanel solves={this.state.solves} />
+                </Container>
             </div >
         )
     }
