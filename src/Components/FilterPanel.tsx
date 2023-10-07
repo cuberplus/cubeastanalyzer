@@ -218,7 +218,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         return (
             <Col>
                 <Card className="card info-card p-2">
-                    <OverlayTrigger placement="top" overlay={this.createTooltip(tooltip)}>
+                    <OverlayTrigger placement="right" overlay={this.createTooltip(tooltip)}>
                         <h6>{title}</h6>
                     </OverlayTrigger>
                     {filter}
