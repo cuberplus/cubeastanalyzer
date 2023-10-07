@@ -3,7 +3,7 @@ import { ChartPanelProps, ChartPanelState, ChartType } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "../Helpers/RunningAverageMath";
 import { createOptions } from "../Helpers/ChartHelpers";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Ratio } from "react-bootstrap";
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
@@ -279,52 +279,30 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
+    buildChartHtml(chart: JSX.Element): JSX.Element {
+        return (
+            <Col className="col-12 col-lg-6">
+                <Card className="m-2">
+                    {chart}
+                </Card>
+            </Col>
+        );
+    }
+
     render() {
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
 
         return (
             <Row className="m-2">
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time", "Solve Number", "Time")} />
-                    </Card>
-                </Col>
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Line data={this.buildRunningRecognitionExecution()} options={createOptions(ChartType.Line, "Average Recognition and Execution", "Solve Number", "Time")} />
-                    </Card>
-                </Col>
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long They Took", "Time (s)", "Count")} />
-                    </Card>
-                </Col>
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second", "Solve Number", "Time (s)")} />
-                    </Card>
-                </Col>
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Average Turns", "Solve Number", "Turns")} />
-                    </Card>
-                </Col>
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Line data={this.buildGoodBadData()} options={createOptions(ChartType.Line, "Percentage of 'Good' and 'Bad' Solves", "Solve Number", "Percentage")} />
-                    </Card>
-                </Col>
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />
-                    </Card>
-                </Col>
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />
-                    </Card>
-                </Col>
+                {this.buildChartHtml(<Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time", "Solve Number", "Time")} />)}
+                {this.buildChartHtml(<Line data={this.buildRunningRecognitionExecution()} options={createOptions(ChartType.Line, "Average Recognition and Execution", "Solve Number", "Time")} />)}
+                {this.buildChartHtml(<Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long They Took", "Time (s)", "Count")} />)}
+                {this.buildChartHtml(<Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second", "Solve Number", "Time (s)")} />)}
+                {this.buildChartHtml(<Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Average Turns", "Solve Number", "Turns")} />)}
+                {this.buildChartHtml(<Line data={this.buildGoodBadData()} options={createOptions(ChartType.Line, "Percentage of 'Good' and 'Bad' Solves", "Solve Number", "Percentage")} />)}
+                {this.buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />)}
+                {this.buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />)}
             </Row>
         )
     }
