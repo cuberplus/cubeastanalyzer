@@ -8,7 +8,7 @@ import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
-import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert } from 'react-bootstrap';
+import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
@@ -214,15 +214,25 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         return tooltip;
     }
 
+    createFilterHtml(filter: JSX.Element, title: string, tooltip: string): JSX.Element {
+        return (
+            <Col>
+                <Card className="card info-card">
+                    <OverlayTrigger placement="top" overlay={this.createTooltip(tooltip)}>
+                        <h6>{title}</h6>
+                    </OverlayTrigger>
+                    {filter}
+                </Card>
+            </Col>
+        )
+    }
+
     render() {
         let filters: JSX.Element = (<></>);
         if (this.state.allSolves.length > 0) {
             filters = (
-                <Col>
-                    <Card className="card info-card">
-                        <OverlayTrigger placement="bottom" overlay={this.createTooltip("This dropdown lets you choose which step to see more information about. This only affects data in the 'Step Drilldown' tab.")}>
-                            <h6>Which step to drill down?</h6>
-                        </OverlayTrigger>
+                <Container>
+                    {this.createFilterHtml(
                         <Select
                             options={[
                                 { label: StepName.Cross, value: StepName.Cross },
@@ -236,22 +246,21 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             ]}
                             value={this.state.drilldownStep}
                             onChange={this.drilldownStepChanged.bind(this)}
-                        />
-                    </Card>
+                        />,
+                        "Which step to drill down?",
+                        "This dropdown lets you choose which step to see more information about. This only affects data in the 'Step Drilldown' tab."
+                    )}
 
                     <br />
                     <br />
 
-                    <Card className={""}>
-                        <OverlayTrigger placement="bottom" overlay={this.createTooltip("If you notice that not all your solves are appearing, even when no filters are chosen, either those solves are corrupt, or cubeast exported a comma in its CSV incorrectly.")}>
-                            <h6>Showing {this.state.filteredSolves.length}/{this.state.allSolves.length} solves</h6>
-                        </OverlayTrigger>
-                    </Card>
+                    {this.createFilterHtml(
+                        <></>,
+                        `Showing ${this.state.filteredSolves.length} / ${this.state.allSolves.length} solves`,
+                        "If you notice that not all your solves are appearing, even when no filters are chosen, either those solves are corrupt, or cubeast exported a comma in its CSV incorrectly."
+                    )}
 
-                    <Card className="card info-card">
-                        <OverlayTrigger placement="bottom" overlay={this.createTooltip("Pick the starting cross color")}>
-                            <h6>Cross Color</h6>
-                        </OverlayTrigger>
+                    {this.createFilterHtml(
                         <MultiSelect
                             options={[
                                 { label: CrossColor.White, value: CrossColor.White },
@@ -264,13 +273,12 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             value={this.state.chosenColors}
                             onChange={this.crossColorsChanged.bind(this)}
                             labelledBy="Select"
-                        />
-                    </Card>
+                        />,
+                        "Cross Color",
+                        "Pick the starting cross color"
+                    )}
 
-                    <Card className="card info-card">
-                        <OverlayTrigger placement="bottom" overlay={this.createTooltip("Choose slowest and fastest solves to keep")}>
-                            <h6>Solve Times</h6>
-                        </OverlayTrigger>
+                    {this.createFilterHtml(
                         <div className="row">
                             <div className="form-outline col-6" >
                                 <FormControl min="0" max="300" type="number" id="fastestSolve" value={this.state.filters.fastestTime} onChange={this.setFastestSolve.bind(this)} />
@@ -278,68 +286,67 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             <div className="form-outline col-6" >
                                 <FormControl min="0" max="300" type="number" id="slowestSolve" value={this.state.filters.slowestTime} onChange={this.setSlowestSolve.bind(this)} />
                             </div>
-                        </div>
-                    </Card>
+                        </div>,
+                        "Solve Times",
+                        "Choose slowest and fastest solves to keep"
+                    )}
 
-                    <Card className="card info-card">
-                        <OverlayTrigger placement="bottom" overlay={this.createTooltip("Choose which PLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips.")}>
-                            <h6>PLL cases</h6>
-                        </OverlayTrigger>
+                    {this.createFilterHtml(
                         <MultiSelect
                             options={Const.PllCases}
                             value={this.state.chosenPLLs}
                             onChange={this.pllChanged.bind(this)}
                             labelledBy="Select"
-                        />
-                    </Card>
+                        />,
+                        "PLL Cases",
+                        "Choose which PLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips."
+                    )}
 
-                    <Card className="card info-card">
-                        <OverlayTrigger placement="bottom" overlay={this.createTooltip("Choose which OLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips.")}>
-                            <h6>OLL cases</h6>
-                        </OverlayTrigger>
+                    {this.createFilterHtml(
                         <MultiSelect
                             options={Const.OllCases}
                             value={this.state.chosenOLLs}
                             onChange={this.ollChanged.bind(this)}
                             labelledBy="Select"
-                        />
-                    </Card>
+                        />,
+                        "OLL Cases",
+                        "Choose which OLL Cases to show. This will not work if you do not have Cubeast Premium. I suggest using this simply to keep/remove skips."
+                    )}
 
-                    <Card className="card info-card">
-                        <OverlayTrigger placement="bottom" overlay={this.createTooltip("Choose the sliding window size. For example, the default is to show the average of 500 solves, over time. If you see no data, you should try lowering this value.")}>
-                            <h6>Sliding Window Size</h6>
-                        </OverlayTrigger>
-                        <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />
-                    </Card>
+                    {this.createFilterHtml(
+                        <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />,
+                        "Sliding Window Size",
+                        "Choose the sliding window size. For example, the default is to show the average of 500 solves, over time. If you see no data, you should try lowering this value."
+                    )}
 
-                    <Card className="card info-card">
-                        <OverlayTrigger placement="bottom" overlay={this.createTooltip("Choose how many points to show on each chart. If this value is set too high, you may see performance issues.")}>
-                            <h6>Points Per Graph</h6>
-                        </OverlayTrigger>
-                        <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.pointsPerGraph} onChange={this.setPointsPerGraph.bind(this)} />
-                    </Card>
+                    {this.createFilterHtml(
+                        <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.pointsPerGraph} onChange={this.setPointsPerGraph.bind(this)} />,
+                        "Points Per Graph",
+                        "Choose how many points to show on each chart. If this value is set too high, you may see performance issues."
+                    )}
 
-                    <Card className="card info-card">
-                        <OverlayTrigger placement="bottom" overlay={this.createTooltip("Choose whether to keep messed up solves. Currently, this just filters out solves over 30 seconds. This will likely change in the future.")}>
-                            <h6>Include Messed Up Solves</h6>
-                        </OverlayTrigger>
+                    {this.createFilterHtml(
                         <input
                             type="checkbox"
                             checked={this.state.filters.includeMistakes}
                             onChange={this.setMistakes.bind(this)}
-                        />
-                    </Card>
+                        />,
+                        "Include Messed Up Solves",
+                        "Choose whether to keep messed up solves. Currently, this just filters out solves over 30 seconds. This will likely change in the future."
+                    )}
 
-                    <Card className="card info-card">
-                        <h6>Pick start date</h6>
-                        <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />
-                    </Card>
+                    {this.createFilterHtml(
+                        <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />,
+                        "Pick Start Date",
+                        ""
+                    )}
 
-                    <Card className="card info-card">
-                        <h6>Pick end date</h6>
-                        <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />
-                    </Card>
-                </Col>
+                    {this.createFilterHtml(
+                        <DatePicker selected={this.state.filters.endDate} onChange={this.setEndDate.bind(this)} />,
+                        "Pick End Date",
+                        ""
+                    )}
+                </Container>
             )
         }
 

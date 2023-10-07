@@ -54,7 +54,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                 <Row className="m-2">
                     <Card className="info-card col-lg-6 col-md-12 col-sm-12">
                         <Form className="m-2">
-                            Upload your Cubeast CSV file:
+                            <h3>Upload your Cubeast CSV file:</h3>
                             <FormControl type="file" id="uploaded_data" accept=".csv" />
                         </Form>
                         <ButtonGroup className="m-2">
@@ -66,7 +66,6 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                             </Button>
                         </ButtonGroup>
                     </Card>
-
                 </Row>
 
                 <FilterPanel solves={this.state.solves} />
