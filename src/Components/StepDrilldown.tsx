@@ -2,7 +2,7 @@ import React from "react";
 import { StepDrilldownProps, StepDrilldownState, StepName, ChartType } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateMovingAverage, reduceDataset } from "../Helpers/RunningAverageMath";
-import { createOptions } from "../Helpers/ChartHelpers";
+import { buildChartHtml, createOptions } from "../Helpers/ChartHelpers";
 import { Card, Row, Col, Container } from "react-bootstrap";
 import { Line, Bar } from 'react-chartjs-2';
 
@@ -199,46 +199,17 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
 
         let caseChart: JSX.Element = (<></>);
         if (this.props.stepName === StepName.OLL || this.props.stepName === StepName.PLL) {
-            caseChart = (
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Bar data={this.buildCaseData()} options={createOptions(ChartType.Bar, "Average Recognition Time and Execution Time per Case", "Solve Number", "Time (s)")} />
-                    </Card>
-                </Col>
-
-            )
+            caseChart = buildChartHtml(<Bar data={this.buildCaseData()} options={createOptions(ChartType.Bar, "Average Recognition Time and Execution Time per Case", "Solve Number", "Time (s)")} />);
         }
-
-        // TODO: try hardcoded heights
 
         return (
             <Row className="m-2">
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time per Case", "Solve Number", "Time (s)")} />
-                    </Card>
-                </Col>
+                {buildChartHtml(<Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time per Case", "Solve Number", "Time (s)")} />)}
                 {caseChart}
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long This Step Took", "Time (s)", "Count")} />
-                    </Card>
-                </Col>
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Line data={this.buildStepTurnsData()} options={createOptions(ChartType.Line, "Average Number of Turns this Step Takes", "Solve Number", "Turns")} />
-                    </Card>
-                </Col>
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second for this Step", "Solve Number", "Turns Per Second")} />
-                    </Card>
-                </Col>
-                <Col className="col-12 col-lg-6">
-                    <Card className="m-2">
-                        <Line data={this.buildRecognitionExecutionData()} options={createOptions(ChartType.Line, "Average Recognition and Execution Time for this Step", "Solve Number", "Time (s)")} />
-                    </Card>
-                </Col>
+                {buildChartHtml(<Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long This Step Took", "Time (s)", "Count")} />)}
+                {buildChartHtml(<Line data={this.buildStepTurnsData()} options={createOptions(ChartType.Line, "Average Number of Turns this Step Takes", "Solve Number", "Turns")} />)}
+                {buildChartHtml(<Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second for this Step", "Solve Number", "Turns Per Second")} />)}
+                {buildChartHtml(<Line data={this.buildRecognitionExecutionData()} options={createOptions(ChartType.Line, "Average Recognition and Execution Time for this Step", "Solve Number", "Time (s)")} />)}
             </Row>
         )
     }

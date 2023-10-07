@@ -1,4 +1,15 @@
+import { Card, Col } from "react-bootstrap";
 import { ChartType } from "./Types";
+
+export function buildChartHtml(chart: JSX.Element): JSX.Element {
+    return (
+        <Col className="col-12 col-lg-6">
+            <Card className="m-2">
+                {chart}
+            </Card>
+        </Col>
+    )
+}
 
 export function createOptions(chartType: ChartType, chartTitle: string, xAxis: string, yAxis: string) {
     let genericOptions: any = {
