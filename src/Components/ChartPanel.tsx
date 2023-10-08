@@ -279,6 +279,39 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
+    buildRecordHistory() {
+        let data: ChartData<"line"> = {
+            labels: [],
+            datasets: []
+        }
+
+        if (this.props.solves.length == 0) {
+            return data;
+        }
+
+        let records = [this.props.solves[0].time];
+        let dates = [this.props.solves[0].date];
+
+        for (let i = 1; i < this.props.solves.length; i++) {
+            if (this.props.solves[i].time < records[records.length - 1]) {
+                records.push(this.props.solves[i].time);
+                dates.push(this.props.solves[i].date);
+            }
+        }
+
+        let labels = dates.map(x => x.toDateString())
+
+        data.labels = labels;
+        data.datasets = [
+            {
+                label: `Current record`,
+                data: records
+            }
+        ]
+
+        return data;
+    }
+
     render() {
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
@@ -295,6 +328,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                     {buildChartHtml(<Line data={this.buildGoodBadData()} options={createOptions(ChartType.Line, "Percentage of 'Good' and 'Bad' Solves", "Solve Number", "Percentage")} />)}
                     {buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />)}
+                    {buildChartHtml(<Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "History of Records", "Date", "Time (s)")} />)}
                 </Row>
             </div>
         )
