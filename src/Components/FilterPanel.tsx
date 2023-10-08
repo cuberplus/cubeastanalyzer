@@ -168,12 +168,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
     crossColorsChanged(selectedList: any[]) {
         let selectedColors: CrossColor[] = selectedList.map(x => x.value);
-
         let newFilters: Filters = this.state.filters;
         newFilters.crossColors = selectedColors;
 
         this.setState({
-            filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
             filters: newFilters,
             chosenColors: selectedList
         })
@@ -187,12 +185,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
     pllChanged(selectedList: any[]) {
         let selectedPlls: string[] = selectedList.map(x => x.value);
-
         let newFilters: Filters = this.state.filters;
         newFilters.pllCases = selectedPlls;
 
         this.setState({
-            filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
             filters: newFilters,
             chosenPLLs: selectedList
         })
@@ -200,12 +196,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
     ollChanged(selectedList: any[]) {
         let selectedOlls: string[] = selectedList.map(x => x.value);
-
         let newFilters: Filters = this.state.filters;
         newFilters.ollCases = selectedOlls;
 
         this.setState({
-            filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters),
             filters: newFilters,
             chosenOLLs: selectedList
         })
@@ -250,7 +244,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         this.setState({
             solveCleanliness: selectedList,
             filters: newFilters,
-            filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters)
         })
     }
 
@@ -397,7 +390,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             onChange={this.setCleanliness.bind(this)}
                             labelledBy="Select"
                         />,
-                        "Include Messed Up Solves",
+                        "Solves",
                         "Choose whether to show messed up solves or clean solves. The definition of a mistake is: Any solve that took 3 standard deviations more than average OR any step that took 3 standard deviations more than average for that step"
                     )}
 
