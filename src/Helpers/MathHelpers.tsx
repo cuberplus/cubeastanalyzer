@@ -5,16 +5,31 @@ import { Records } from "./Types";
 // TODO: filter out corrupt solves beforehand
 export function calculateRecords(data: number[]): Records {
     let records: Records = {
-        best: 10000000,
-        bestAo5: 10000000,
-        bestAo12: 10000000,
-        bestAo100: 10000000,
-        bestAo1000: 10000000
+        best: Number.MAX_SAFE_INTEGER,
+        bestAo5: Number.MAX_SAFE_INTEGER,
+        bestAo12: Number.MAX_SAFE_INTEGER,
+        bestAo100: Number.MAX_SAFE_INTEGER,
     };
 
     for (let i = 0; i < data.length; i++) {
+        if (data[i] <= .5) {
+            continue;
+        }
+
         if (data[i] < records.best) {
             records.best = data[i];
+        }
+
+        if (i >= 5) {
+            records.bestAo5 = Math.min(records.bestAo5, calculateDroppedAverage(data.slice(i - 5, i), 1))
+        }
+
+        if (i >= 12) {
+            records.bestAo12 = Math.min(records.bestAo12, calculateDroppedAverage(data.slice(i - 12, i), 1))
+        }
+
+        if (i >= 100) {
+            records.bestAo100 = Math.min(records.bestAo100, calculateDroppedAverage(data.slice(i - 100, i), 5))
         }
     }
 
@@ -29,6 +44,12 @@ export function calculateAverage(data: number[]): number {
     mean /= data.length;
 
     return mean;
+}
+
+export function calculateDroppedAverage(data: number[], countToRemove: number): number {
+    let sorted = data.sort();
+    sorted = sorted.slice(countToRemove, -countToRemove);
+    return calculateAverage(sorted);
 }
 
 export function calculateStandardDeviation(data: number[]): number {

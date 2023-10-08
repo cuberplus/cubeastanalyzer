@@ -1,7 +1,7 @@
 import React from "react";
 import { ChartPanelProps, ChartPanelState, ChartType, CrossColor } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
-import { calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset } from "../Helpers/RunningAverageMath";
+import { calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset } from "../Helpers/MathHelpers";
 import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
 import { Card, Row, Col, Ratio } from "react-bootstrap";
 import { Line, Bar, Doughnut } from 'react-chartjs-2';

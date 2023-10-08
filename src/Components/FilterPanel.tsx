@@ -7,7 +7,7 @@ import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, So
 import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import { Option } from "react-multi-select-component"
-import { calculate90thPercentile, calculateAverage, calculateRecords, calculateStandardDeviation } from "../Helpers/RunningAverageMath";
+import { calculate90thPercentile, calculateAverage, calculateRecords, calculateStandardDeviation } from "../Helpers/MathHelpers";
 import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 
@@ -411,6 +411,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
 
         let analysis: JSX.Element = (<></>)
+        let records = calculateRecords(this.props.solves.map(x => x.time));
         if (this.state.allSolves.length > 0) {
             let numSolves = Math.min(1000, this.props.solves.length);
             analysis = (
@@ -426,6 +427,24 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 <Card>
                                     <h5>
                                         You are Sub-{calculate90thPercentile(this.props.solves.map(x => x.time), numSolves)}.
+                                    </h5>
+                                </Card>
+                            </OverlayTrigger>
+                        </Col>
+                        <Col>
+                            <OverlayTrigger placement="bottom" overlay={this.createTooltip(`This means that of the past ${numSolves} solves, 90% of them were below the shown time, rounded up to the nearest second. This is a very high definition of Sub-X, but if you tell someone this number, you will be able to meet that number with 90% certainty.`)}>
+                                <Card>
+                                    <h5>
+                                        Your PB is {records.best.toFixed(3)}.
+                                    </h5>
+                                    <h5>
+                                        Your Ao5 is {records.bestAo5.toFixed(3)}.
+                                    </h5>
+                                    <h5>
+                                        Your Ao12 is {records.bestAo12.toFixed(3)}.
+                                    </h5>
+                                    <h5>
+                                        Your Ao100 is {records.bestAo100.toFixed(3)}.
                                     </h5>
                                 </Card>
                             </OverlayTrigger>

@@ -160,6 +160,5 @@ export interface Records {
     best: number,
     bestAo5: number,
     bestAo12: number,
-    bestAo100: number,
-    bestAo1000: number
+    bestAo100: number
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { StepDrilldownProps, StepDrilldownState, StepName, ChartType } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
-import { calculateMovingAverage, calculateMovingStdDev, reduceDataset } from "../Helpers/RunningAverageMath";
+import { calculateMovingAverage, calculateMovingStdDev, reduceDataset } from "../Helpers/MathHelpers";
 import { buildChartHtml, createOptions } from "../Helpers/ChartHelpers";
 import { Card, Row, Col, Container } from "react-bootstrap";
 import { Line, Bar } from 'react-chartjs-2';
