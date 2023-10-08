@@ -1,5 +1,25 @@
 import { Deque } from "@datastructures-js/deque";
 import { Const } from "./Constants";
+import { Records } from "./Types";
+
+// TODO: filter out corrupt solves beforehand
+export function calculateRecords(data: number[]): Records {
+    let records: Records = {
+        best: 10000000,
+        bestAo5: 10000000,
+        bestAo12: 10000000,
+        bestAo100: 10000000,
+        bestAo1000: 10000000
+    };
+
+    for (let i = 0; i < data.length; i++) {
+        if (data[i] < records.best) {
+            records.best = data[i];
+        }
+    }
+
+    return records;
+}
 
 export function calculateAverage(data: number[]): number {
     let mean = 0;

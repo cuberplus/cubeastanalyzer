@@ -16,7 +16,6 @@ export function buildChartHtml(chart: JSX.Element): JSX.Element {
 export function createOptions(chartType: ChartType, chartTitle: string, xAxis: string, yAxis: string) {
     let genericOptions: any = {
         maintainAspectRatio: false,
-        responsive: false,
         plugins: {
             title: {
                 display: true,

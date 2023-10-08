@@ -7,7 +7,7 @@ import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, So
 import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import { Option } from "react-multi-select-component"
-import { calculate90thPercentile, calculateAverage, calculateStandardDeviation } from "../Helpers/RunningAverageMath";
+import { calculate90thPercentile, calculateAverage, calculateRecords, calculateStandardDeviation } from "../Helpers/RunningAverageMath";
 import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 

@@ -155,3 +155,11 @@ export interface Deviations {
     avg_oll: number,
     avg_pll: number
 }
+
+export interface Records {
+    best: number,
+    bestAo5: number,
+    bestAo12: number,
+    bestAo100: number,
+    bestAo1000: number
+}
