@@ -351,6 +351,17 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
                     {this.createFilterHtml(
                         <MultiSelect
+                            options={Const.solveCleanliness}
+                            value={this.state.solveCleanliness}
+                            onChange={this.setCleanliness.bind(this)}
+                            labelledBy="Select"
+                        />,
+                        "Solve Cleanliness",
+                        "Choose whether to show messed up solves or clean solves. The definition of a mistake is: Any solve that took 3 standard deviations more than average OR any step that took 3 standard deviations more than average for that step"
+                    )}
+
+                    {this.createFilterHtml(
+                        <MultiSelect
                             options={Const.PllCases}
                             value={this.state.chosenPLLs}
                             onChange={this.pllChanged.bind(this)}
@@ -381,17 +392,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.pointsPerGraph} onChange={this.setPointsPerGraph.bind(this)} />,
                         "Points Per Graph",
                         "Choose how many points to show on each chart. If this value is set too high, you may see performance issues."
-                    )}
-
-                    {this.createFilterHtml(
-                        <MultiSelect
-                            options={Const.solveCleanliness}
-                            value={this.state.solveCleanliness}
-                            onChange={this.setCleanliness.bind(this)}
-                            labelledBy="Select"
-                        />,
-                        "Solves",
-                        "Choose whether to show messed up solves or clean solves. The definition of a mistake is: Any solve that took 3 standard deviations more than average OR any step that took 3 standard deviations more than average for that step"
                     )}
 
                     {this.createFilterHtml(
