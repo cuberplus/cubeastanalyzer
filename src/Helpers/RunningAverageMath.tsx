@@ -32,7 +32,7 @@ export function calculateMovingAverage(data: number[], window: number): number[]
     return result;
 };
 
-export function calculateMovingPercentage(data: number[], window: number, criteria: (solve: number) => boolean): number[] {
+export function calculateMovingPercentage(data: any[], window: number, criteria: (solve: any) => boolean): number[] {
     let result: number[] = [];
     if (data.length < window) {
         return result;

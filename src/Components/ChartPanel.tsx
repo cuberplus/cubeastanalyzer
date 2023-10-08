@@ -1,5 +1,5 @@
 import React from "react";
-import { ChartPanelProps, ChartPanelState, ChartType } from "../Helpers/Types";
+import { ChartPanelProps, ChartPanelState, ChartType, CrossColor } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "../Helpers/RunningAverageMath";
 import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
@@ -312,6 +312,62 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
+    buildRunningColorPercentages() {
+        let checkIfWhite = (crossColor: CrossColor) => { return crossColor == CrossColor.White };
+        let checkIfYellow = (crossColor: CrossColor) => { return crossColor == CrossColor.Yellow };
+        let checkIfRed = (crossColor: CrossColor) => { return crossColor == CrossColor.Red };
+        let checkIfOrange = (crossColor: CrossColor) => { return crossColor == CrossColor.Orange };
+        let checkIfBlue = (crossColor: CrossColor) => { return crossColor == CrossColor.Blue };
+        let checkIfGreen = (crossColor: CrossColor) => { return crossColor == CrossColor.Green };
+
+        let movingPercentWhite = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfWhite);
+        let movingPercentYellow = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfYellow);
+        let movingPercentRed = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfRed);
+        let movingPercentOrange = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfOrange);
+        let movingPercentBlue = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfBlue);
+        let movingPercentGreen = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfGreen);
+
+        let labels = [];
+        for (let i = 1; i <= movingPercentWhite.length; i++) {
+            labels.push(i.toString())
+        };
+
+        movingPercentWhite = reduceDataset(movingPercentWhite, this.props.pointsPerGraph);
+        movingPercentYellow = reduceDataset(movingPercentYellow, this.props.pointsPerGraph);
+        movingPercentRed = reduceDataset(movingPercentRed, this.props.pointsPerGraph);
+        movingPercentOrange = reduceDataset(movingPercentOrange, this.props.pointsPerGraph);
+        movingPercentBlue = reduceDataset(movingPercentBlue, this.props.pointsPerGraph);
+        movingPercentGreen = reduceDataset(movingPercentGreen, this.props.pointsPerGraph);
+
+
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: `Percentage of solves with white cross over last ${this.props.windowSize}`,
+                data: movingPercentWhite
+            }, {
+                label: `Percentage of solves with yellow cross over last ${this.props.windowSize}`,
+                data: movingPercentYellow
+            }, {
+                label: `Percentage of solves with red cross over last ${this.props.windowSize}`,
+                data: movingPercentRed
+            }, {
+                label: `Percentage of solves with orange cross over last ${this.props.windowSize}`,
+                data: movingPercentOrange
+            }, {
+                label: `Percentage of solves with blue cross over last ${this.props.windowSize}`,
+                data: movingPercentBlue
+            }, {
+                label: `Percentage of solves with green cross over last ${this.props.windowSize}`,
+                data: movingPercentGreen
+            }]
+        }
+
+        return data;
+    }
+
     render() {
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
@@ -329,6 +385,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                     {buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />)}
                     {buildChartHtml(<Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "History of Records", "Date", "Time (s)")} />)}
+                    {buildChartHtml(<Line data={this.buildRunningColorPercentages()} options={createOptions(ChartType.Line, "Percentage of Solves by Cross Color", "Solve Number", "Percentage")} />)}
                 </Row>
             </div>
         )
