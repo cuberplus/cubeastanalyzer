@@ -398,7 +398,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             labelledBy="Select"
                         />,
                         "Include Messed Up Solves",
-                        "Choose whether to keep messed up solves. Currently, this just filters out solves over 30 seconds. This will likely change in the future."
+                        "Choose whether to show messed up solves or clean solves. The definition of a mistake is: Any solve that took 3 standard deviations more than average OR any step that took 3 standard deviations more than average for that step"
                     )}
 
                     {this.createFilterHtml(
