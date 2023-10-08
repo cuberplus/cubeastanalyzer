@@ -86,7 +86,7 @@ export function calculateMovingPercentage(data: any[], window: number, criteria:
 
 export function calculateMovingStdDev(data: number[], window: number) {
     let result: number[] = [];
-    if (data.length < window) {
+    if (Number.isNaN(window) || data.length < window) {
         return result;
     }
 
