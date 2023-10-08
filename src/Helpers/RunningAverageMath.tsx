@@ -1,3 +1,5 @@
+import { Deque } from "@datastructures-js/deque";
+
 export function calculate90thPercentile(data: number[], window: number): number {
     let recentSolves = data;
     if (data.length > window) {
@@ -55,6 +57,34 @@ export function calculateMovingPercentage(data: any[], window: number, criteria:
         }
         result.push(good / window * 100);
     }
+    return result;
+}
+
+export function calculateMovingStdDev(data: number[], window: number) {
+    let result: number[] = [];
+    if (data.length < window) {
+        return result;
+    }
+
+    let deque = new Deque<number>(new Array(window).fill(0));
+    let mean = 0;
+    let variance = 0;
+
+    for (let i = 0; i < data.length; i++) {
+        let oldMean = mean;
+        let goingAway = deque.front();
+        mean = oldMean + (data[i] - goingAway) / window;
+        let newMean = mean;
+        deque.pushBack(data[i]);
+        if (deque.size() > window) {
+            deque.popFront()
+        }
+        variance += (data[i] - goingAway) * ((data[i] - newMean) + (goingAway - oldMean)) / (window - 1)
+        if (i >= window) {
+            result.push(Math.sqrt(variance))
+        }
+    }
+
     return result;
 }
 

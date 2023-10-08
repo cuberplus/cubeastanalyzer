@@ -1,7 +1,7 @@
 import React from "react";
 import { ChartPanelProps, ChartPanelState, ChartType, CrossColor } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
-import { calculateMovingAverage, calculateMovingPercentage, reduceDataset } from "../Helpers/RunningAverageMath";
+import { calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset } from "../Helpers/RunningAverageMath";
 import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
 import { Card, Row, Col, Ratio } from "react-bootstrap";
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
@@ -24,6 +24,28 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             labels,
             datasets: [{
                 label: `Average Time Of ${this.props.windowSize}`,
+                data: movingAverage
+            }]
+        }
+
+        return data;
+    }
+
+    buildRunningStdDevData() {
+        let movingAverage = calculateMovingStdDev(this.props.solves.map(x => x.time), this.props.windowSize);
+
+        let labels = [];
+        for (let i = 1; i <= movingAverage.length; i++) {
+            labels.push(i.toString())
+        };
+
+        movingAverage = reduceDataset(movingAverage, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: `Average StdDev Of ${this.props.windowSize}`,
                 data: movingAverage
             }]
         }
@@ -381,6 +403,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                     {buildChartHtml(<Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long They Took", "Time (s)", "Count")} />)}
                     {buildChartHtml(<Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Average Turns", "Solve Number", "Turns")} />)}
+                    {buildChartHtml(<Line data={this.buildRunningStdDevData()} options={createOptions(ChartType.Line, "Average Standard Deviation", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Line data={this.buildGoodBadData()} options={createOptions(ChartType.Line, "Percentage of 'Good' and 'Bad' Solves", "Solve Number", "Percentage")} />)}
                     {buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />)}

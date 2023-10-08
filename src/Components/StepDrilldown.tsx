@@ -1,7 +1,7 @@
 import React from "react";
 import { StepDrilldownProps, StepDrilldownState, StepName, ChartType } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
-import { calculateMovingAverage, reduceDataset } from "../Helpers/RunningAverageMath";
+import { calculateMovingAverage, calculateMovingStdDev, reduceDataset } from "../Helpers/RunningAverageMath";
 import { buildChartHtml, createOptions } from "../Helpers/ChartHelpers";
 import { Card, Row, Col, Container } from "react-bootstrap";
 import { Line, Bar } from 'react-chartjs-2';
@@ -46,6 +46,28 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
             labels,
             datasets: [{
                 label: `Average time of ${this.props.stepName} Of ${this.props.windowSize}`,
+                data: movingAverage
+            }]
+        }
+
+        return data;
+    }
+
+    buildRunningStdDevData() {
+        let movingAverage = calculateMovingStdDev(this.props.steps.map(x => x.time), this.props.windowSize);
+
+        let labels = [];
+        for (let i = 1; i <= movingAverage.length; i++) {
+            labels.push(i.toString())
+        };
+
+        movingAverage = reduceDataset(movingAverage, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: `Average standard deviation of ${this.props.stepName} Of ${this.props.windowSize}`,
                 data: movingAverage
             }]
         }
@@ -208,6 +230,7 @@ export class StepDrilldown extends React.Component<StepDrilldownProps, StepDrill
                 <Row>
                     {buildChartHtml(<Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time per Case", "Solve Number", "Time (s)")} />)}
                     {caseChart}
+                    {buildChartHtml(<Line data={this.buildRunningStdDevData()} options={createOptions(ChartType.Line, "Average standard deviation per Case", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long This Step Took", "Time (s)", "Count")} />)}
                     {buildChartHtml(<Line data={this.buildStepTurnsData()} options={createOptions(ChartType.Line, "Average Number of Turns this Step Takes", "Solve Number", "Turns")} />)}
                     {buildChartHtml(<Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second for this Step", "Solve Number", "Turns Per Second")} />)}
