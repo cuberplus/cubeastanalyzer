@@ -68,28 +68,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
         // If total time or any step is 3 standard deviations away, remove it
         if (!filters.includeMistakes) {
-            if (solve.time > (3 * deviations.dev_total) + deviations.avg_total) {
-                return false;
-            }
-            if (solve.steps.cross.time > (3 * deviations.dev_cross) + deviations.avg_cross) {
-                return false;
-            }
-            if (solve.steps.f2l_1.time > (3 * deviations.dev_f2l_1) + deviations.avg_f2l_1) {
-                return false;
-            }
-            if (solve.steps.f2l_2.time > (3 * deviations.dev_f2l_2) + deviations.avg_f2l_2) {
-                return false;
-            }
-            if (solve.steps.f2l_3.time > (3 * deviations.dev_f2l_3) + deviations.avg_f2l_3) {
-                return false;
-            }
-            if (solve.steps.f2l_4.time > (3 * deviations.dev_f2l_4) + deviations.avg_f2l_4) {
-                return false;
-            }
-            if (solve.steps.oll.time > (3 * deviations.dev_oll) + deviations.avg_oll) {
-                return false;
-            }
-            if (solve.steps.pll.time > (3 * deviations.dev_pll) + deviations.avg_pll) {
+            if (this.isMistakeSolve(solve, deviations)) {
                 return false;
             }
         }
@@ -97,7 +76,36 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         return true;
     }
 
-    static applyFiltersToSolves(allSolves: Solve[], filters: Filters): Solve[] {
+    static isMistakeSolve(solve: Solve, deviations: Deviations) {
+        if (solve.time > (3 * deviations.dev_total) + deviations.avg_total) {
+            return false;
+        }
+        if (solve.steps.cross.time > (3 * deviations.dev_cross) + deviations.avg_cross) {
+            return false;
+        }
+        if (solve.steps.f2l_1.time > (3 * deviations.dev_f2l_1) + deviations.avg_f2l_1) {
+            return false;
+        }
+        if (solve.steps.f2l_2.time > (3 * deviations.dev_f2l_2) + deviations.avg_f2l_2) {
+            return false;
+        }
+        if (solve.steps.f2l_3.time > (3 * deviations.dev_f2l_3) + deviations.avg_f2l_3) {
+            return false;
+        }
+        if (solve.steps.f2l_4.time > (3 * deviations.dev_f2l_4) + deviations.avg_f2l_4) {
+            return false;
+        }
+        if (solve.steps.oll.time > (3 * deviations.dev_oll) + deviations.avg_oll) {
+            return false;
+        }
+        if (solve.steps.pll.time > (3 * deviations.dev_pll) + deviations.avg_pll) {
+            return false;
+        }
+
+        return true;
+    }
+
+    static calculateDeviations(allSolves: Solve[]) {
         let deviations: Deviations = {
             dev_total: calculateStandardDeviation(allSolves.map(x => x.time)),
             dev_cross: calculateStandardDeviation(allSolves.map(x => x.steps.cross.time)),
@@ -117,7 +125,11 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             avg_pll: calculateAverage(allSolves.map(x => x.steps.pll.time))
         }
 
-        console.log("deviations are ", deviations)
+        return deviations;
+    }
+
+    static applyFiltersToSolves(allSolves: Solve[], filters: Filters): Solve[] {
+        let deviations = this.calculateDeviations(allSolves);
 
         let filteredSolves: Solve[] = [];
         allSolves.forEach(x => {
