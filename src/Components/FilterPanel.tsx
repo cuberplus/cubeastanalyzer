@@ -3,11 +3,11 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { MultiSelect } from "react-multi-select-component";
-import { CrossColor, FilterPanelProps, FilterPanelState, Filters, Solve, StepName } from "../Helpers/Types";
+import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, Solve, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import { Option } from "react-multi-select-component"
-import { calculate90thPercentile } from "../Helpers/RunningAverageMath";
+import { calculate90thPercentile, calculateAverage, calculateStandardDeviation } from "../Helpers/RunningAverageMath";
 import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 
@@ -43,7 +43,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         showAlert: true
     }
 
-    static passesFilters(solve: Solve, filters: Filters) {
+    static passesFilters(solve: Solve, filters: Filters, deviations: Deviations) {
         if (filters.crossColors.indexOf(solve.crossColor) < 0) {
             return false;
         }
@@ -66,18 +66,62 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             return false;
         }
 
-        // TODO: this is a bad way of filtering out mistakes
-        if (!filters.includeMistakes && solve.time > 30) {
-            return false;
+        // If total time or any step is 3 standard deviations away, remove it
+        if (!filters.includeMistakes) {
+            if (solve.time > (3 * deviations.dev_total) + deviations.avg_total) {
+                return false;
+            }
+            if (solve.steps.cross.time > (3 * deviations.dev_cross) + deviations.avg_cross) {
+                return false;
+            }
+            if (solve.steps.f2l_1.time > (3 * deviations.dev_f2l_1) + deviations.avg_f2l_1) {
+                return false;
+            }
+            if (solve.steps.f2l_2.time > (3 * deviations.dev_f2l_2) + deviations.avg_f2l_2) {
+                return false;
+            }
+            if (solve.steps.f2l_3.time > (3 * deviations.dev_f2l_3) + deviations.avg_f2l_3) {
+                return false;
+            }
+            if (solve.steps.f2l_4.time > (3 * deviations.dev_f2l_4) + deviations.avg_f2l_4) {
+                return false;
+            }
+            if (solve.steps.oll.time > (3 * deviations.dev_oll) + deviations.avg_oll) {
+                return false;
+            }
+            if (solve.steps.pll.time > (3 * deviations.dev_pll) + deviations.avg_pll) {
+                return false;
+            }
         }
 
         return true;
     }
 
     static applyFiltersToSolves(allSolves: Solve[], filters: Filters): Solve[] {
+        let deviations: Deviations = {
+            dev_total: calculateStandardDeviation(allSolves.map(x => x.time)),
+            dev_cross: calculateStandardDeviation(allSolves.map(x => x.steps.cross.time)),
+            dev_f2l_1: calculateStandardDeviation(allSolves.map(x => x.steps.f2l_1.time)),
+            dev_f2l_2: calculateStandardDeviation(allSolves.map(x => x.steps.f2l_2.time)),
+            dev_f2l_3: calculateStandardDeviation(allSolves.map(x => x.steps.f2l_3.time)),
+            dev_f2l_4: calculateStandardDeviation(allSolves.map(x => x.steps.f2l_4.time)),
+            dev_oll: calculateStandardDeviation(allSolves.map(x => x.steps.oll.time)),
+            dev_pll: calculateStandardDeviation(allSolves.map(x => x.steps.pll.time)),
+            avg_total: calculateAverage(allSolves.map(x => x.time)),
+            avg_cross: calculateAverage(allSolves.map(x => x.steps.cross.time)),
+            avg_f2l_1: calculateAverage(allSolves.map(x => x.steps.f2l_1.time)),
+            avg_f2l_2: calculateAverage(allSolves.map(x => x.steps.f2l_2.time)),
+            avg_f2l_3: calculateAverage(allSolves.map(x => x.steps.f2l_3.time)),
+            avg_f2l_4: calculateAverage(allSolves.map(x => x.steps.f2l_4.time)),
+            avg_oll: calculateAverage(allSolves.map(x => x.steps.oll.time)),
+            avg_pll: calculateAverage(allSolves.map(x => x.steps.pll.time))
+        }
+
+        console.log("deviations are ", deviations)
+
         let filteredSolves: Solve[] = [];
         allSolves.forEach(x => {
-            if (this.passesFilters(x, filters)) {
+            if (this.passesFilters(x, filters, deviations)) {
                 filteredSolves.push(x);
             }
         })

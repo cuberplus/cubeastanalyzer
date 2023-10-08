@@ -2,6 +2,8 @@ import { Option } from "react-multi-select-component";
 import { CrossColor } from "./Types";
 
 export class Const {
+    static readonly StdDevWindow: number = 1000; // This is the default window to use when calculating a single standard deviation
+
     static readonly PllCases: Option[] = [
         { label: "Solved", value: "Solved" },
         { label: "T Perm", value: "T" },

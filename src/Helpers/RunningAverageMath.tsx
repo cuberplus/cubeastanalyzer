@@ -1,4 +1,28 @@
 import { Deque } from "@datastructures-js/deque";
+import { Const } from "./Constants";
+
+export function calculateAverage(data: number[]): number {
+    let mean = 0;
+    for (let i = 0; i < data.length; i++) {
+        mean += data[i];
+    }
+    mean /= data.length;
+
+    return mean;
+}
+
+export function calculateStandardDeviation(data: number[]): number {
+    let samples = data.slice(-Const.StdDevWindow);
+    let mean = calculateAverage(samples)
+
+    let variance = 0;
+    for (let i = 0; i < samples.length; i++) {
+        variance += Math.pow(samples[i] - mean, 2);
+    }
+    variance /= samples.length;
+
+    return Math.sqrt(variance)
+}
 
 export function calculate90thPercentile(data: number[], window: number): number {
     let recentSolves = data;
