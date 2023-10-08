@@ -100,4 +100,9 @@ export class Const {
             ['RU', CrossColor.Orange],
         ]
     );
+
+    static readonly solveCleanliness: Option[] = [
+        { label: "Clean", value: "Clean" },
+        { label: "Mistake", value: "Mistake" }
+    ]
 }

@@ -25,6 +25,11 @@ export enum ChartType {
     Doughnut = "Doughnut"
 }
 
+export enum SolveCleanliness {
+    Clean = "Clean",
+    Mistake = "Mistake",
+}
+
 export interface Filters {
     crossColors: CrossColor[],
     startDate: Date,
@@ -33,7 +38,7 @@ export interface Filters {
     fastestTime: number,
     pllCases: string[],
     ollCases: string[],
-    includeMistakes: boolean
+    solveCleanliness: string[]
 }
 
 export interface Step {
@@ -85,6 +90,7 @@ export interface FilterPanelState {
     chosenColors: Option[],
     chosenPLLs: Option[],
     chosenOLLs: Option[],
+    solveCleanliness: Option[],
     tabKey: number,
     windowSize: number,
     pointsPerGraph: number,

@@ -3,7 +3,7 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { MultiSelect } from "react-multi-select-component";
-import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, Solve, StepName } from "../Helpers/Types";
+import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, Solve, SolveCleanliness, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import { Option } from "react-multi-select-component"
@@ -23,7 +23,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red],
             pllCases: Const.PllCases.map(x => x.value),
             ollCases: Const.OllCases.map(x => x.value),
-            includeMistakes: true
+            solveCleanliness: Const.solveCleanliness.map(x => x.value)
         },
         drilldownStep: { label: StepName.PLL, value: StepName.PLL },
         chosenColors: [
@@ -34,6 +34,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: CrossColor.Blue, value: CrossColor.Blue },
             { label: CrossColor.Green, value: CrossColor.Green },
         ],
+        solveCleanliness: Const.solveCleanliness,
         chosenPLLs: Const.PllCases,
         chosenOLLs: Const.OllCases,
         tabKey: 1,
@@ -67,10 +68,12 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         }
 
         // If total time or any step is 3 standard deviations away, remove it
-        if (!filters.includeMistakes) {
-            if (this.isMistakeSolve(solve, deviations)) {
-                return false;
-            }
+        let isMistake = this.isMistakeSolve(solve, deviations);
+        if (filters.solveCleanliness.indexOf(SolveCleanliness.Clean) < 0 && !isMistake) {
+            return false;
+        }
+        if (filters.solveCleanliness.indexOf(SolveCleanliness.Mistake) < 0 && isMistake) {
+            return false;
         }
 
         return true;
@@ -156,7 +159,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             windowSize: prevState.windowSize,
             pointsPerGraph: prevState.pointsPerGraph,
             showFilters: prevState.showFilters,
-            showAlert: prevState.showAlert
+            showAlert: prevState.showAlert,
+            solveCleanliness: prevState.solveCleanliness
         }
 
         return newState;
@@ -239,10 +243,15 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         this.setState({ pointsPerGraph: parseInt(event.target.value) })
     }
 
-    setMistakes(event: React.ChangeEvent<HTMLInputElement>) {
+    setCleanliness(selectedList: any[]) {
         let newFilters: Filters = this.state.filters;
-        newFilters.includeMistakes = event.target.checked;
-        this.setState({ filters: newFilters });
+        newFilters.solveCleanliness = selectedList.map(x => x.value);
+
+        this.setState({
+            solveCleanliness: selectedList,
+            filters: newFilters,
+            filteredSolves: FilterPanel.applyFiltersToSolves(this.state.allSolves, newFilters)
+        })
     }
 
     tabSelect(key: any) {
@@ -382,10 +391,11 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     )}
 
                     {this.createFilterHtml(
-                        <input
-                            type="checkbox"
-                            checked={this.state.filters.includeMistakes}
-                            onChange={this.setMistakes.bind(this)}
+                        <MultiSelect
+                            options={Const.solveCleanliness}
+                            value={this.state.solveCleanliness}
+                            onChange={this.setCleanliness.bind(this)}
+                            labelledBy="Select"
                         />,
                         "Include Messed Up Solves",
                         "Choose whether to keep messed up solves. Currently, this just filters out solves over 30 seconds. This will likely change in the future."
