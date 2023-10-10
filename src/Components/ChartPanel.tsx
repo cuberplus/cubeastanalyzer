@@ -368,22 +368,34 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             labels,
             datasets: [{
                 label: `Percentage of solves with white cross over last ${this.props.windowSize}`,
-                data: movingPercentWhite
+                data: movingPercentWhite,
+                borderColor: 'Black',
+                backgroundColor: 'Black'
             }, {
                 label: `Percentage of solves with yellow cross over last ${this.props.windowSize}`,
-                data: movingPercentYellow
+                data: movingPercentYellow,
+                borderColor: 'Yellow',
+                backgroundColor: 'Yellow'
             }, {
                 label: `Percentage of solves with red cross over last ${this.props.windowSize}`,
-                data: movingPercentRed
+                data: movingPercentRed,
+                borderColor: 'Red',
+                backgroundColor: 'Red'
             }, {
                 label: `Percentage of solves with orange cross over last ${this.props.windowSize}`,
-                data: movingPercentOrange
+                data: movingPercentOrange,
+                borderColor: 'Orange',
+                backgroundColor: 'Orange'
             }, {
                 label: `Percentage of solves with blue cross over last ${this.props.windowSize}`,
-                data: movingPercentBlue
+                data: movingPercentBlue,
+                borderColor: 'Blue',
+                backgroundColor: 'Blue'
             }, {
                 label: `Percentage of solves with green cross over last ${this.props.windowSize}`,
-                data: movingPercentGreen
+                data: movingPercentGreen,
+                borderColor: 'Green',
+                backgroundColor: 'Green'
             }]
         }
 
