@@ -20,7 +20,7 @@ export function GetEmptySolve() {
     let solve: Solve = {
         time: 0,
         date: new Date(),
-        crossColor: CrossColor.White,
+        crossColor: CrossColor.Unknown,
         scramble: "",
         tps: 0,
         recognitionTime: 0,
@@ -61,7 +61,9 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     break;
                 case "solution_rotation":
                     if (Const.crossMappings.get(item.at(index)!) === undefined) {
-                        console.log("couldn't parse rotation ", item.at(index));
+                        console.log("Couldn't parse rotation ", item.at(index));
+                        obj.crossColor = CrossColor.Unknown;
+                        break;
                     }
                     obj.crossColor = Const.crossMappings.get(item.at(index)!)!
                     break;

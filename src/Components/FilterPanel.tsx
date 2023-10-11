@@ -20,7 +20,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             endDate: moment.utc("2300-01-01").toDate(),
             fastestTime: 0,
             slowestTime: 300,
-            crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red],
+            crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red, CrossColor.Unknown],
             pllCases: Const.PllCases.map(x => x.value),
             ollCases: Const.OllCases.map(x => x.value),
             solveCleanliness: Const.solveCleanliness.map(x => x.value)
@@ -33,6 +33,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: CrossColor.Orange, value: CrossColor.Orange },
             { label: CrossColor.Blue, value: CrossColor.Blue },
             { label: CrossColor.Green, value: CrossColor.Green },
+            { label: CrossColor.Unknown, value: CrossColor.Unknown },
+
         ],
         solveCleanliness: Const.solveCleanliness,
         chosenPLLs: Const.PllCases,
@@ -54,10 +56,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (solve.time < filters.fastestTime || solve.time > filters.slowestTime) {
             return false;
         }
-        if (solve.steps.pll.case !== "" && filters.pllCases.indexOf(solve.steps.pll.case) < 0) {
+        if (solve.steps.pll.case !== undefined && filters.pllCases.indexOf(solve.steps.pll.case) < 0) {
             return false;
         }
-        if (solve.steps.oll.case !== "" && filters.ollCases.indexOf(solve.steps.oll.case) < 0) {
+        if (solve.steps.oll.case !== undefined && filters.ollCases.indexOf(solve.steps.oll.case) < 0) {
             return false;
         }
         if (filters.slowestTime < solve.time) {
@@ -327,6 +329,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 { label: CrossColor.Orange, value: CrossColor.Orange },
                                 { label: CrossColor.Blue, value: CrossColor.Blue },
                                 { label: CrossColor.Green, value: CrossColor.Green },
+                                { label: CrossColor.Unknown, value: CrossColor.Unknown }
                             ]}
                             value={this.state.chosenColors}
                             onChange={this.crossColorsChanged.bind(this)}

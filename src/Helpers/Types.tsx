@@ -6,7 +6,8 @@ export enum CrossColor {
     Red = 'Red',
     Orange = 'Orange',
     Blue = 'Blue',
-    Green = 'Green'
+    Green = 'Green',
+    Unknown = 'Unknown'
 }
 
 export enum StepName {
