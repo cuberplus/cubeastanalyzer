@@ -92,12 +92,33 @@ export class Const {
 
     static readonly crossMappings = new Map<string, CrossColor>(
         [
+            // CFOP
             ['DB', CrossColor.White],
             ['BU', CrossColor.Green],
             ['FU', CrossColor.Blue],
             ['UF', CrossColor.Yellow],
             ['LU', CrossColor.Red],
             ['RU', CrossColor.Orange],
+
+            // Roux
+            ['BD', CrossColor.Unknown],
+            ['BL', CrossColor.Unknown],
+            ['BR', CrossColor.Unknown],
+            ['DF', CrossColor.Unknown],
+            ['DL', CrossColor.Unknown],
+            ['DR', CrossColor.Unknown],
+            ['FD', CrossColor.Unknown],
+            ['FL', CrossColor.Unknown],
+            ['FR', CrossColor.Unknown],
+            ['LB', CrossColor.Unknown],
+            ['LD', CrossColor.Unknown],
+            ['LF', CrossColor.Unknown],
+            ['RB', CrossColor.Unknown],
+            ['RD', CrossColor.Unknown],
+            ['RF', CrossColor.Unknown],
+            ['UB', CrossColor.Unknown],
+            ['UL', CrossColor.Unknown],
+            ['UR', CrossColor.Unknown]
         ]
     );
 

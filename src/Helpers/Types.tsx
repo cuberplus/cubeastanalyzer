@@ -70,7 +70,8 @@ export interface Solve {
         f2l_4: Step,
         oll: Step,
         pll: Step
-    }
+    },
+    isCorrupt: boolean
 }
 
 export interface AppState {

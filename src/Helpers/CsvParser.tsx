@@ -36,7 +36,8 @@ export function GetEmptySolve() {
             oll: GetEmptyStep(),
             pll: GetEmptyStep()
 
-        }
+        },
+        isCorrupt: false
     };
 
     return solve;
@@ -55,6 +56,9 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
             switch (key) {
                 case "time":
                     obj.time = Number(item.at(index)) / 1000;
+                    if (obj.time < 1) {
+                        obj.isCorrupt = true;
+                    }
                     break;
                 case "date":
                     obj.date = moment.utc(item.at(index), 'YYYY-MM-DD hh:mm:ss').toDate()
@@ -63,6 +67,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     if (Const.crossMappings.get(item.at(index)!) === undefined) {
                         console.log("Couldn't parse rotation ", item.at(index));
                         obj.crossColor = CrossColor.Unknown;
+                        obj.isCorrupt = true;
                         break;
                     }
                     obj.crossColor = Const.crossMappings.get(item.at(index)!)!

@@ -25,7 +25,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             ollCases: Const.OllCases.map(x => x.value),
             solveCleanliness: Const.solveCleanliness.map(x => x.value)
         },
-        drilldownStep: { label: StepName.PLL, value: StepName.PLL },
+        drilldownStep: { label: StepName.Cross, value: StepName.Cross },
         chosenColors: [
             { label: CrossColor.White, value: CrossColor.White },
             { label: CrossColor.Yellow, value: CrossColor.Yellow },
@@ -47,6 +47,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     }
 
     static passesFilters(solve: Solve, filters: Filters, deviations: Deviations) {
+        if (solve.isCorrupt) {
+            return false;
+        }
         if (filters.crossColors.indexOf(solve.crossColor) < 0) {
             return false;
         }
