@@ -341,6 +341,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let checkIfOrange = (crossColor: CrossColor) => { return crossColor == CrossColor.Orange };
         let checkIfBlue = (crossColor: CrossColor) => { return crossColor == CrossColor.Blue };
         let checkIfGreen = (crossColor: CrossColor) => { return crossColor == CrossColor.Green };
+        let checkIfUnknown = (crossColor: CrossColor) => { return crossColor == CrossColor.Unknown };
 
         let movingPercentWhite = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfWhite);
         let movingPercentYellow = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfYellow);
@@ -348,6 +349,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let movingPercentOrange = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfOrange);
         let movingPercentBlue = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfBlue);
         let movingPercentGreen = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfGreen);
+        let movingPercentUnknown = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfUnknown);
 
         let labels = [];
         for (let i = 1; i <= movingPercentWhite.length; i++) {
@@ -360,6 +362,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         movingPercentOrange = reduceDataset(movingPercentOrange, this.props.pointsPerGraph);
         movingPercentBlue = reduceDataset(movingPercentBlue, this.props.pointsPerGraph);
         movingPercentGreen = reduceDataset(movingPercentGreen, this.props.pointsPerGraph);
+        movingPercentUnknown = reduceDataset(movingPercentUnknown, this.props.pointsPerGraph);
 
 
         labels = reduceDataset(labels, this.props.pointsPerGraph);
@@ -396,6 +399,11 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                 data: movingPercentGreen,
                 borderColor: 'Green',
                 backgroundColor: 'Green'
+            }, {
+                label: `Percentage of solves with unknown cross over last ${this.props.windowSize}`,
+                data: movingPercentUnknown,
+                borderColor: 'Purple',
+                backgroundColor: 'Purple'
             }]
         }
 
