@@ -43,7 +43,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         windowSize: 500,
         pointsPerGraph: 100,
         showFilters: false,
-        showAlert: true
+        showAlert: true,
+        badTime: 20,
+        goodTime: 15
     }
 
     static passesFilters(solve: Solve, filters: Filters, deviations: Deviations) {
@@ -165,7 +167,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             pointsPerGraph: prevState.pointsPerGraph,
             showFilters: prevState.showFilters,
             showAlert: prevState.showAlert,
-            solveCleanliness: prevState.solveCleanliness
+            solveCleanliness: prevState.solveCleanliness,
+            badTime: prevState.badTime,
+            goodTime: prevState.goodTime
         }
 
         return newState;
@@ -232,6 +236,15 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         let newFilters: Filters = this.state.filters;
         newFilters.fastestTime = parseInt(event.target.value);
         this.setState({ filters: newFilters })
+    }
+
+
+    setBadTime(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({ badTime: parseInt(event.target.value) })
+    }
+
+    setGoodTime(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({ goodTime: parseInt(event.target.value) })
     }
 
     setWindowSize(event: React.ChangeEvent<HTMLInputElement>) {
@@ -401,6 +414,19 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     )}
 
                     {this.createFilterHtml(
+                        <div className="row">
+                            <div className="form-outline col-6" >
+                                <FormControl min="0" max="300" type="number" id="goodTime" value={this.state.goodTime} onChange={this.setGoodTime.bind(this)} />
+                            </div>
+                            <div className="form-outline col-6" >
+                                <FormControl min="0" max="300" type="number" id="badTime" value={this.state.badTime} onChange={this.setBadTime.bind(this)} />
+                            </div>
+                        </div>,
+                        "Benchmarks",
+                        "Choose what you consider a 'good' solve and a 'bad' solve"
+                    )}
+
+                    {this.createFilterHtml(
                         <DatePicker selected={this.state.filters.startDate} onChange={this.setStartDate.bind(this)} />,
                         "Pick Start Date",
                         "Choose start date"
@@ -480,7 +506,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 <ChartPanel
                                     windowSize={this.state.windowSize}
                                     solves={this.state.filteredSolves}
-                                    pointsPerGraph={this.state.pointsPerGraph} />
+                                    pointsPerGraph={this.state.pointsPerGraph}
+                                    goodTime={this.state.goodTime}
+                                    badTime={this.state.badTime} />
                             </Tab>
                             <Tab eventKey={2} title="Step Drilldown">
                                 <StepDrilldown

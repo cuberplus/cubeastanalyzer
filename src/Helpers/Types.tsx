@@ -97,7 +97,9 @@ export interface FilterPanelState {
     windowSize: number,
     pointsPerGraph: number,
     showFilters: boolean,
-    showAlert: boolean
+    showAlert: boolean,
+    badTime: number,
+    goodTime: number
 }
 
 export interface FileInputProps {
@@ -112,7 +114,9 @@ export interface FileInputState {
 export interface ChartPanelProps {
     windowSize: number,
     pointsPerGraph: number,
-    solves: Solve[]
+    solves: Solve[],
+    badTime: number,
+    goodTime: number
 }
 
 export interface ChartPanelState {
