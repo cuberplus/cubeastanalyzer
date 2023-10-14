@@ -1,10 +1,11 @@
 import React from "react";
-import { ChartPanelProps, ChartPanelState, ChartType, CrossColor } from "../Helpers/Types";
+import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, Solve } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
-import { calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset } from "../Helpers/MathHelpers";
+import { calculateAverage, calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset, splitIntoChunks } from "../Helpers/MathHelpers";
 import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
 import { Card, Row, Col, Ratio } from "react-bootstrap";
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
+import { Const } from "../Helpers/Constants";
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
@@ -301,6 +302,33 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
+    buildInspectionData() {
+        let recentSolves = this.props.solves.slice(-this.props.windowSize);
+        recentSolves.sort((a, b) => {
+            return a.inspectionTime - b.inspectionTime;
+        })
+
+        let chunkedArr: Solve[][] = splitIntoChunks(recentSolves, Const.InspectionGraphChunks);
+
+        let labels: string[] = [];
+        let values: number[] = [];
+
+        for (let i = 0; i < Const.InspectionGraphChunks; i++) {
+            labels.push(calculateAverage(chunkedArr[i].map(x => x.inspectionTime)).toFixed(2).toString());
+            values.push(calculateAverage(chunkedArr[i].map(x => x.time)));
+        }
+
+        let data: ChartData<"bar"> = {
+            labels: labels,
+            datasets: [{
+                label: `Solve time by inspection time (of recent ${this.props.windowSize})`,
+                data: values
+            }]
+        }
+
+        return data;
+    }
+
     buildRecordHistory() {
         let data: ChartData<"line"> = {
             labels: [],
@@ -418,8 +446,8 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             <div>
                 <br />
                 <Row>
-                    {buildChartHtml(<Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time", "Solve Number", "Time")} />)}
-                    {buildChartHtml(<Line data={this.buildRunningRecognitionExecution()} options={createOptions(ChartType.Line, "Average Recognition and Execution", "Solve Number", "Time")} />)}
+                    {buildChartHtml(<Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time", "Solve Number", "Time (s)")} />)}
+                    {buildChartHtml(<Line data={this.buildRunningRecognitionExecution()} options={createOptions(ChartType.Line, "Average Recognition and Execution", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long They Took", "Time (s)", "Count")} />)}
                     {buildChartHtml(<Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Average Turns Per Second", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Average Turns", "Solve Number", "Turns")} />)}
@@ -429,6 +457,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                     {buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />)}
                     {buildChartHtml(<Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "History of Records", "Date", "Time (s)")} />)}
                     {buildChartHtml(<Line data={this.buildRunningColorPercentages()} options={createOptions(ChartType.Line, "Percentage of Solves by Cross Color", "Solve Number", "Percentage")} />)}
+                    {buildChartHtml(<Bar data={this.buildInspectionData()} options={createOptions(ChartType.Bar, "Average solve time by inspection time", "Inspection Time (s)", "Solve Time (s)")} />)}
                 </Row>
             </div>
         )

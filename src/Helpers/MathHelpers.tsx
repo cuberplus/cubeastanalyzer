@@ -175,3 +175,10 @@ export function reduceDataset(values: any[], pointsPerGraph: number) {
 
     return reducedValues;
 }
+
+export function splitIntoChunks(values: any[], chunks: number) {
+    let size: number = Math.ceil(values.length / chunks);
+    return Array.from({ length: chunks }, (v, i) =>
+        values.slice(i * size, i * size + size)
+    );
+}
