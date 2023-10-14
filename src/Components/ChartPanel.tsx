@@ -314,7 +314,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         let values: number[] = [];
 
         for (let i = 0; i < Const.InspectionGraphChunks; i++) {
-            labels.push(calculateAverage(chunkedArr[i].map(x => x.inspectionTime)).toFixed(2).toString());
+            labels.push("~" + calculateAverage(chunkedArr[i].map(x => x.inspectionTime)).toFixed(2).toString());
             values.push(calculateAverage(chunkedArr[i].map(x => x.time)));
         }
 
