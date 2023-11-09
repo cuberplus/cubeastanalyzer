@@ -23,7 +23,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red, CrossColor.Unknown],
             pllCases: Const.PllCases.map(x => x.value),
             ollCases: Const.OllCases.map(x => x.value),
-            solveCleanliness: Const.solveCleanliness.map(x => x.value)
+            solveCleanliness: Const.solveCleanliness.map(x => x.value),
+            method: MethodName.CFOP
         },
         drilldownStep: { label: StepName.Cross, value: StepName.Cross },
         chosenColors: [
@@ -34,7 +35,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: CrossColor.Blue, value: CrossColor.Blue },
             { label: CrossColor.Green, value: CrossColor.Green },
             { label: CrossColor.Unknown, value: CrossColor.Unknown },
-
         ],
         solveCleanliness: Const.solveCleanliness,
         chosenPLLs: Const.PllCases,
@@ -45,11 +45,15 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         showFilters: false,
         showAlert: true,
         badTime: 20,
-        goodTime: 15
+        goodTime: 15,
+        method: { label: MethodName.CFOP, value: MethodName.CFOP }
     }
 
     static passesFilters(solve: Solve, filters: Filters, deviations: Deviations) {
         if (solve.isCorrupt) {
+            return false;
+        }
+        if (solve.method != filters.method) {
             return false;
         }
         if (filters.crossColors.indexOf(solve.crossColor) < 0) {
@@ -62,7 +66,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             return false;
         }
         if (solve.method == MethodName.CFOP && solve.steps[6].case !== undefined && filters.pllCases.indexOf(solve.steps[6].case) < 0) {
-            //console.log("Filtered, ", solve.steps[6].case)
             return false;
         }
         if (solve.method == MethodName.CFOP && solve.steps[5].case !== undefined && filters.ollCases.indexOf(solve.steps[5].case) < 0) {
@@ -148,7 +151,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             showAlert: prevState.showAlert,
             solveCleanliness: prevState.solveCleanliness,
             badTime: prevState.badTime,
-            goodTime: prevState.goodTime
+            goodTime: prevState.goodTime,
+            method: prevState.method
         }
 
         return newState;
@@ -168,6 +172,16 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     drilldownStepChanged(newValue: Option | null) {
         this.setState({
             drilldownStep: newValue!
+        })
+    }
+
+    methodChanged(newValue: Option | null) {
+        let newFilters: Filters = this.state.filters;
+        newFilters.method = newValue!.value;
+
+        this.setState({
+            method: newValue!,
+            filters: newFilters
         })
     }
 
@@ -287,6 +301,19 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (this.state.allSolves.length > 0) {
             filters = (
                 <Container>
+                    {this.createFilterHtml(
+                        <Select
+                            options={[
+                                { label: MethodName.CFOP, value: MethodName.CFOP },
+                                { label: MethodName.CFOP_2OLL, value: MethodName.CFOP_2OLL },
+                                { label: MethodName.CFOP_4LL, value: MethodName.CFOP_4LL }
+                            ]}
+                            value={this.state.method}
+                            onChange={this.methodChanged.bind(this)}
+                        />,
+                        "Which Method?",
+                        "This dropdown lets you choose which method to show solves for."
+                    )}
                     {this.createFilterHtml(
                         <Select
                             options={[

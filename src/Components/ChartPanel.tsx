@@ -127,7 +127,6 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildStepPercentages() {
-
         let labels = ['Cross', 'F2L Pair 1', 'F2L Pair 2', 'F2L Pair 3', 'F2L Pair 4', 'OLL', 'PLL'];
 
         let cross = 0;

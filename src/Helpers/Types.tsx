@@ -53,7 +53,8 @@ export interface Filters {
     fastestTime: number,
     pllCases: string[],
     ollCases: string[],
-    solveCleanliness: string[]
+    solveCleanliness: string[],
+    method: MethodName
 }
 
 export interface Step {
@@ -106,7 +107,8 @@ export interface FilterPanelState {
     showFilters: boolean,
     showAlert: boolean,
     badTime: number,
-    goodTime: number
+    goodTime: number,
+    method: Option
 }
 
 export interface FileInputProps {
