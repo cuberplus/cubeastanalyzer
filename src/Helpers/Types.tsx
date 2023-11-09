@@ -125,7 +125,8 @@ export interface ChartPanelProps {
     pointsPerGraph: number,
     solves: Solve[],
     badTime: number,
-    goodTime: number
+    goodTime: number,
+    methodName: MethodName
 }
 
 export interface ChartPanelState {
@@ -136,7 +137,8 @@ export interface StepDrilldownProps {
     windowSize: number,
     pointsPerGraph: number,
     steps: Step[],
-    stepName: string
+    stepName: string,
+    methodName: MethodName
 }
 
 export interface StepDrilldownState {

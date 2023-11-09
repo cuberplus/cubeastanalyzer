@@ -46,7 +46,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         showAlert: true,
         badTime: 20,
         goodTime: 15,
-        method: { label: MethodName.CFOP, value: MethodName.CFOP }
+        method: { label: MethodName.CFOP, value: MethodName.CFOP } // TODO: default this to the most common method used
     }
 
     static passesFilters(solve: Solve, filters: Filters, deviations: Deviations) {
@@ -513,6 +513,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                     windowSize={this.state.windowSize}
                                     solves={this.state.filteredSolves}
                                     pointsPerGraph={this.state.pointsPerGraph}
+                                    methodName={this.state.filters.method}
                                     goodTime={this.state.goodTime}
                                     badTime={this.state.badTime} />
                             </Tab>
@@ -521,6 +522,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                     windowSize={this.state.windowSize}
                                     pointsPerGraph={this.state.pointsPerGraph}
                                     stepName={this.state.drilldownStep.label}
+                                    methodName={this.state.filters.method}
                                     steps={this.state.filteredSolves.map(x => {
                                         switch (this.state.drilldownStep.value) {
                                             case StepName.Cross:
