@@ -1,10 +1,13 @@
 import { Option } from "react-multi-select-component"
 
-export enum Method {
+export enum MethodName {
     CFOP = 'CFOP',
     CFOP_2OLL = 'CFOP (2 look OLL)',
     CFOP_4LL = 'CFOP (4 look LL)',
     Roux = 'Roux'
+    // CFOP_2PLL = 'CFOP (2 look PLL)',
+    // Beginner method?
+    // Petrus?
 }
 
 export enum CrossColor {
@@ -25,6 +28,10 @@ export enum StepName {
     F2L_4 = 'F2L_4',
     OLL = 'OLL',
     PLL = 'PLL',
+    EOLL = 'EOLL',
+    COLL = 'OCLL',
+    EPLL = 'EPLL',
+    CPLL = 'CPLL'
 }
 
 export enum ChartType {
@@ -69,17 +76,9 @@ export interface Solve {
     recognitionTime: number,
     executionTime: number,
     turns: number,
-    steps: {
-        cross: Step,
-        f2l_1: Step,
-        f2l_2: Step,
-        f2l_3: Step,
-        f2l_4: Step,
-        oll: Step,
-        pll: Step
-    },
+    steps: Step[],
     isCorrupt: boolean,
-    method: Method
+    method: MethodName
 }
 
 export interface AppState {

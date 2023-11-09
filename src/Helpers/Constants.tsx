@@ -1,9 +1,16 @@
 import { Option } from "react-multi-select-component";
-import { CrossColor } from "./Types";
+import { CrossColor, MethodName, StepName } from "./Types";
 
 export class Const {
     static readonly StdDevWindow: number = 1000; // This is the default window to use when calculating a single standard deviation
     static readonly InspectionGraphChunks: number = 7;
+
+    static readonly MethodSteps: { [id in MethodName]: StepName[] } = {
+        [MethodName.CFOP]: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.OLL, StepName.PLL],
+        [MethodName.CFOP_4LL]: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.EOLL, StepName.COLL, StepName.CPLL, StepName.EPLL],
+        [MethodName.CFOP_2OLL]: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.EOLL, StepName.COLL, StepName.PLL],
+        [MethodName.Roux]: []
+    }
 
     static readonly PllCases: Option[] = [
         { label: "Solved", value: "Solved" },

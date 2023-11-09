@@ -1,5 +1,5 @@
 import { Const } from "./Constants";
-import { Solve, Step, CrossColor, Method } from "./Types";
+import { Solve, Step, CrossColor, MethodName } from "./Types";
 import moment from 'moment';
 
 export function GetEmptyStep() {
@@ -27,21 +27,23 @@ export function GetEmptySolve() {
         inspectionTime: 0,
         executionTime: 0,
         turns: 0,
-        steps: {
-            cross: GetEmptyStep(),
-            f2l_1: GetEmptyStep(),
-            f2l_2: GetEmptyStep(),
-            f2l_3: GetEmptyStep(),
-            f2l_4: GetEmptyStep(),
-            oll: GetEmptyStep(),
-            pll: GetEmptyStep()
-
-        },
+        steps: [GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep()],
         isCorrupt: false,
-        method: Method.CFOP
+        method: MethodName.CFOP
     };
 
     return solve;
+}
+
+export function getStepIndex(columnName: string) {
+    let indexStr = columnName[5];
+    let index = +indexStr;
+
+    // We need this fix since Cubeast CSV exports are messed up
+    if (index >= 3) {
+        return index - 1;
+    }
+    return index;
 }
 
 export function parseCsv(stringVal: string, splitter: string): Solve[] {
@@ -77,7 +79,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     obj.scramble = item.at(index)!;
                     break;
                 case "solving_method":
-                    obj.method = item.at(index)! as Method;
+                    obj.method = item.at(index)! as MethodName;
                     break;
                 case "turns_per_second":
                     obj.tps = Number(item.at(index));
@@ -95,147 +97,75 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     obj.turns = Number(item.at(index));
                     break;
 
-
                 case "step_0_slice_turns":
-                    obj.steps.cross.turns = Number(item.at(index));
-                    break;
                 case "step_1_slice_turns":
-                    obj.steps.f2l_1.turns = Number(item.at(index));
-                    break;
                 case "step_2_slice_turns":
-                    obj.steps.f2l_2.turns = Number(item.at(index));
-                    break;
                 case "step_3_slice_turns":
-                    obj.steps.f2l_3.turns = Number(item.at(index));
-                    break;
                 case "step_4_slice_turns":
-                    obj.steps.f2l_4.turns = Number(item.at(index));
-                    break;
                 case "step_5_slice_turns":
-                    obj.steps.oll.turns = Number(item.at(index));
-                    break;
                 case "step_6_slice_turns":
-                    obj.steps.pll.turns = Number(item.at(index));
+                case "step_7_slice_turns":
+                case "step_8_slice_turns":
+                    obj.steps[+key[5]].turns = Number(item.at(index));
                     break;
-
-
                 case "step_0_time":
-                    obj.steps.cross.time = Number(item.at(index)) / 1000;
-                    break;
                 case "step_1_time":
-                    obj.steps.f2l_1.time = Number(item.at(index)) / 1000;
-                    break;
                 case "step_2_time":
-                    obj.steps.f2l_2.time = Number(item.at(index)) / 1000;
-                    break;
                 case "step_3_time":
-                    obj.steps.f2l_3.time = Number(item.at(index)) / 1000;
-                    break;
                 case "step_4_time":
-                    obj.steps.f2l_4.time = Number(item.at(index)) / 1000;
-                    break;
                 case "step_5_time":
-                    obj.steps.oll.time = Number(item.at(index)) / 1000;
-                    break;
                 case "step_6_time":
-                    obj.steps.pll.time = Number(item.at(index)) / 1000;
+                case "step_7_time":
+                case "step_8_time":
+                    obj.steps[+key[5]].time = Number(item.at(index)) / 1000;
                     break;
-
                 case "step_0_case":
-                    obj.steps.cross.case = item.at(index)!;
-                    break;
                 case "step_1_case":
-                    obj.steps.f2l_1.case = item.at(index)!;
-                    break;
                 case "step_2_case":
-                    obj.steps.f2l_2.case = item.at(index)!;
-                    break;
                 case "step_3_case":
-                    obj.steps.f2l_3.case = item.at(index)!;
-                    break;
                 case "step_4_case":
-                    obj.steps.f2l_4.case = item.at(index)!;
-                    break;
-                // As a note, these are out of order because F2L pair column 3 contains a comma, which breaks my script
+                case "step_5_case":
                 case "step_6_case":
-                    obj.steps.oll.case = item.at(index)!;
-                    break;
                 case "step_7_case":
-                    obj.steps.pll.case = item.at(index)!;
+                case "step_8_case":
+                    obj.steps[getStepIndex(key)].case = item.at(index)!;
                     break;
-
-
                 case "step_0_turns_per_second":
-                    obj.steps.cross.tps = Number(item.at(index));
-                    break;
                 case "step_1_turns_per_second":
-                    obj.steps.f2l_1.tps = Number(item.at(index));
-                    break;
                 case "step_2_turns_per_second":
-                    obj.steps.f2l_2.tps = Number(item.at(index));
-                    break;
                 case "step_3_turns_per_second":
-                    obj.steps.f2l_3.tps = Number(item.at(index));
-                    break;
                 case "step_4_turns_per_second":
-                    obj.steps.f2l_4.tps = Number(item.at(index));
-                    break;
                 case "step_5_turns_per_second":
-                    obj.steps.oll.tps = Number(item.at(index));
-                    break;
                 case "step_6_turns_per_second":
-                    obj.steps.pll.tps = Number(item.at(index));
+                case "step_7_turns_per_second":
+                case "step_8_turns_per_second":
+                    obj.steps[+key[5]].tps = Number(item.at(index));
                     break;
-
-
-
                 case "step_0_recognition_time":
-                    obj.steps.cross.recognitionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_1_recognition_time":
-                    obj.steps.f2l_1.recognitionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_2_recognition_time":
-                    obj.steps.f2l_2.recognitionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_3_recognition_time":
-                    obj.steps.f2l_3.recognitionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_4_recognition_time":
-                    obj.steps.f2l_4.recognitionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_5_recognition_time":
-                    obj.steps.oll.recognitionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_6_recognition_time":
-                    obj.steps.pll.recognitionTime = Number(item.at(index)) / 1000;
+                case "step_7_recognition_time":
+                case "step_8_recognition_time":
+                    obj.steps[+key[5]].recognitionTime = Number(item.at(index)) / 1000;
                     break;
-
-
                 case "step_0_execution_time":
-                    obj.steps.cross.executionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_1_execution_time":
-                    obj.steps.f2l_1.executionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_2_execution_time":
-                    obj.steps.f2l_2.executionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_3_execution_time":
-                    obj.steps.f2l_3.executionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_4_execution_time":
-                    obj.steps.f2l_4.executionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_5_execution_time":
-                    obj.steps.oll.executionTime = Number(item.at(index)) / 1000;
-                    break;
                 case "step_6_execution_time":
-                    obj.steps.pll.executionTime = Number(item.at(index)) / 1000;
+                case "step_7_execution_time":
+                case "step_8_execution_time":
+                    obj.steps[+key[5]].executionTime = Number(item.at(index)) / 1000;
                     break;
 
                 default:
-                //console.log(key + " is an unused column");    
+                    break;
             }
         });
         return obj;

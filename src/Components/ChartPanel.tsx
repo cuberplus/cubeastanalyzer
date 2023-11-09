@@ -140,13 +140,13 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
         let recentSolves = this.props.solves.slice(-this.props.windowSize);
         for (let i = 0; i < recentSolves.length; i++) {
-            cross += recentSolves[i].steps.cross.time;
-            f2l_1 += recentSolves[i].steps.f2l_1.time;
-            f2l_2 += recentSolves[i].steps.f2l_2.time;
-            f2l_3 += recentSolves[i].steps.f2l_3.time;
-            f2l_4 += recentSolves[i].steps.f2l_4.time;
-            oll += recentSolves[i].steps.oll.time;
-            pll += recentSolves[i].steps.pll.time;
+            cross += recentSolves[i].steps[0].time;
+            f2l_1 += recentSolves[i].steps[1].time;
+            f2l_2 += recentSolves[i].steps[2].time;
+            f2l_3 += recentSolves[i].steps[3].time;
+            f2l_4 += recentSolves[i].steps[4].time;
+            oll += recentSolves[i].steps[5].time;
+            pll += recentSolves[i].steps[6].time;
         }
         let f2l = f2l_1 + f2l_2 + f2l_3 + f2l_4;
         let total = cross + f2l_1 + f2l_2 + f2l_3 + f2l_4 + oll + pll;
@@ -182,13 +182,13 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildStepAverages() {
-        let crossAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.cross.time), this.props.windowSize);
-        let f2l_1Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_1.time), this.props.windowSize);
-        let f2l_2Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_2.time), this.props.windowSize);
-        let f2l_3Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_3.time), this.props.windowSize);
-        let f2l_4Average = calculateMovingAverage(this.props.solves.map(x => x.steps.f2l_4.time), this.props.windowSize);
-        let ollAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.oll.time), this.props.windowSize);
-        let pllAverage = calculateMovingAverage(this.props.solves.map(x => x.steps.pll.time), this.props.windowSize);
+        let crossAverage = calculateMovingAverage(this.props.solves.map(x => x.steps[0].time), this.props.windowSize);
+        let f2l_1Average = calculateMovingAverage(this.props.solves.map(x => x.steps[1].time), this.props.windowSize);
+        let f2l_2Average = calculateMovingAverage(this.props.solves.map(x => x.steps[2].time), this.props.windowSize);
+        let f2l_3Average = calculateMovingAverage(this.props.solves.map(x => x.steps[3].time), this.props.windowSize);
+        let f2l_4Average = calculateMovingAverage(this.props.solves.map(x => x.steps[4].time), this.props.windowSize);
+        let ollAverage = calculateMovingAverage(this.props.solves.map(x => x.steps[5].time), this.props.windowSize);
+        let pllAverage = calculateMovingAverage(this.props.solves.map(x => x.steps[6].time), this.props.windowSize);
 
         let labels = [];
         for (let i = 1; i <= crossAverage.length; i++) {

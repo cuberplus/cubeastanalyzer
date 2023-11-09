@@ -3,7 +3,7 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { MultiSelect } from "react-multi-select-component";
-import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, Method, Solve, SolveCleanliness, StepName } from "../Helpers/Types";
+import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, MethodName, Solve, SolveCleanliness, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import { Option } from "react-multi-select-component"
@@ -61,10 +61,11 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (solve.time < filters.fastestTime || solve.time > filters.slowestTime) {
             return false;
         }
-        if (solve.method == Method.CFOP && solve.steps.pll.case !== undefined && filters.pllCases.indexOf(solve.steps.pll.case) < 0) {
+        if (solve.method == MethodName.CFOP && solve.steps[6].case !== undefined && filters.pllCases.indexOf(solve.steps[6].case) < 0) {
+            //console.log("Filtered, ", solve.steps[6].case)
             return false;
         }
-        if (solve.method == Method.CFOP && solve.steps.oll.case !== undefined && filters.ollCases.indexOf(solve.steps.oll.case) < 0) {
+        if (solve.method == MethodName.CFOP && solve.steps[5].case !== undefined && filters.ollCases.indexOf(solve.steps[5].case) < 0) {
             return false;
         }
 
@@ -84,26 +85,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (solve.time > (3 * deviations.dev_total) + deviations.avg_total) {
             return true;
         }
-        if (solve.steps.cross.time > ((3 * deviations.dev_cross) + deviations.avg_cross)) {
-            return true;
-        }
-        if (solve.steps.f2l_1.time > ((3 * deviations.dev_f2l_1) + deviations.avg_f2l_1)) {
-            return true;
-        }
-        if (solve.steps.f2l_2.time > ((3 * deviations.dev_f2l_2) + deviations.avg_f2l_2)) {
-            return true;
-        }
-        if (solve.steps.f2l_3.time > ((3 * deviations.dev_f2l_3) + deviations.avg_f2l_3)) {
-            return true;
-        }
-        if (solve.steps.f2l_4.time > ((3 * deviations.dev_f2l_4) + deviations.avg_f2l_4)) {
-            return true;
-        }
-        if (solve.steps.oll.time > ((3 * deviations.dev_oll) + deviations.avg_oll)) {
-            return true;
-        }
-        if (solve.steps.pll.time > ((3 * deviations.dev_pll) + deviations.avg_pll)) {
-            return true;
+        for (let i = 0; i < solve.steps.length; i++) {
+            if (solve.steps[i].time > ((3 * deviations.dev_cross) + deviations.avg_cross)) {
+                return true;
+            }
         }
 
         return false;
@@ -112,21 +97,21 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     static calculateDeviations(allSolves: Solve[]) {
         let deviations: Deviations = {
             dev_total: calculateStandardDeviation(allSolves.map(x => x.time)),
-            dev_cross: calculateStandardDeviation(allSolves.map(x => x.steps.cross.time)),
-            dev_f2l_1: calculateStandardDeviation(allSolves.map(x => x.steps.f2l_1.time)),
-            dev_f2l_2: calculateStandardDeviation(allSolves.map(x => x.steps.f2l_2.time)),
-            dev_f2l_3: calculateStandardDeviation(allSolves.map(x => x.steps.f2l_3.time)),
-            dev_f2l_4: calculateStandardDeviation(allSolves.map(x => x.steps.f2l_4.time)),
-            dev_oll: calculateStandardDeviation(allSolves.map(x => x.steps.oll.time)),
-            dev_pll: calculateStandardDeviation(allSolves.map(x => x.steps.pll.time)),
+            dev_cross: calculateStandardDeviation(allSolves.map(x => x.steps[0].time)),
+            dev_f2l_1: calculateStandardDeviation(allSolves.map(x => x.steps[1].time)),
+            dev_f2l_2: calculateStandardDeviation(allSolves.map(x => x.steps[2].time)),
+            dev_f2l_3: calculateStandardDeviation(allSolves.map(x => x.steps[3].time)),
+            dev_f2l_4: calculateStandardDeviation(allSolves.map(x => x.steps[4].time)),
+            dev_oll: calculateStandardDeviation(allSolves.map(x => x.steps[5].time)),
+            dev_pll: calculateStandardDeviation(allSolves.map(x => x.steps[6].time)),
             avg_total: calculateAverage(allSolves.map(x => x.time)),
-            avg_cross: calculateAverage(allSolves.map(x => x.steps.cross.time)),
-            avg_f2l_1: calculateAverage(allSolves.map(x => x.steps.f2l_1.time)),
-            avg_f2l_2: calculateAverage(allSolves.map(x => x.steps.f2l_2.time)),
-            avg_f2l_3: calculateAverage(allSolves.map(x => x.steps.f2l_3.time)),
-            avg_f2l_4: calculateAverage(allSolves.map(x => x.steps.f2l_4.time)),
-            avg_oll: calculateAverage(allSolves.map(x => x.steps.oll.time)),
-            avg_pll: calculateAverage(allSolves.map(x => x.steps.pll.time))
+            avg_cross: calculateAverage(allSolves.map(x => x.steps[0].time)),
+            avg_f2l_1: calculateAverage(allSolves.map(x => x.steps[1].time)),
+            avg_f2l_2: calculateAverage(allSolves.map(x => x.steps[2].time)),
+            avg_f2l_3: calculateAverage(allSolves.map(x => x.steps[3].time)),
+            avg_f2l_4: calculateAverage(allSolves.map(x => x.steps[4].time)),
+            avg_oll: calculateAverage(allSolves.map(x => x.steps[5].time)),
+            avg_pll: calculateAverage(allSolves.map(x => x.steps[5].time))
         }
 
         return deviations;
@@ -512,22 +497,22 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                     steps={this.state.filteredSolves.map(x => {
                                         switch (this.state.drilldownStep.value) {
                                             case StepName.Cross:
-                                                return x.steps.cross;
+                                                return x.steps[0];
                                             case StepName.F2L_1:
-                                                return x.steps.f2l_1;
+                                                return x.steps[1];
                                             case StepName.F2L_2:
-                                                return x.steps.f2l_2;
+                                                return x.steps[2];
                                             case StepName.F2L_3:
-                                                return x.steps.f2l_3;
+                                                return x.steps[3];
                                             case StepName.F2L_4:
-                                                return x.steps.f2l_4;
+                                                return x.steps[4];
                                             case StepName.OLL:
-                                                return x.steps.oll;
+                                                return x.steps[5];
                                             case StepName.PLL:
-                                                return x.steps.pll;
+                                                return x.steps[6];
                                             default:
                                                 console.log("Invalid step picked" + this.state.drilldownStep.value);
-                                                return x.steps.cross;
+                                                return x.steps[0];
                                         }
                                     })} />
                             </Tab>
