@@ -1,5 +1,5 @@
 import { Const } from "./Constants";
-import { Solve, Step, CrossColor } from "./Types";
+import { Solve, Step, CrossColor, Method } from "./Types";
 import moment from 'moment';
 
 export function GetEmptyStep() {
@@ -37,7 +37,8 @@ export function GetEmptySolve() {
             pll: GetEmptyStep()
 
         },
-        isCorrupt: false
+        isCorrupt: false,
+        method: Method.CFOP
     };
 
     return solve;
@@ -74,6 +75,9 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     break;
                 case "scramble":
                     obj.scramble = item.at(index)!;
+                    break;
+                case "solving_method":
+                    obj.method = item.at(index)! as Method;
                     break;
                 case "turns_per_second":
                     obj.tps = Number(item.at(index));

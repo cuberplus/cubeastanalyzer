@@ -3,7 +3,7 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { MultiSelect } from "react-multi-select-component";
-import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, Solve, SolveCleanliness, StepName } from "../Helpers/Types";
+import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, Method, Solve, SolveCleanliness, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
 import { StepDrilldown } from "./StepDrilldown";
 import { Option } from "react-multi-select-component"
@@ -61,16 +61,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (solve.time < filters.fastestTime || solve.time > filters.slowestTime) {
             return false;
         }
-        if (solve.steps.pll.case !== undefined && filters.pllCases.indexOf(solve.steps.pll.case) < 0) {
+        if (solve.method == Method.CFOP && solve.steps.pll.case !== undefined && filters.pllCases.indexOf(solve.steps.pll.case) < 0) {
             return false;
         }
-        if (solve.steps.oll.case !== undefined && filters.ollCases.indexOf(solve.steps.oll.case) < 0) {
-            return false;
-        }
-        if (filters.slowestTime < solve.time) {
-            return false;
-        }
-        if (filters.fastestTime > solve.time) {
+        if (solve.method == Method.CFOP && solve.steps.oll.case !== undefined && filters.ollCases.indexOf(solve.steps.oll.case) < 0) {
             return false;
         }
 

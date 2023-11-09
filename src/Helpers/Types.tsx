@@ -1,5 +1,12 @@
 import { Option } from "react-multi-select-component"
 
+export enum Method {
+    CFOP = 'CFOP',
+    CFOP_2OLL = 'CFOP (2 look OLL)',
+    CFOP_4LL = 'CFOP (4 look LL)',
+    Roux = 'Roux'
+}
+
 export enum CrossColor {
     White = 'White',
     Yellow = 'Yellow',
@@ -71,7 +78,8 @@ export interface Solve {
         oll: Step,
         pll: Step
     },
-    isCorrupt: boolean
+    isCorrupt: boolean,
+    method: Method
 }
 
 export interface AppState {
