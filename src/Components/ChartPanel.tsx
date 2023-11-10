@@ -442,7 +442,6 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                     {buildChartHtml(<Line data={this.buildRunningStdDevData()} options={createOptions(ChartType.Line, "Average Standard Deviation", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Line data={this.buildGoodBadData(this.props.goodTime, this.props.badTime)} options={createOptions(ChartType.Line, "Percentage of 'Good' and 'Bad' Solves", "Solve Number", "Percentage")} />)}
                     {buildChartHtml(<Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "History of Records", "Date", "Time (s)")} />)}
-
                     {buildChartHtml(<Line data={this.buildRunningColorPercentages()} options={createOptions(ChartType.Line, "Percentage of Solves by Cross Color", "Solve Number", "Percentage")} />)}
                     {buildChartHtml(<Bar data={this.buildInspectionData()} options={createOptions(ChartType.Bar, "Average solve time by inspection time", "Inspection Time (s)", "Solve Time (s)")} />)}
                 </Row>
