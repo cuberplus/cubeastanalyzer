@@ -22,10 +22,10 @@ export enum CrossColor {
 
 export enum StepName {
     Cross = 'Cross',
-    F2L_1 = 'F2L_1',
-    F2L_2 = 'F2L_2',
-    F2L_3 = 'F2L_3',
-    F2L_4 = 'F2L_4',
+    F2L_1 = 'F2L Slot 1',
+    F2L_2 = 'F2L Slot 2',
+    F2L_3 = 'F2L Slot 3',
+    F2L_4 = 'F2L Slot 4',
     OLL = 'OLL',
     PLL = 'PLL',
     EOLL = 'EOLL',
@@ -53,6 +53,7 @@ export interface Filters {
     fastestTime: number,
     pllCases: string[],
     ollCases: string[],
+    steps: StepName[],
     solveCleanliness: string[],
     method: MethodName
 }
@@ -64,7 +65,8 @@ export interface Step {
     turns: number,
     tps: number,
     moves: string,
-    case: string
+    case: string,
+    name: StepName
 }
 
 export interface Solve {
@@ -96,7 +98,7 @@ export interface FilterPanelState {
     filters: Filters,
 
     // Objects required for filter objects to work
-    drilldownStep: Option,
+    chosenSteps: Option[],
     chosenColors: Option[],
     chosenPLLs: Option[],
     chosenOLLs: Option[],

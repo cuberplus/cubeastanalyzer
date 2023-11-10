@@ -3,13 +3,13 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { MultiSelect } from "react-multi-select-component";
-import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, MethodName, Solve, SolveCleanliness, StepName } from "../Helpers/Types";
+import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, MethodName, Solve, SolveCleanliness, Step, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
-import { StepDrilldown } from "./StepDrilldown";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile, calculateAverage, calculateRecords, calculateStandardDeviation } from "../Helpers/MathHelpers";
-import { Tabs, Tab, FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container } from 'react-bootstrap';
+import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
+import { GetEmptySolve } from "../Helpers/CubeHelpers";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -23,10 +23,19 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             crossColors: [CrossColor.White, CrossColor.Yellow, CrossColor.Blue, CrossColor.Green, CrossColor.Orange, CrossColor.Red, CrossColor.Unknown],
             pllCases: Const.PllCases.map(x => x.value),
             ollCases: Const.OllCases.map(x => x.value),
+            steps: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.OLL, StepName.PLL],
             solveCleanliness: Const.solveCleanliness.map(x => x.value),
             method: MethodName.CFOP
         },
-        drilldownStep: { label: StepName.Cross, value: StepName.Cross },
+        chosenSteps: [
+            { label: StepName.Cross, value: StepName.Cross },
+            { label: StepName.F2L_1, value: StepName.F2L_1 },
+            { label: StepName.F2L_2, value: StepName.F2L_2 },
+            { label: StepName.F2L_3, value: StepName.F2L_3 },
+            { label: StepName.F2L_4, value: StepName.F2L_4 },
+            { label: StepName.OLL, value: StepName.OLL },
+            { label: StepName.PLL, value: StepName.PLL }
+        ],
         chosenColors: [
             { label: CrossColor.White, value: CrossColor.White },
             { label: CrossColor.Yellow, value: CrossColor.Yellow },
@@ -89,7 +98,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             return true;
         }
         for (let i = 0; i < solve.steps.length; i++) {
-            if (solve.steps[i].time > ((3 * deviations.dev_cross) + deviations.avg_cross)) {
+            if (solve.steps[i].time > ((3 * deviations.dev_cross) + deviations.avg_cross)) { // TODO this seems to be hardcoded to cross rn
                 return true;
             }
         }
@@ -139,7 +148,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             filteredSolves: FilterPanel.applyFiltersToSolves(nextProps.solves, prevState.filters),
 
             // Leave remaining props the same
-            drilldownStep: prevState.drilldownStep,
+            chosenSteps: prevState.chosenSteps,
             filters: prevState.filters,
             chosenColors: prevState.chosenColors,
             chosenPLLs: prevState.chosenPLLs,
@@ -169,9 +178,14 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         })
     }
 
-    drilldownStepChanged(newValue: Option | null) {
+    chosenStepsChanged(selectedList: any[]) {
+        let selectedSteps: StepName[] = selectedList.map(x => x.value);
+        let newFilters: Filters = this.state.filters;
+        newFilters.steps = selectedSteps;
+
         this.setState({
-            drilldownStep: newValue!
+            filters: newFilters,
+            chosenSteps: selectedList
         })
     }
 
@@ -274,6 +288,41 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         this.setState({ showAlert: false });
     }
 
+    compressSolves(solves: Solve[]) {
+        let newSolves: Solve[] = [];
+
+        solves.forEach((solve) => {
+            let newSolve: Solve = GetEmptySolve();
+
+            let newSteps: Step[] = solve.steps.filter((x) => {
+                return this.state.filters.steps.find((y) => y == x.name);
+            })
+            newSolve.steps = newSteps;
+
+            newSolve.crossColor = solve.crossColor;
+            newSolve.date = solve.date;
+            newSolve.inspectionTime = solve.inspectionTime;
+            newSolve.executionTime = newSolve.steps.reduce((sum, current) => sum + current.executionTime, 0);
+            newSolve.recognitionTime = newSolve.steps.reduce((sum, current) => sum + current.recognitionTime, 0);
+            newSolve.isCorrupt = solve.isCorrupt;
+            newSolve.method = solve.method;
+            newSolve.scramble = solve.scramble;
+            newSolve.time = newSolve.steps.reduce((sum, current) => sum + current.time, 0);
+            newSolve.turns = newSolve.steps.reduce((sum, current) => sum + current.turns, 0);
+            newSolve.tps = newSolve.turns / newSolve.time;
+
+            newSolves.push(newSolve);
+        })
+
+
+        return newSolves;
+    }
+
+    getCompositeStepName(steps: Option[]): string {
+        let names: string[] = steps.map(x => x.label);
+        return names.join(',');
+    }
+
     createTooltip(description: string) {
         const tooltip = (
             <Tooltip id="tooltip">
@@ -315,7 +364,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         "This dropdown lets you choose which method to show solves for."
                     )}
                     {this.createFilterHtml(
-                        <Select
+                        <MultiSelect
                             options={[
                                 { label: StepName.Cross, value: StepName.Cross },
                                 { label: StepName.F2L_1, value: StepName.F2L_1 },
@@ -326,8 +375,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 { label: StepName.PLL, value: StepName.PLL },
 
                             ]}
-                            value={this.state.drilldownStep}
-                            onChange={this.drilldownStepChanged.bind(this)}
+                            value={this.state.chosenSteps}
+                            onChange={this.chosenStepsChanged.bind(this)}
+                            labelledBy="Select"
                         />,
                         "Which step to drill down?",
                         "This dropdown lets you choose which step to see more information about. This only affects data in the 'Step Drilldown' tab."
@@ -504,48 +554,13 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     </Alert>
 
                     <Row>
-                        <Tabs
-                            activeKey={this.state.tabKey}
-                            onSelect={this.tabSelect.bind(this)}
-                        >
-                            <Tab eventKey={1} title="All Steps">
-                                <ChartPanel
-                                    windowSize={this.state.windowSize}
-                                    solves={this.state.filteredSolves}
-                                    pointsPerGraph={this.state.pointsPerGraph}
-                                    methodName={this.state.filters.method}
-                                    goodTime={this.state.goodTime}
-                                    badTime={this.state.badTime} />
-                            </Tab>
-                            <Tab eventKey={2} title="Step Drilldown">
-                                <StepDrilldown
-                                    windowSize={this.state.windowSize}
-                                    pointsPerGraph={this.state.pointsPerGraph}
-                                    stepName={this.state.drilldownStep.label}
-                                    methodName={this.state.filters.method}
-                                    steps={this.state.filteredSolves.map(x => {
-                                        switch (this.state.drilldownStep.value) {
-                                            case StepName.Cross:
-                                                return x.steps[0];
-                                            case StepName.F2L_1:
-                                                return x.steps[1];
-                                            case StepName.F2L_2:
-                                                return x.steps[2];
-                                            case StepName.F2L_3:
-                                                return x.steps[3];
-                                            case StepName.F2L_4:
-                                                return x.steps[4];
-                                            case StepName.OLL:
-                                                return x.steps[5];
-                                            case StepName.PLL:
-                                                return x.steps[6];
-                                            default:
-                                                console.log("Invalid step picked" + this.state.drilldownStep.value);
-                                                return x.steps[0];
-                                        }
-                                    })} />
-                            </Tab>
-                        </Tabs>
+                        <ChartPanel
+                            windowSize={this.state.windowSize}
+                            solves={this.compressSolves(this.state.filteredSolves)}
+                            pointsPerGraph={this.state.pointsPerGraph}
+                            methodName={this.state.filters.method}
+                            goodTime={this.state.goodTime}
+                            badTime={this.state.badTime} />
                     </Row>
                 </div >
             );

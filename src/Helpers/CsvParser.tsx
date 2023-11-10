@@ -1,52 +1,11 @@
 import { Const } from "./Constants";
-import { Solve, Step, CrossColor, MethodName } from "./Types";
+import { GetEmptySolve } from "./CubeHelpers";
+import { Solve, Step, CrossColor, MethodName, StepName } from "./Types";
 import moment from 'moment';
 
-export function GetEmptyStep() {
-    let step: Step = {
-        time: 0,
-        executionTime: 0,
-        recognitionTime: 0,
-        turns: 0,
-        tps: 0,
-        moves: "",
-        case: ""
-    }
-
-    return step;
-}
-
-export function GetEmptySolve() {
-    let solve: Solve = {
-        time: 0,
-        date: new Date(),
-        crossColor: CrossColor.Unknown,
-        scramble: "",
-        tps: 0,
-        recognitionTime: 0,
-        inspectionTime: 0,
-        executionTime: 0,
-        turns: 0,
-        steps: [GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep()],
-        isCorrupt: false,
-        method: MethodName.CFOP
-    };
-
-    return solve;
-}
-
-export function getStepIndex(columnName: string) {
-    let indexStr = columnName[5];
-    let index = +indexStr;
-
-    // We need this fix since Cubeast CSV exports are messed up
-    if (index >= 3) {
-        return index - 1;
-    }
-    return index;
-}
-
 export function parseCsv(stringVal: string, splitter: string): Solve[] {
+    stringVal = stringVal.replace(/(\[.*?\])/g, '');
+
     const [keys, ...rest] = stringVal
         .trim()
         .split("\n")
@@ -97,6 +56,17 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                     obj.turns = Number(item.at(index));
                     break;
 
+                case "step_0_name":
+                case "step_1_name":
+                case "step_2_name":
+                case "step_3_name":
+                case "step_4_name":
+                case "step_5_name":
+                case "step_6_name":
+                case "step_7_name":
+                case "step_8_name":
+                    obj.steps[+key[5]].name = item.at(index)! as StepName;
+                    break;
                 case "step_0_slice_turns":
                 case "step_1_slice_turns":
                 case "step_2_slice_turns":
@@ -128,7 +98,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "step_6_case":
                 case "step_7_case":
                 case "step_8_case":
-                    obj.steps[getStepIndex(key)].case = item.at(index)!;
+                    obj.steps[+key[5]].case = item.at(index)!;
                     break;
                 case "step_0_turns_per_second":
                 case "step_1_turns_per_second":
