@@ -25,9 +25,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             ollCases: Const.OllCases.map(x => x.value),
             steps: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.OLL, StepName.PLL],
             solveCleanliness: Const.solveCleanliness.map(x => x.value),
-            method: this.props.startingMethod
+            method: MethodName.CFOP
         },
-        chosenSteps: FilterPanel.getStepOptionsForMethod(this.props.startingMethod),
+        chosenSteps: FilterPanel.getStepOptionsForMethod(MethodName.CFOP),
         chosenColors: [
             { label: CrossColor.White, value: CrossColor.White },
             { label: CrossColor.Yellow, value: CrossColor.Yellow },
@@ -47,7 +47,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         showAlert: true,
         badTime: 20,
         goodTime: 15,
-        method: { label: this.props.startingMethod, value: this.props.startingMethod }
+        method: { label: MethodName.CFOP, value: MethodName.CFOP }
     }
 
     static passesFilters(solve: Solve, filters: Filters, deviations: Deviations) {
@@ -159,10 +159,12 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         // Update anything that needs it
         newState.allSolves = nextProps.solves;
         newState.filteredSolves = FilterPanel.applyFiltersToSolves(nextProps.solves, prevState.filters);
+        /*
         newState.method = { label: nextProps.startingMethod, value: nextProps.startingMethod };
         newState.filters.method = nextProps.startingMethod;
         newState.filters.steps = Const.MethodSteps[nextProps.startingMethod];
         newState.chosenSteps = FilterPanel.getStepOptionsForMethod(nextProps.startingMethod);
+        */
 
         return newState;
     }
@@ -205,13 +207,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         return options;
     }
 
-    // TODO: in here, we need to set the full list of steps, and the selected steps
     methodChanged(newValue: Option | null) {
         let newMethod: MethodName = newValue!.value;
-
         let newFilters: Filters = this.state.filters;
         newFilters.method = newMethod;
-
         newFilters.steps = Const.MethodSteps[newMethod];
 
         this.setState({

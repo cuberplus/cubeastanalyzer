@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 import { FileInputProps, FileInputState, MethodName, Solve } from "../Helpers/Types";
 import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
@@ -8,7 +8,8 @@ import { HelpPanel } from "./HelpPanel";
 import { CalculateMostUsedMethod } from "../Helpers/CubeHelpers";
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
-    state: FileInputState = { solves: [], showHelpModal: false, startingMethod: MethodName.CFOP };
+    state: FileInputState = { solves: [], showHelpModal: false };
+    filterPanel: RefObject<FilterPanel> = React.createRef();
 
     showFileData() {
         let dataset = (document.getElementById("uploaded_data") as HTMLInputElement);
@@ -17,14 +18,18 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         let text = file?.text();
         text?.then((value: string) => {
             let solveList: Solve[] = parseCsv(value, ',');
-            this.setState({ solves: solveList, startingMethod: CalculateMostUsedMethod(solveList) });
+            this.setState({ solves: solveList });
+            let method = CalculateMostUsedMethod(solveList);
+            this.filterPanel.current?.methodChanged({ label: method, value: method })
         })
     };
 
     showTestData() {
         let file = GetDemoData();
         let solveList: Solve[] = parseCsv(file, ',');
-        this.setState({ solves: solveList, startingMethod: MethodName.CFOP });
+        this.setState({ solves: solveList });
+        let method = CalculateMostUsedMethod(solveList);
+        this.filterPanel.current?.methodChanged({ label: method, value: method })
     }
 
     helpButtonClicked() {
@@ -71,7 +76,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                         </Card>
                     </Row>
 
-                    <FilterPanel solves={this.state.solves} startingMethod={this.state.startingMethod} />
+                    <FilterPanel solves={this.state.solves} ref={this.filterPanel} />
                 </Container>
             </div >
         )
