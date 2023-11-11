@@ -4,9 +4,9 @@ export enum MethodName {
     CFOP = 'CFOP',
     CFOP_2OLL = 'CFOP (2 look OLL)',
     CFOP_4LL = 'CFOP (4 look LL)',
-    Roux = 'Roux'
+    Roux = 'Roux',
+    LayerByLayer = 'Layer by Layer'
     // CFOP_2PLL = 'CFOP (2 look PLL)',
-    // Beginner method?
     // Petrus?
 }
 
@@ -35,7 +35,8 @@ export enum StepName {
     LEFTBLOCK = 'Left block',
     RIGHTBLOCK = 'Right block',
     CMLL = 'CMLL',
-    LSE = 'LSE'
+    LSE = 'LSE',
+    F2L = 'F2L'
 }
 
 export enum ChartType {
