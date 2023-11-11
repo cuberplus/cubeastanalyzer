@@ -560,7 +560,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             pointsPerGraph={this.state.pointsPerGraph}
                             methodName={this.state.filters.method}
                             goodTime={this.state.goodTime}
-                            badTime={this.state.badTime} />
+                            badTime={this.state.badTime}
+                            steps={this.state.filters.steps}
+                        />
                     </Row>
                 </div >
             );

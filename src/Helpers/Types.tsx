@@ -128,7 +128,8 @@ export interface ChartPanelProps {
     solves: Solve[],
     badTime: number,
     goodTime: number,
-    methodName: MethodName
+    methodName: MethodName,
+    steps: StepName[]
 }
 
 export interface ChartPanelState {

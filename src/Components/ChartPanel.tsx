@@ -171,58 +171,28 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildStepAverages() {
-        let crossAverage = calculateMovingAverage(this.props.solves.map(x => x.steps[0].time), this.props.windowSize);
-        let f2l_1Average = calculateMovingAverage(this.props.solves.map(x => x.steps[1].time), this.props.windowSize);
-        let f2l_2Average = calculateMovingAverage(this.props.solves.map(x => x.steps[2].time), this.props.windowSize);
-        let f2l_3Average = calculateMovingAverage(this.props.solves.map(x => x.steps[3].time), this.props.windowSize);
-        let f2l_4Average = calculateMovingAverage(this.props.solves.map(x => x.steps[4].time), this.props.windowSize);
-        let ollAverage = calculateMovingAverage(this.props.solves.map(x => x.steps[5].time), this.props.windowSize);
-        let pllAverage = calculateMovingAverage(this.props.solves.map(x => x.steps[6].time), this.props.windowSize);
+        let datasets = [];
 
-        let labels = [];
-        for (let i = 1; i <= crossAverage.length; i++) {
-            labels.push(i.toString())
-        };
+        for (let i = 0; i < this.props.steps.length; i++) {
+            let average: number[] = calculateMovingAverage(this.props.solves.map(x => x.steps[i].time), this.props.windowSize);
+            average = reduceDataset(average, this.props.pointsPerGraph);
 
+            let dataset = {
+                label: `${this.props.steps[i]} Average of ${this.props.windowSize}`,
+                data: average
+            }
+            datasets.push(dataset);
+        }
+
+        let labels: string[] = [];
+        for (let i = 0; i < this.props.solves.length; i++) {
+            labels.push(i.toString());
+        }
         labels = reduceDataset(labels, this.props.pointsPerGraph);
-        crossAverage = reduceDataset(crossAverage, this.props.pointsPerGraph);
-        f2l_1Average = reduceDataset(f2l_1Average, this.props.pointsPerGraph);
-        f2l_2Average = reduceDataset(f2l_2Average, this.props.pointsPerGraph);
-        f2l_3Average = reduceDataset(f2l_3Average, this.props.pointsPerGraph);
-        f2l_4Average = reduceDataset(f2l_4Average, this.props.pointsPerGraph);
-        ollAverage = reduceDataset(ollAverage, this.props.pointsPerGraph);
-        pllAverage = reduceDataset(pllAverage, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
-            labels,
-            datasets: [{
-                label: `Cross Average Of ${this.props.windowSize}`,
-                data: crossAverage
-            },
-            {
-                label: `Pair 1 Average Of ${this.props.windowSize}`,
-                data: f2l_1Average
-            },
-            {
-                label: `Pair 2 Average Of ${this.props.windowSize}`,
-                data: f2l_2Average
-            },
-            {
-                label: `Pair 3 Average Of ${this.props.windowSize}`,
-                data: f2l_3Average
-            },
-            {
-                label: `Pair 4 Average Of ${this.props.windowSize}`,
-                data: f2l_4Average
-            },
-            {
-                label: `OLL Average Of ${this.props.windowSize}`,
-                data: ollAverage
-            },
-            {
-                label: `PLL Average Of ${this.props.windowSize}`,
-                data: pllAverage
-            }]
+            labels: labels,
+            datasets: datasets
         }
 
         return data;
@@ -444,6 +414,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                     {buildChartHtml(<Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "History of Records", "Date", "Time (s)")} />)}
                     {buildChartHtml(<Line data={this.buildRunningColorPercentages()} options={createOptions(ChartType.Line, "Percentage of Solves by Cross Color", "Solve Number", "Percentage")} />)}
                     {buildChartHtml(<Bar data={this.buildInspectionData()} options={createOptions(ChartType.Bar, "Average solve time by inspection time", "Inspection Time (s)", "Solve Time (s)")} />)}
+                    {buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />)}
                 </Row>
             </div>
         )
@@ -451,6 +422,6 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 }
 
 /*
-                    {buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />)}
+
 */
