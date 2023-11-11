@@ -127,36 +127,26 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildStepPercentages() {
-        let labels = ['Cross', 'F2L Pair 1', 'F2L Pair 2', 'F2L Pair 3', 'F2L Pair 4', 'OLL', 'PLL'];
+        let labels = this.props.steps;
 
-        let cross = 0;
-        let f2l_1 = 0;
-        let f2l_2 = 0;
-        let f2l_3 = 0;
-        let f2l_4 = 0;
-        let oll = 0;
-        let pll = 0;
+        let totals: number[] = [];
+        for (let i = 0; i < labels.length; i++) {
+            totals.push(0);
+        }
 
         let recentSolves = this.props.solves.slice(-this.props.windowSize);
         for (let i = 0; i < recentSolves.length; i++) {
-            cross += recentSolves[i].steps[0].time;
-            f2l_1 += recentSolves[i].steps[1].time;
-            f2l_2 += recentSolves[i].steps[2].time;
-            f2l_3 += recentSolves[i].steps[3].time;
-            f2l_4 += recentSolves[i].steps[4].time;
-            oll += recentSolves[i].steps[5].time;
-            pll += recentSolves[i].steps[6].time;
+            for (let j = 0; j < this.props.steps.length; j++) {
+                totals[j] += recentSolves[i].steps[j].time;
+            }
         }
-        let total = cross + f2l_1 + f2l_2 + f2l_3 + f2l_4 + oll + pll;
-        let values = [
-            100 * cross / total,
-            100 * f2l_1 / total,
-            100 * f2l_2 / total,
-            100 * f2l_3 / total,
-            100 * f2l_4 / total,
-            100 * oll / total,
-            100 * pll / total
-        ];
+
+        let total = 0;
+        for (let i = 0; i < this.props.steps.length; i++) {
+            total += totals[i];
+        }
+
+        let values: number[] = totals.map(x => (100 * x / total));
 
         // TODO: make the colors consistent
         let data: ChartData<"doughnut"> = {
@@ -415,13 +405,9 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                     {buildChartHtml(<Line data={this.buildRunningColorPercentages()} options={createOptions(ChartType.Line, "Percentage of Solves by Cross Color", "Solve Number", "Percentage")} />)}
                     {buildChartHtml(<Bar data={this.buildInspectionData()} options={createOptions(ChartType.Bar, "Average solve time by inspection time", "Inspection Time (s)", "Solve Time (s)")} />)}
                     {buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />)}
+                    {buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />)}
                 </Row>
             </div>
         )
     }
 }
-
-/*
-                    {buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />)}
-
-*/
