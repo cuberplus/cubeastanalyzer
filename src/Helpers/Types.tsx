@@ -159,21 +159,9 @@ export interface HelpPanelState {
 
 export interface Deviations {
     dev_total: number,
-    dev_cross: number,
-    dev_f2l_1: number,
-    dev_f2l_2: number,
-    dev_f2l_3: number,
-    dev_f2l_4: number,
-    dev_oll: number,
-    dev_pll: number,
+    dev: number[],
     avg_total: number,
-    avg_cross: number,
-    avg_f2l_1: number,
-    avg_f2l_2: number,
-    avg_f2l_3: number,
-    avg_f2l_4: number,
-    avg_oll: number,
-    avg_pll: number
+    avg: number[]
 }
 
 export interface Records {

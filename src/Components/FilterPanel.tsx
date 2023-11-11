@@ -97,8 +97,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (solve.time > (3 * deviations.dev_total) + deviations.avg_total) {
             return true;
         }
+
         for (let i = 0; i < solve.steps.length; i++) {
-            if (solve.steps[i].time > ((3 * deviations.dev_cross) + deviations.avg_cross)) { // TODO this seems to be hardcoded to cross rn
+            if (solve.steps[i].time > ((3 * deviations.dev[i]) + deviations.avg[i])) {
                 return true;
             }
         }
@@ -109,21 +110,20 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     static calculateDeviations(allSolves: Solve[]) {
         let deviations: Deviations = {
             dev_total: calculateStandardDeviation(allSolves.map(x => x.time)),
-            dev_cross: calculateStandardDeviation(allSolves.map(x => x.steps[0].time)),
-            dev_f2l_1: calculateStandardDeviation(allSolves.map(x => x.steps[1].time)),
-            dev_f2l_2: calculateStandardDeviation(allSolves.map(x => x.steps[2].time)),
-            dev_f2l_3: calculateStandardDeviation(allSolves.map(x => x.steps[3].time)),
-            dev_f2l_4: calculateStandardDeviation(allSolves.map(x => x.steps[4].time)),
-            dev_oll: calculateStandardDeviation(allSolves.map(x => x.steps[5].time)),
-            dev_pll: calculateStandardDeviation(allSolves.map(x => x.steps[6].time)),
             avg_total: calculateAverage(allSolves.map(x => x.time)),
-            avg_cross: calculateAverage(allSolves.map(x => x.steps[0].time)),
-            avg_f2l_1: calculateAverage(allSolves.map(x => x.steps[1].time)),
-            avg_f2l_2: calculateAverage(allSolves.map(x => x.steps[2].time)),
-            avg_f2l_3: calculateAverage(allSolves.map(x => x.steps[3].time)),
-            avg_f2l_4: calculateAverage(allSolves.map(x => x.steps[4].time)),
-            avg_oll: calculateAverage(allSolves.map(x => x.steps[5].time)),
-            avg_pll: calculateAverage(allSolves.map(x => x.steps[5].time))
+            dev: [],
+            avg: []
+        }
+
+        if (allSolves.length == 0) {
+            return deviations;
+        }
+
+        for (let i = 0; i < allSolves[0].steps.length; i++) {
+            let dev = calculateStandardDeviation(allSolves.map(x => x.steps[i].time));
+            let avg = calculateAverage(allSolves.map(x => x.steps[i].time));
+            deviations.dev.push(dev);
+            deviations.avg.push(avg);
         }
 
         return deviations;
