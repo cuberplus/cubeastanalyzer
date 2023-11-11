@@ -25,9 +25,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             ollCases: Const.OllCases.map(x => x.value),
             steps: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.OLL, StepName.PLL],
             solveCleanliness: Const.solveCleanliness.map(x => x.value),
-            method: MethodName.CFOP
+            method: this.props.startingMethod
         },
-        chosenSteps: this.getStepOptionsForMethod(MethodName.CFOP),
+        chosenSteps: FilterPanel.getStepOptionsForMethod(this.props.startingMethod),
         chosenColors: [
             { label: CrossColor.White, value: CrossColor.White },
             { label: CrossColor.Yellow, value: CrossColor.Yellow },
@@ -47,7 +47,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         showAlert: true,
         badTime: 20,
         goodTime: 15,
-        method: { label: MethodName.CFOP, value: MethodName.CFOP } // TODO: default this to the most common method used
+        method: { label: this.props.startingMethod, value: this.props.startingMethod }
     }
 
     static passesFilters(solve: Solve, filters: Filters, deviations: Deviations) {
@@ -137,11 +137,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
     static getDerivedStateFromProps(nextProps: FilterPanelProps, prevState: FilterPanelState) {
         let newState: FilterPanelState = {
-            // Update with new solves
-            allSolves: nextProps.solves,
-            filteredSolves: FilterPanel.applyFiltersToSolves(nextProps.solves, prevState.filters),
-
-            // Leave remaining props the same
+            // Assume all props stay the same
+            allSolves: prevState.allSolves,
+            filteredSolves: prevState.filteredSolves,
+            method: prevState.method,
             chosenSteps: prevState.chosenSteps,
             filters: prevState.filters,
             chosenColors: prevState.chosenColors,
@@ -154,9 +153,16 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             showAlert: prevState.showAlert,
             solveCleanliness: prevState.solveCleanliness,
             badTime: prevState.badTime,
-            goodTime: prevState.goodTime,
-            method: prevState.method
+            goodTime: prevState.goodTime
         }
+
+        // Update anything that needs it
+        newState.allSolves = nextProps.solves;
+        newState.filteredSolves = FilterPanel.applyFiltersToSolves(nextProps.solves, prevState.filters);
+        newState.method = { label: nextProps.startingMethod, value: nextProps.startingMethod };
+        newState.filters.method = nextProps.startingMethod;
+        newState.filters.steps = Const.MethodSteps[nextProps.startingMethod];
+        newState.chosenSteps = FilterPanel.getStepOptionsForMethod(nextProps.startingMethod);
 
         return newState;
     }
@@ -183,7 +189,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         })
     }
 
-    getStepOptionsForMethod(method: MethodName) {
+    static getStepOptionsForMethod(method: MethodName) {
         let options: Option[] = [];
         Const.MethodSteps[method].forEach(x => {
             options.push({ label: x, value: x });
@@ -211,7 +217,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         this.setState({
             method: newValue!,
             filters: newFilters,
-            chosenSteps: this.getStepOptionsForMethod(newMethod)
+            chosenSteps: FilterPanel.getStepOptionsForMethod(newMethod)
         })
     }
 
@@ -371,7 +377,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     )}
                     {this.createFilterHtml(
                         <MultiSelect
-                            options={this.getStepOptionsForMethod(this.state.filters.method)}
+                            options={FilterPanel.getStepOptionsForMethod(this.state.filters.method)}
                             value={this.state.chosenSteps}
                             onChange={this.chosenStepsChanged.bind(this)}
                             labelledBy="Select"

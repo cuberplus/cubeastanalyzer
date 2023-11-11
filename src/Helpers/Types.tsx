@@ -95,6 +95,7 @@ export interface AppState {
 
 export interface FilterPanelProps {
     solves: Solve[]
+    startingMethod: MethodName
 }
 
 export interface FilterPanelState {
@@ -124,7 +125,8 @@ export interface FileInputProps {
 
 export interface FileInputState {
     solves: Solve[],
-    showHelpModal: boolean
+    showHelpModal: boolean,
+    startingMethod: MethodName
 }
 
 export interface ChartPanelProps {

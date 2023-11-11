@@ -33,3 +33,25 @@ export function GetEmptySolve() {
 
     return solve;
 }
+
+export function CalculateMostUsedMethod(solves: Solve[]): MethodName {
+    let counts: { [id in MethodName]: number } = {
+        [MethodName.CFOP]: 0,
+        [MethodName.CFOP_2OLL]: 0,
+        [MethodName.CFOP_4LL]: 0,
+        [MethodName.LayerByLayer]: 0,
+        [MethodName.Roux]: 0
+    }
+
+    let max = 0;
+    let method = MethodName.CFOP;
+
+    for (let i = 0; i < solves.length; i++) {
+        counts[solves[i].method]++;
+        if (counts[solves[i].method] > max) {
+            method = solves[i].method;
+        }
+    }
+
+    return method;
+}

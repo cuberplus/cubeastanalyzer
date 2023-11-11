@@ -1,13 +1,14 @@
 import React from "react";
-import { FileInputProps, FileInputState, Solve } from "../Helpers/Types";
+import { FileInputProps, FileInputState, MethodName, Solve } from "../Helpers/Types";
 import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
 import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar, Modal, Container } from "react-bootstrap";
 import { HelpPanel } from "./HelpPanel";
+import { CalculateMostUsedMethod } from "../Helpers/CubeHelpers";
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
-    state: FileInputState = { solves: [], showHelpModal: false };
+    state: FileInputState = { solves: [], showHelpModal: false, startingMethod: MethodName.CFOP };
 
     showFileData() {
         let dataset = (document.getElementById("uploaded_data") as HTMLInputElement);
@@ -16,14 +17,14 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         let text = file?.text();
         text?.then((value: string) => {
             let solveList: Solve[] = parseCsv(value, ',');
-            this.setState({ solves: solveList });
+            this.setState({ solves: solveList, startingMethod: CalculateMostUsedMethod(solveList) });
         })
     };
 
     showTestData() {
         let file = GetDemoData();
         let solveList: Solve[] = parseCsv(file, ',');
-        this.setState({ solves: solveList });
+        this.setState({ solves: solveList, startingMethod: MethodName.CFOP });
     }
 
     helpButtonClicked() {
@@ -70,7 +71,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                         </Card>
                     </Row>
 
-                    <FilterPanel solves={this.state.solves} />
+                    <FilterPanel solves={this.state.solves} startingMethod={this.state.startingMethod} />
                 </Container>
             </div >
         )

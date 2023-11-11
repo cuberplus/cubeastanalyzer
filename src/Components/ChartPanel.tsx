@@ -10,7 +10,7 @@ import { Const } from "../Helpers/Constants";
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
 
-    getEmptyChartData(chartType: string) {
+    getEmptyChartData() {
         let data: ChartData<"line"> = {
             labels: [],
             datasets: []
@@ -169,7 +169,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
     buildStepAverages() {
         if (this.props.solves.length == 0) {
-            return this.getEmptyChartData("line");
+            return this.getEmptyChartData();
         }
 
         let datasets = [];
@@ -290,7 +290,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
     buildRecordHistory() {
         if (this.props.solves.length == 0) {
-            return this.getEmptyChartData("line");
+            return this.getEmptyChartData();
         }
 
         let records = [this.props.solves[0].time];
