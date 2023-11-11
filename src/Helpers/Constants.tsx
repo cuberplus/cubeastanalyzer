@@ -9,7 +9,7 @@ export class Const {
         [MethodName.CFOP]: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.OLL, StepName.PLL],
         [MethodName.CFOP_4LL]: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.EOLL, StepName.COLL, StepName.CPLL, StepName.EPLL],
         [MethodName.CFOP_2OLL]: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.EOLL, StepName.COLL, StepName.PLL],
-        [MethodName.Roux]: []
+        [MethodName.Roux]: [StepName.LEFTBLOCK, StepName.RIGHTBLOCK, StepName.CMLL, StepName.LSE]
     }
 
     static readonly PllCases: Option[] = [

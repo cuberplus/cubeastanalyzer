@@ -31,7 +31,11 @@ export enum StepName {
     EOLL = 'EOLL',
     COLL = 'OCLL',
     EPLL = 'EPLL',
-    CPLL = 'CPOLL'
+    CPLL = 'CPOLL',
+    LEFTBLOCK = 'Left block',
+    RIGHTBLOCK = 'Right block',
+    CMLL = 'CMLL',
+    LSE = 'LSE'
 }
 
 export enum ChartType {
