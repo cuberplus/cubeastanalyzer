@@ -6,7 +6,7 @@ import { MultiSelect } from "react-multi-select-component";
 import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, MethodName, Solve, SolveCleanliness, Step, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
 import { Option } from "react-multi-select-component"
-import { calculate90thPercentile, calculateAverage, calculateRecords, calculateStandardDeviation } from "../Helpers/MathHelpers";
+import { calculate90thPercentile, calculateAverage, calculateStandardDeviation } from "../Helpers/MathHelpers";
 import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 import { GetEmptySolve } from "../Helpers/CubeHelpers";
@@ -27,15 +27,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             solveCleanliness: Const.solveCleanliness.map(x => x.value),
             method: MethodName.CFOP
         },
-        chosenSteps: [
-            { label: StepName.Cross, value: StepName.Cross },
-            { label: StepName.F2L_1, value: StepName.F2L_1 },
-            { label: StepName.F2L_2, value: StepName.F2L_2 },
-            { label: StepName.F2L_3, value: StepName.F2L_3 },
-            { label: StepName.F2L_4, value: StepName.F2L_4 },
-            { label: StepName.OLL, value: StepName.OLL },
-            { label: StepName.PLL, value: StepName.PLL }
-        ],
+        chosenSteps: this.getStepOptionsForMethod(MethodName.CFOP),
         chosenColors: [
             { label: CrossColor.White, value: CrossColor.White },
             { label: CrossColor.Yellow, value: CrossColor.Yellow },
@@ -501,30 +493,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                 </Container>
             )
         }
-
-        /*
-        let records = calculateRecords(this.props.solves.map(x => x.time));
-        let personalBests = (
-            <Col>
-                <OverlayTrigger placement="bottom" overlay={this.createTooltip(`This means that of the past ${numSolves} solves, 90% of them were below the shown time, rounded up to the nearest second. This is a very high definition of Sub-X, but if you tell someone this number, you will be able to meet that number with 90% certainty.`)}>
-                    <Card>
-                        <h5>
-                            Your PB is {records.best.toFixed(3)}.
-                        </h5>
-                        <h5>
-                            Your Best Ao5 is {records.bestAo5.toFixed(3)}.
-                        </h5>
-                        <h5>
-                            Your Best Ao12 is {records.bestAo12.toFixed(3)}.
-                        </h5>
-                        <h5>
-                            Your Best Ao100 is {records.bestAo100.toFixed(3)}.
-                        </h5>
-                    </Card>
-                </OverlayTrigger>
-            </Col>
-        )
-        */
 
         let analysis: JSX.Element = (<></>)
         if (this.state.allSolves.length > 0) {
