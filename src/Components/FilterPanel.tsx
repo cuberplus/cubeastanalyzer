@@ -159,12 +159,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         // Update anything that needs it
         newState.allSolves = nextProps.solves;
         newState.filteredSolves = FilterPanel.applyFiltersToSolves(nextProps.solves, prevState.filters);
-        /*
-        newState.method = { label: nextProps.startingMethod, value: nextProps.startingMethod };
-        newState.filters.method = nextProps.startingMethod;
-        newState.filters.steps = Const.MethodSteps[nextProps.startingMethod];
-        newState.chosenSteps = FilterPanel.getStepOptionsForMethod(nextProps.startingMethod);
-        */
 
         return newState;
     }
