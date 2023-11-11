@@ -10,6 +10,14 @@ import { Const } from "../Helpers/Constants";
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
 
+    getEmptyChartData(chartType: string) {
+        let data: ChartData<"line"> = {
+            labels: [],
+            datasets: []
+        }
+        return data;
+    }
+
     buildRunningAverageData() {
         let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.time), this.props.windowSize);
 
@@ -127,32 +135,31 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildStepPercentages() {
-        let labels = this.props.steps;
-
-        let totals: number[] = [];
-        for (let i = 0; i < labels.length; i++) {
-            totals.push(0);
+        let totals: { [step in StepName]?: number } = {};
+        for (let i = 0; i < this.props.steps.length; i++) {
+            totals[this.props.steps[i]] = 0;
         }
 
         let recentSolves = this.props.solves.slice(-this.props.windowSize);
         for (let i = 0; i < recentSolves.length; i++) {
             for (let j = 0; j < this.props.steps.length; j++) {
-                totals[j] += recentSolves[i].steps[j].time;
+                totals[recentSolves[i].steps[j].name]! += recentSolves[i].steps[j].time;
             }
         }
 
-        let total = 0;
-        for (let i = 0; i < this.props.steps.length; i++) {
-            total += totals[i];
-        }
+        let labels: string[] = [];
+        let values: number[] = [];
 
-        let values: number[] = totals.map(x => (100 * x / total));
+        for (let key in totals) {
+            labels.push(key);
+            values.push(totals[key as StepName]! / recentSolves.length);
+        }
 
         // TODO: make the colors consistent
         let data: ChartData<"doughnut"> = {
             labels: labels,
             datasets: [{
-                label: `Percent of solve each step takes (of recent ${this.props.windowSize})`,
+                label: `Seconds each step takes (of recent ${this.props.windowSize})`,
                 data: values
             }]
         }
@@ -161,6 +168,10 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildStepAverages() {
+        if (this.props.solves.length == 0) {
+            return this.getEmptyChartData("line");
+        }
+
         let datasets = [];
 
         for (let i = 0; i < this.props.steps.length; i++) {
@@ -168,7 +179,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             average = reduceDataset(average, this.props.pointsPerGraph);
 
             let dataset = {
-                label: `${this.props.steps[i]} Average of ${this.props.windowSize}`,
+                label: `${this.props.solves[0].steps[i].name} Average of ${this.props.windowSize}`,
                 data: average
             }
             datasets.push(dataset);
@@ -278,13 +289,8 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildRecordHistory() {
-        let data: ChartData<"line"> = {
-            labels: [],
-            datasets: []
-        }
-
         if (this.props.solves.length == 0) {
-            return data;
+            return this.getEmptyChartData("line");
         }
 
         let records = [this.props.solves[0].time];
@@ -299,13 +305,13 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
         let labels = dates.map(x => x.toDateString())
 
-        data.labels = labels;
-        data.datasets = [
-            {
+        let data: ChartData<"line"> = {
+            labels: labels,
+            datasets: [{
                 label: `Current record`,
                 data: records
-            }
-        ]
+            }]
+        }
 
         return data;
     }
