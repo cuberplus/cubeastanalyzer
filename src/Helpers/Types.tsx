@@ -31,7 +31,7 @@ export enum StepName {
     EOLL = 'EOLL',
     COLL = 'OCLL',
     EPLL = 'EPLL',
-    CPLL = 'CPLL'
+    CPLL = 'CPOLL'
 }
 
 export enum ChartType {

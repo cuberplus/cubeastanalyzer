@@ -65,6 +65,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "step_6_name":
                 case "step_7_name":
                 case "step_8_name":
+                case "step_9_name":
                     obj.steps[+key[5]].name = item.at(index)! as StepName;
                     break;
                 case "step_0_slice_turns":
@@ -76,6 +77,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "step_6_slice_turns":
                 case "step_7_slice_turns":
                 case "step_8_slice_turns":
+                case "step_9_slice_turns":
                     obj.steps[+key[5]].turns = Number(item.at(index));
                     break;
                 case "step_0_time":
@@ -87,6 +89,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "step_6_time":
                 case "step_7_time":
                 case "step_8_time":
+                case "step_9_time":
                     obj.steps[+key[5]].time = Number(item.at(index)) / 1000;
                     break;
                 case "step_0_case":
@@ -98,6 +101,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "step_6_case":
                 case "step_7_case":
                 case "step_8_case":
+                case "step_9_case":
                     obj.steps[+key[5]].case = item.at(index)!;
                     break;
                 case "step_0_turns_per_second":
@@ -109,6 +113,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "step_6_turns_per_second":
                 case "step_7_turns_per_second":
                 case "step_8_turns_per_second":
+                case "step_9_turns_per_second":
                     obj.steps[+key[5]].tps = Number(item.at(index));
                     break;
                 case "step_0_recognition_time":
@@ -120,6 +125,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "step_6_recognition_time":
                 case "step_7_recognition_time":
                 case "step_8_recognition_time":
+                case "step_9_recognition_time":
                     obj.steps[+key[5]].recognitionTime = Number(item.at(index)) / 1000;
                     break;
                 case "step_0_execution_time":
@@ -131,6 +137,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "step_6_execution_time":
                 case "step_7_execution_time":
                 case "step_8_execution_time":
+                case "step_9_execution_time":
                     obj.steps[+key[5]].executionTime = Number(item.at(index)) / 1000;
                     break;
 
