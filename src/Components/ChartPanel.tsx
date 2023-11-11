@@ -1,5 +1,5 @@
 import React from "react";
-import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, Solve } from "../Helpers/Types";
+import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, Solve, StepName } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateAverage, calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset, splitIntoChunks } from "../Helpers/MathHelpers";
 import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
@@ -386,14 +386,79 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
+    buildCaseData() {
+        if (this.props.steps.length != 1 || (this.props.steps[0] !== StepName.OLL && this.props.steps[0] !== StepName.PLL)) {
+            let data: ChartData<"bar"> = {
+                labels: [],
+                datasets: []
+            }
+            return data;
+        }
+
+        let solves = this.props.solves.slice(-this.props.windowSize);
+
+        let caseTimes: { [id: string]: { recognitionTime: number, executionTime: number }[] } = {};
+        for (let i = 0; i < solves.length; i++) {
+            if (!(solves[i].steps[0].case in caseTimes)) {
+                caseTimes[solves[i].steps[0].case] = [];
+            }
+            caseTimes[solves[i].steps[0].case].push({
+                recognitionTime: solves[i].recognitionTime,
+                executionTime: solves[i].executionTime
+            });
+        }
+
+        let cases: { label: string, recognitionTime: number, executionTime: number }[] = []
+        for (let key in caseTimes) {
+            let recognitionTimes = caseTimes[key].map(x => x.recognitionTime);
+            let executionTimes = caseTimes[key].map(x => x.executionTime);
+
+            let averageRecognition: number = recognitionTimes.reduce((a, b) => a + b) / recognitionTimes.length;
+            let averageExecution: number = executionTimes.reduce((a, b) => a + b) / executionTimes.length;
+
+            cases.push({
+                label: key,
+                executionTime: averageExecution,
+                recognitionTime: averageRecognition
+            })
+        }
+
+        cases.sort((a, b) => {
+            return (b.recognitionTime + b.executionTime) - (a.recognitionTime + a.executionTime);
+        })
+
+        let labels = cases.map(x => "Case: " + x.label);
+        let recognitionValues = cases.map(x => x.recognitionTime)
+        let executionValues = cases.map(x => x.executionTime)
+
+        let data: ChartData<"bar"> = {
+            labels: labels,
+            datasets: [{
+                label: `Average recognition time for each case in past ${this.props.windowSize} solves`,
+                data: recognitionValues
+            }, {
+                label: `Average execution time for each case in past ${this.props.windowSize} solves`,
+                data: executionValues
+            }]
+        }
+
+        return data;
+    }
+
     render() {
         // TODO: is there a better spot to put this?
         ChartJS.register(CategoryScale);
+
+        let caseChart: JSX.Element = (<></>);
+        if (this.props.steps.length == 1 && (this.props.steps[0] === StepName.OLL || this.props.steps[0] === StepName.PLL)) {
+            caseChart = buildChartHtml(<Bar data={this.buildCaseData()} options={createOptions(ChartType.Bar, "Average Recognition Time and Execution Time per Case", "Solve Number", "Time (s)")} />);
+        }
 
         return (
             <div>
                 <br />
                 <Row>
+                    {caseChart}
                     {buildChartHtml(<Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Average Time", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Line data={this.buildRunningRecognitionExecution()} options={createOptions(ChartType.Line, "Average Recognition and Execution", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Count of Solves by How Long They Took", "Time (s)", "Count")} />)}
@@ -406,6 +471,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                     {buildChartHtml(<Bar data={this.buildInspectionData()} options={createOptions(ChartType.Bar, "Average solve time by inspection time", "Inspection Time (s)", "Solve Time (s)")} />)}
                     {buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />)}
                     {buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "Percentage of the Solve Each Step Took", "", "")} />)}
+
                 </Row>
             </div>
         )
