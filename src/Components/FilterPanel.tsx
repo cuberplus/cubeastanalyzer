@@ -74,6 +74,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         if (solve.time < filters.fastestTime || solve.time > filters.slowestTime) {
             return false;
         }
+
+        // TODO: check case logic properly
         if (solve.method == MethodName.CFOP && solve.steps[6].case !== undefined && filters.pllCases.indexOf(solve.steps[6].case) < 0) {
             return false;
         }
@@ -189,13 +191,35 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         })
     }
 
+    getStepOptionsForMethod(method: MethodName) {
+        let options: Option[] = [];
+        Const.MethodSteps[method].forEach(x => {
+            options.push({ label: x, value: x });
+        })
+        return options;
+    }
+
+    getMethodOptions() {
+        let options: Option[] = [];
+        Object.values(MethodName).forEach(x => {
+            options.push({ label: x, value: x });
+        })
+        return options;
+    }
+
+    // TODO: in here, we need to set the full list of steps, and the selected steps
     methodChanged(newValue: Option | null) {
+        let newMethod: MethodName = newValue!.value;
+
         let newFilters: Filters = this.state.filters;
-        newFilters.method = newValue!.value;
+        newFilters.method = newMethod;
+
+        newFilters.steps = Const.MethodSteps[newMethod];
 
         this.setState({
             method: newValue!,
-            filters: newFilters
+            filters: newFilters,
+            chosenSteps: this.getStepOptionsForMethod(newMethod)
         })
     }
 
@@ -314,13 +338,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             newSolves.push(newSolve);
         })
 
-
         return newSolves;
-    }
-
-    getCompositeStepName(steps: Option[]): string {
-        let names: string[] = steps.map(x => x.label);
-        return names.join(',');
     }
 
     createTooltip(description: string) {
@@ -352,11 +370,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                 <Container>
                     {this.createFilterHtml(
                         <Select
-                            options={[
-                                { label: MethodName.CFOP, value: MethodName.CFOP },
-                                { label: MethodName.CFOP_2OLL, value: MethodName.CFOP_2OLL },
-                                { label: MethodName.CFOP_4LL, value: MethodName.CFOP_4LL }
-                            ]}
+                            options={this.getMethodOptions()}
                             value={this.state.method}
                             onChange={this.methodChanged.bind(this)}
                         />,
@@ -365,16 +379,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     )}
                     {this.createFilterHtml(
                         <MultiSelect
-                            options={[
-                                { label: StepName.Cross, value: StepName.Cross },
-                                { label: StepName.F2L_1, value: StepName.F2L_1 },
-                                { label: StepName.F2L_2, value: StepName.F2L_2 },
-                                { label: StepName.F2L_3, value: StepName.F2L_3 },
-                                { label: StepName.F2L_4, value: StepName.F2L_4 },
-                                { label: StepName.OLL, value: StepName.OLL },
-                                { label: StepName.PLL, value: StepName.PLL },
-
-                            ]}
+                            options={this.getStepOptionsForMethod(this.state.filters.method)}
                             value={this.state.chosenSteps}
                             onChange={this.chosenStepsChanged.bind(this)}
                             labelledBy="Select"
