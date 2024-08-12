@@ -192,7 +192,6 @@ export function getTypicalAverages(userAverage: number) {
 
     for (let i = 0; i < 4; i++) {
         expectedSplits[i] *= scalar;
-        console.log(" " + i + " " + expectedSplits[i])
     }
 
     return expectedSplits;
