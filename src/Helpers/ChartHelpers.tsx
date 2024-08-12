@@ -13,7 +13,7 @@ export function buildChartHtml(chart: JSX.Element): JSX.Element {
     )
 }
 
-export function createOptions(chartType: ChartType, chartTitle: string, xAxis: string, yAxis: string) {
+export function createOptions(chartType: ChartType, chartTitle: string, xAxis: string, yAxis: string, isStacked: boolean = true) {
     let genericOptions: any = {
         maintainAspectRatio: false,
         plugins: {
@@ -55,7 +55,7 @@ export function createOptions(chartType: ChartType, chartTitle: string, xAxis: s
                             display: true,
                             text: xAxis
                         },
-                        stacked: true,
+                        stacked: isStacked,
                         ticks: {
                             autoSkip: false
                         }
@@ -65,7 +65,7 @@ export function createOptions(chartType: ChartType, chartTitle: string, xAxis: s
                             display: true,
                             text: yAxis
                         },
-                        stacked: true
+                        stacked: isStacked
                     }
                 }
             };

@@ -1,7 +1,7 @@
 import React from "react";
-import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, Solve, StepName } from "../Helpers/Types";
+import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, MethodName, Solve, StepName } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
-import { calculateAverage, calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset, splitIntoChunks } from "../Helpers/MathHelpers";
+import { calculateAverage, calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset, splitIntoChunks, getTypicalAverages } from "../Helpers/MathHelpers";
 import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
 import { Card, Row, Col, Ratio } from "react-bootstrap";
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
@@ -225,6 +225,58 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                 label: `Percentage of bad solves over last ${this.props.windowSize}`,
                 data: movingPercentBad
             }]
+        }
+
+        return data;
+    }
+
+    buildTypicalCompare() {
+        // This chart was built using data sourced from here:
+        // https://www.cubeskills.com/blog/cfop-solve-splits-tool
+
+        // Get users's average for each step, and average overall
+        let average = calculateAverage(this.props.solves.map(x => x.time).slice(-this.props.windowSize));
+        let crossAverage = calculateAverage(this.props.solves.map(x => x.steps[0].time).slice(-this.props.windowSize));
+        let f2l1Average = calculateAverage(this.props.solves.map(x => x.steps[1].time).slice(-this.props.windowSize));
+        let f2l2Average = calculateAverage(this.props.solves.map(x => x.steps[2].time).slice(-this.props.windowSize));
+        let f2l3Average = calculateAverage(this.props.solves.map(x => x.steps[3].time).slice(-this.props.windowSize));
+        let f2l4Average = calculateAverage(this.props.solves.map(x => x.steps[4].time).slice(-this.props.windowSize));
+        let ollAverage = calculateAverage(this.props.solves.map(x => x.steps[5].time).slice(-this.props.windowSize));
+        let pllAverage = calculateAverage(this.props.solves.map(x => x.steps[6].time).slice(-this.props.windowSize));
+        let f2lAverage = f2l1Average + f2l2Average + f2l3Average + f2l4Average;
+        let yourAverages = [crossAverage, f2lAverage, ollAverage, pllAverage];
+
+        // Get typical solver's average for each step, and overall
+        let typicalAverages = getTypicalAverages(average);
+
+        // Get percent differences
+        //let differences = [0, 0, 0, 0]
+        //let colors = ["green", "green", "green", "green"]
+        //for (let i = 0; i < 4; i++) {
+        //    differences[i] = (yourAverages[i] - typicalAverages[i]) / typicalAverages[i] * 100;
+        //    if (differences[i] >= 0) {
+        //        colors[i] = "red";
+        //    }
+        //}
+
+        let labels = ['Cross', 'F2L', 'OLL', 'PLL'];
+        let data: ChartData<"bar"> = {
+            labels,
+            datasets: [
+                {
+                    label: `Your average by step over last ${this.props.windowSize}`,
+                    data: yourAverages
+                },
+                {
+                    label: `Typical cuber's average by step, using your average time`,
+                    data: typicalAverages
+                },
+                //{
+                //    label: `Percent difference between your solves and typical solvers (lower is good)`,
+                //    data: differences,
+                //    backgroundColor: colors
+                //}
+            ]
         }
 
         return data;
@@ -472,6 +524,11 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         charts.push(buildChartHtml(<Line data={this.buildRunningColorPercentages()} options={createOptions(ChartType.Line, "Percentage of Solves by Cross Color", "Solve Number", "Percentage")} />));
         charts.push(buildChartHtml(<Bar data={this.buildInspectionData()} options={createOptions(ChartType.Bar, "Average solve time by inspection time", "Inspection Time (s)", "Solve Time (s)")} />));
         charts.push(buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Average Time by Step", "Solve Number", "Time (s)")} />));
+
+        // Add charts that require CFOP method (and all of its steps) to be chosen
+        if (this.props.methodName == MethodName.CFOP && this.props.steps.length == Const.MethodSteps[MethodName.CFOP].length) {
+            charts.push(buildChartHtml(<Bar data={this.buildTypicalCompare()} options={createOptions(ChartType.Bar, "Time Per Step, Compared to Typical Solver", "Step Name", "Time (s)", false)} />));
+        }
 
         // Add charts that require 2+ steps
         if (this.props.steps.length >= 2) {
