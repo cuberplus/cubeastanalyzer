@@ -168,7 +168,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildStepAverages() {
-        if (this.props.solves.length == 0) {
+        if (this.props.solves.length == 0 || this.props.steps.length == 0) {
             return this.getEmptyChartData();
         }
 
