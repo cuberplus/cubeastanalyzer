@@ -1,13 +1,25 @@
-import { Card, Col, Ratio } from "react-bootstrap";
+import { Card, Col, OverlayTrigger, Ratio, Tooltip } from "react-bootstrap";
 import { ChartType } from "./Types";
 
-export function buildChartHtml(chart: JSX.Element): JSX.Element {
+export function createTooltip(description: string) {
+    const tooltip = (
+        <Tooltip id="tooltip">
+            {description}
+        </Tooltip>
+    );
+    return tooltip;
+}
+
+export function buildChartHtml(chart: JSX.Element, tooltip: string): JSX.Element {
     return (
         <Col className="col-12 col-lg-6">
             <Card className="p-2">
-                <Ratio aspectRatio="4x3">
-                    {chart}
-                </Ratio>
+                <OverlayTrigger placement="auto" overlay={createTooltip(tooltip)}>
+                    <Ratio aspectRatio="4x3">
+                        {chart}
+                    </Ratio>
+                </OverlayTrigger>
+
             </Card>
         </Col>
     )
