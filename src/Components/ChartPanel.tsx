@@ -186,7 +186,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         }
 
         let labels: string[] = [];
-        for (let i = 0; i < this.props.solves.length; i++) {
+        for (let i = 0; i < datasets[0].data.length; i++) {
             labels.push(i.toString());
         }
         labels = reduceDataset(labels, this.props.pointsPerGraph);
