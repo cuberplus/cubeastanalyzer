@@ -1,3 +1,4 @@
+import { Const } from "./Constants";
 import { CrossColor, MethodName, Solve, Step, StepName } from "./Types";
 
 export function GetEmptyStep() {
@@ -50,8 +51,15 @@ export function CalculateMostUsedMethod(solves: Solve[]): MethodName {
         counts[solves[i].method]++;
         if (counts[solves[i].method] > max) {
             method = solves[i].method;
+            max = counts[solves[i].method];
         }
     }
 
     return method;
+}
+
+// If user doesn't have enough solves, choose a smaller window size to show their data
+export function CalculateWindowSize(solveCount: number): number {
+    let reducedWindowSize = Math.ceil(solveCount / 4);
+    return Math.min(reducedWindowSize, Const.DefaultWindowSize);
 }

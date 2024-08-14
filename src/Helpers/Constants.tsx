@@ -4,6 +4,7 @@ import { CrossColor, MethodName, StepName } from "./Types";
 export class Const {
     static readonly StdDevWindow: number = 1000; // This is the default window to use when calculating a single standard deviation
     static readonly InspectionGraphChunks: number = 7;
+    static readonly DefaultWindowSize: number = 1000;
 
     static readonly MethodSteps: { [id in MethodName]: StepName[] } = {
         [MethodName.CFOP]: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.OLL, StepName.PLL],

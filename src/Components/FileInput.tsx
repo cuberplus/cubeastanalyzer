@@ -5,7 +5,8 @@ import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
 import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar, Modal, Container } from "react-bootstrap";
 import { HelpPanel } from "./HelpPanel";
-import { CalculateMostUsedMethod } from "../Helpers/CubeHelpers";
+import { CalculateMostUsedMethod, CalculateWindowSize } from "../Helpers/CubeHelpers";
+import { Option } from "react-multi-select-component"
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [], showHelpModal: false };
@@ -19,8 +20,13 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         text?.then((value: string) => {
             let solveList: Solve[] = parseCsv(value, ',');
             this.setState({ solves: solveList });
+
             let method = CalculateMostUsedMethod(solveList);
-            this.filterPanel.current?.methodChanged({ label: method, value: method })
+            let newOption: Option = { label: method, value: method };
+            this.filterPanel.current?.methodChanged(newOption);
+
+            let windowSize = CalculateWindowSize(solveList.length);
+            this.filterPanel.current?.windowSizeChanged(windowSize);
         })
     };
 
@@ -28,8 +34,13 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         let file = GetDemoData();
         let solveList: Solve[] = parseCsv(file, ',');
         this.setState({ solves: solveList });
+
         let method = CalculateMostUsedMethod(solveList);
-        this.filterPanel.current?.methodChanged({ label: method, value: method })
+        let newOption: Option = { label: method, value: method };
+        this.filterPanel.current?.methodChanged(newOption);
+
+        let windowSize = CalculateWindowSize(solveList.length);
+        this.filterPanel.current?.windowSizeChanged(windowSize);
     }
 
     helpButtonClicked() {

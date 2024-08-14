@@ -41,7 +41,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         chosenPLLs: Const.PllCases,
         chosenOLLs: Const.OllCases,
         tabKey: 1,
-        windowSize: 500,
+        windowSize: Const.DefaultWindowSize,
         pointsPerGraph: 100,
         showFilters: false,
         showAlert: true,
@@ -171,6 +171,12 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         this.setState({
             filters: newFilters,
             chosenColors: selectedList
+        })
+    }
+
+    windowSizeChanged(newWindowSize: number) {
+        this.setState({
+            windowSize: newWindowSize
         })
     }
 
@@ -456,7 +462,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     {this.createFilterHtml(
                         <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.windowSize} onChange={this.setWindowSize.bind(this)} />,
                         "Sliding Window Size",
-                        "Choose the sliding window size. For example, the default is to show the average of 500 solves, over time. If you see no data, you should try lowering this value."
+                        "Choose the sliding window size. For example, the default is to show the average of 1000 solves, over time. If you see no data, you should try lowering this value."
                     )}
 
                     {this.createFilterHtml(
