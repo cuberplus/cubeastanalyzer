@@ -112,7 +112,7 @@ export interface FilterPanelState {
     windowSize: number,
     pointsPerGraph: number,
     showFilters: boolean,
-    showAlert: boolean,
+    showTestAlert: boolean,
     badTime: number,
     goodTime: number,
     method: Option

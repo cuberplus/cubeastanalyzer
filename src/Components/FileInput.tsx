@@ -27,6 +27,8 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
             let windowSize = CalculateWindowSize(solveList.length);
             this.filterPanel.current?.windowSizeChanged(windowSize);
+
+            this.filterPanel.current?.setTestAlert(false);
         })
     };
 
@@ -41,6 +43,8 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
         let windowSize = CalculateWindowSize(solveList.length);
         this.filterPanel.current?.windowSizeChanged(windowSize);
+
+        this.filterPanel.current?.setTestAlert(true);
     }
 
     helpButtonClicked() {

@@ -44,7 +44,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         windowSize: Const.DefaultWindowSize,
         pointsPerGraph: 100,
         showFilters: false,
-        showAlert: true,
+        showTestAlert: false,
         badTime: 20,
         goodTime: 15,
         method: { label: MethodName.CFOP, value: MethodName.CFOP }
@@ -150,7 +150,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             windowSize: prevState.windowSize,
             pointsPerGraph: prevState.pointsPerGraph,
             showFilters: prevState.showFilters,
-            showAlert: prevState.showAlert,
+            showTestAlert: prevState.showTestAlert,
             solveCleanliness: prevState.solveCleanliness,
             badTime: prevState.badTime,
             goodTime: prevState.goodTime
@@ -293,6 +293,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         })
     }
 
+    setTestAlert(showTestAlert: boolean) {
+        this.setState({ showTestAlert: showTestAlert })
+    }
+
     tabSelect(key: any) {
         this.setState({ tabKey: key });
     }
@@ -306,7 +310,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
     }
 
     hideAlert() {
-        this.setState({ showAlert: false });
+        this.setState({ showTestAlert: false });
     }
 
     compressSolves(solves: Solve[]) {
@@ -521,9 +525,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         </Col>
                     </Row >
 
-                    <Alert show={this.state.showAlert && (this.state.allSolves.length < this.state.windowSize)} variant={"warning"}>
-                        <Alert.Heading>Warning: Not Enough Solves</Alert.Heading>
-                        Your number of solves is less than your sliding window size. Try decreasing the Sliding Window Size or do more solves and export them again!
+                    <Alert show={this.state.showTestAlert} variant={"warning"}>
+                        <Alert.Heading>Warning: Viewing Test Data</Alert.Heading>
+                        These are not your solves, these are the dev's personal solves, just to show off the capabilities of this website! To view your solves, upload a CSV file, and click "Display My Stats"
                         <div className="d-flex justify-content-end">
                             <Button onClick={() => this.hideAlert()} variant="warning">
                                 Close
