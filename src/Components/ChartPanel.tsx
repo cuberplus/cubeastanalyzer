@@ -1,11 +1,13 @@
 import React from "react";
-import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, MethodName, Solve, StepName } from "../Helpers/Types";
+import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, FastestSolve, MethodName, Solve, StepName } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateAverage, calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset, splitIntoChunks, getTypicalAverages } from "../Helpers/MathHelpers";
 import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
-import { Card, Row, Col, Ratio, Tooltip } from "react-bootstrap";
+import { Card, Row, Col, Ratio, Tooltip, Table } from "react-bootstrap";
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { Const } from "../Helpers/Constants";
+import DataGrid, { CellClickArgs, ColumnOrColumnGroup, DataGridProps } from 'react-data-grid';
+import 'react-data-grid/lib/styles.css';
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
@@ -503,13 +505,32 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
-    createTooltip(description: string) {
+    buildBestSolves() {
+        const cols = [
+            { key: 'time', name: 'Time', resizable: true },
+            { key: 'date', name: 'Date', resizable: true },
+            { key: 'scramble', name: 'Scramble', resizable: true },
+            { key: 'id', name: 'ID', resizable: true } // Make invisible?
+        ];
+
+        let solveCopy: Solve[] = structuredClone(this.props.solves);
+        let fastest: Solve[] = solveCopy.sort((a: Solve, b: Solve) => a.time - b.time).slice(0, Const.FastestSolvesCount);
+        let reduced: FastestSolve[] = fastest.map(x => { return { date: x.date.toDateString(), time: x.time.toFixed(3), scramble: x.scramble, id: x.id } });
+
+        return (<DataGrid rows={reduced} columns={cols} onCellClick={this.openCubeast} />);
+    }
+
+    createTooltip(description: string): JSX.Element {
         const tooltip = (
             <Tooltip id="tooltip">
                 {description}
             </Tooltip>
         );
         return tooltip;
+    }
+
+    openCubeast(params: CellClickArgs<FastestSolve>) {
+        window.open("https://app.cubeast.com/log/solves/" + params.row.id)
     }
 
     render() {
@@ -529,10 +550,12 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         charts.push(buildChartHtml(<Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Time (s)", "Count")} />, "Count of Solves by How Long They Took", "This chart shows how many solves you have done in 10s, 11s, 12s, etc..."));
         charts.push(buildChartHtml(<Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)")} />, "Average Turns Per Second", "This chart shows your average turns per second"));
         charts.push(buildChartHtml(<Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Solve Number", "Turns")} />, "Average Turns", "This chart shows your average number of turns, in quarter turn metric"));
+        charts.push(buildChartHtml(this.buildBestSolves(), `Top ${Const.FastestSolvesCount} Fastest Solves`, `This shows your ${Const.FastestSolvesCount} fastest solves, given the filters`));
         charts.push(buildChartHtml(<Line data={this.buildRunningStdDevData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)")} />, "Average Standard Deviation", "This chart shows your running average's standard deviation"));
         charts.push(buildChartHtml(<Line data={this.buildRunningColorPercentages()} options={createOptions(ChartType.Line, "Solve Number", "Percentage")} />, "Percentage of Solves by Cross Color", "This chart shows what percentage of solves started with cross on White/Yellow/etc..."));
         charts.push(buildChartHtml(<Bar data={this.buildInspectionData()} options={createOptions(ChartType.Bar, "Inspection Time (s)", "Solve Time (s)")} />, "Average solve time by inspection time", "This chart shows your average, grouped up by how much inspection time (For example, the left bar is the 1/7 of your solves with the lowest inspection time, and the right bar is the 1/7 of your solves with the most inspection time)"));
         charts.push(buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)")} />, "Average Time by Step", "This chart shows what percentage of your solve each step takes"));
+
 
         // Add charts that require CFOP method (and all of its steps) to be chosen
         if (this.props.methodName == MethodName.CFOP && this.props.steps.length == Const.MethodSteps[MethodName.CFOP].length) {

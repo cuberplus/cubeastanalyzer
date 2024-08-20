@@ -75,6 +75,7 @@ export interface Step {
 }
 
 export interface Solve {
+    id: string,
     time: number,
     date: Date,
     crossColor: CrossColor,
@@ -174,4 +175,11 @@ export interface Records {
     bestAo5: number,
     bestAo12: number,
     bestAo100: number
+}
+
+export interface FastestSolve {
+    time: string,
+    date: string,
+    scramble: string,
+    id: string
 }

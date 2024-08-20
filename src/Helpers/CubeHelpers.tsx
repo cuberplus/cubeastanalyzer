@@ -18,6 +18,7 @@ export function GetEmptyStep() {
 
 export function GetEmptySolve() {
     let solve: Solve = {
+        id: "",
         time: 0,
         date: new Date(),
         crossColor: CrossColor.Unknown,

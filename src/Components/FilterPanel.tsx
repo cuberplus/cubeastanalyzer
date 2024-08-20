@@ -324,6 +324,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             })
             newSolve.steps = newSteps;
 
+            newSolve.id = solve.id;
             newSolve.crossColor = solve.crossColor;
             newSolve.date = solve.date;
             newSolve.inspectionTime = solve.inspectionTime;

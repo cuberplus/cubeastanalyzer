@@ -16,6 +16,9 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
 
         keys.forEach((key, index) => {
             switch (key) {
+                case "id":
+                    obj.id = item.at(index)!;
+                    break;
                 case "time":
                     obj.time = Number(item.at(index)) / 1000;
                     if (obj.time < 1) {
