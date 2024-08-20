@@ -1,4 +1,4 @@
-import { Card, Col, Container, OverlayTrigger, Ratio, Row, Tooltip } from "react-bootstrap";
+import { Card, CardText, Col, Container, OverlayTrigger, Ratio, Row, Tooltip } from "react-bootstrap";
 import { ChartType } from "./Types";
 
 export function createTooltip(description: string) {
@@ -16,7 +16,9 @@ export function buildChartHtml(chart: JSX.Element, title: string, tooltip: strin
             <Card className="p-2">
                 <OverlayTrigger placement="auto" overlay={createTooltip(tooltip)}>
                     <Row className="justify-content-center">
-                        {title} ⓘ
+                        <CardText>
+                            {title} ⓘ
+                        </CardText>
                     </Row>
                 </OverlayTrigger>
                 <Ratio aspectRatio="4x3">

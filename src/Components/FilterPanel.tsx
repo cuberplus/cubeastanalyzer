@@ -7,7 +7,7 @@ import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, Me
 import { ChartPanel } from "./ChartPanel";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile, calculateAverage, calculateStandardDeviation } from "../Helpers/MathHelpers";
-import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container, CloseButton } from 'react-bootstrap';
+import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container, CloseButton, CardText } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 import { GetEmptySolve } from "../Helpers/CubeHelpers";
 
@@ -520,14 +520,14 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         <Col className="col-auto">
                             <Container className="">
                                 <Button className="position-fixed" onClick={this.showFilters.bind(this)}>
-                                    <h4>
+                                    <CardText>
                                         →
-                                    </h4>
+                                    </CardText>
                                 </Button>
                                 <Button onClick={this.showFilters.bind(this)} style={{ visibility: "hidden" }}>
-                                    <h4>
+                                    <CardText>
                                         →
-                                    </h4>
+                                    </CardText>
                                 </Button>
                             </Container>
                         </Col>
