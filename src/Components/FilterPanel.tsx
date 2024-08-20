@@ -517,11 +517,16 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 </Button>
                             </div>
                         </Alert>
-                        <Col className="col-1">
-                            <Container>
+                        <Col className="col-auto">
+                            <Container className="">
                                 <Button className="position-fixed" onClick={this.showFilters.bind(this)}>
                                     <h4>
-                                        Filters →
+                                        →
+                                    </h4>
+                                </Button>
+                                <Button onClick={this.showFilters.bind(this)} style={{ visibility: "hidden" }}>
+                                    <h4>
+                                        →
                                     </h4>
                                 </Button>
                             </Container>
