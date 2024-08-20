@@ -1,4 +1,4 @@
-import { Card, Col, OverlayTrigger, Ratio, Tooltip } from "react-bootstrap";
+import { Card, Col, Container, OverlayTrigger, Ratio, Row, Tooltip } from "react-bootstrap";
 import { ChartType } from "./Types";
 
 export function createTooltip(description: string) {
@@ -10,30 +10,26 @@ export function createTooltip(description: string) {
     return tooltip;
 }
 
-export function buildChartHtml(chart: JSX.Element, tooltip: string): JSX.Element {
+export function buildChartHtml(chart: JSX.Element, title: string, tooltip: string): JSX.Element {
     return (
         <Col className="col-12 col-lg-6">
             <Card className="p-2">
                 <OverlayTrigger placement="auto" overlay={createTooltip(tooltip)}>
-                    <Ratio aspectRatio="4x3">
-                        {chart}
-                    </Ratio>
+                    <Row className="justify-content-center">
+                        {title} ⓘ
+                    </Row>
                 </OverlayTrigger>
-
+                <Ratio aspectRatio="4x3">
+                    {chart}
+                </Ratio>
             </Card>
         </Col>
     )
 }
 
-export function createOptions(chartType: ChartType, chartTitle: string, xAxis: string, yAxis: string, isStacked: boolean = true) {
+export function createOptions(chartType: ChartType, xAxis: string, yAxis: string, isStacked: boolean = true) {
     let genericOptions: any = {
-        maintainAspectRatio: false,
-        plugins: {
-            title: {
-                display: true,
-                text: chartTitle
-            }
-        }
+        maintainAspectRatio: false
     };
 
     let chartOptions: any = {};
