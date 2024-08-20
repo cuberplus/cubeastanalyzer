@@ -531,7 +531,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 </Button>
                             </Container>
                         </Col>
-                        <Col className="col-11">
+                        <Col>
                             <ChartPanel
                                 windowSize={this.state.windowSize}
                                 solves={this.compressSolves(this.state.filteredSolves)}
