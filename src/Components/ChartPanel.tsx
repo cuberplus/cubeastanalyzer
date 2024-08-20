@@ -552,7 +552,6 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
         return (
             <div>
-                <br />
                 <Row>
                     {charts}
                 </Row>

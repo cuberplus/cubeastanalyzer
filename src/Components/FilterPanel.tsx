@@ -7,7 +7,7 @@ import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, Me
 import { ChartPanel } from "./ChartPanel";
 import { Option } from "react-multi-select-component"
 import { calculate90thPercentile, calculateAverage, calculateStandardDeviation } from "../Helpers/MathHelpers";
-import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container } from 'react-bootstrap';
+import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container, CloseButton } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 import { GetEmptySolve } from "../Helpers/CubeHelpers";
 
@@ -505,46 +505,38 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
         let analysis: JSX.Element = (<></>)
         if (this.state.allSolves.length > 0) {
-            let numSolves = Math.min(1000, this.props.solves.length);
             analysis = (
                 <div>
                     <Row>
-                        <Col>
-                            <Button onClick={this.showFilters.bind(this)}>
-                                Show filters
-                            </Button>
+                        <Alert show={this.state.showTestAlert} variant={"warning"}>
+                            <Alert.Heading>Warning: Viewing Test Data</Alert.Heading>
+                            These are not your solves, these are the dev's personal solves, just to show off the capabilities of this website! To view your solves, upload a CSV file, and click "Display My Stats"
+                            <div className="d-flex justify-content-end">
+                                <Button onClick={() => this.hideAlert()} variant="warning">
+                                    Close
+                                </Button>
+                            </div>
+                        </Alert>
+                        <Col className="col-1">
+                            <Container>
+                                <Button className="position-fixed" onClick={this.showFilters.bind(this)}>
+                                    <h4>
+                                        Filters →
+                                    </h4>
+                                </Button>
+                            </Container>
                         </Col>
-                        <Col>
-                            <OverlayTrigger placement="bottom" overlay={this.createTooltip(`This means that of the past ${numSolves} solves, 90% of them were below the shown time, rounded up to the nearest second. This is a very high definition of Sub-X, but if you tell someone this number, you will be able to meet that number with 90% certainty.`)}>
-                                <Card>
-                                    <h5>
-                                        You are Sub-{calculate90thPercentile(this.props.solves.map(x => x.time), numSolves)}.
-                                    </h5>
-                                </Card>
-                            </OverlayTrigger>
+                        <Col className="col-11">
+                            <ChartPanel
+                                windowSize={this.state.windowSize}
+                                solves={this.compressSolves(this.state.filteredSolves)}
+                                pointsPerGraph={this.state.pointsPerGraph}
+                                methodName={this.state.filters.method}
+                                goodTime={this.state.goodTime}
+                                badTime={this.state.badTime}
+                                steps={this.state.filters.steps}
+                            />
                         </Col>
-                    </Row >
-
-                    <Alert show={this.state.showTestAlert} variant={"warning"}>
-                        <Alert.Heading>Warning: Viewing Test Data</Alert.Heading>
-                        These are not your solves, these are the dev's personal solves, just to show off the capabilities of this website! To view your solves, upload a CSV file, and click "Display My Stats"
-                        <div className="d-flex justify-content-end">
-                            <Button onClick={() => this.hideAlert()} variant="warning">
-                                Close
-                            </Button>
-                        </div>
-                    </Alert>
-
-                    <Row>
-                        <ChartPanel
-                            windowSize={this.state.windowSize}
-                            solves={this.compressSolves(this.state.filteredSolves)}
-                            pointsPerGraph={this.state.pointsPerGraph}
-                            methodName={this.state.filters.method}
-                            goodTime={this.state.goodTime}
-                            badTime={this.state.badTime}
-                            steps={this.state.filters.steps}
-                        />
                     </Row>
                 </div >
             );
