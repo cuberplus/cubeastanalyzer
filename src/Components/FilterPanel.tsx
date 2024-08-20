@@ -517,8 +517,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 </Button>
                             </div>
                         </Alert>
-                        <Col className="col-auto">
-                            <Container className="">
+                        <Col className="col-auto m-0 p-0">
+                            <Container className="m-0 p-0">
                                 <Button className="position-fixed" onClick={this.showFilters.bind(this)}>
                                     <CardText>
                                         →
