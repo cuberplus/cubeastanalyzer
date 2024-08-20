@@ -15,11 +15,9 @@ export function buildChartHtml(chart: JSX.Element, title: string, tooltip: strin
         <Col className="col-12 col-lg-6">
             <Card className="p-2">
                 <OverlayTrigger placement="auto" overlay={createTooltip(tooltip)}>
-                    <Row className="justify-content-center">
-                        <CardText>
-                            {title} ⓘ
-                        </CardText>
-                    </Row>
+                    <CardText className="text-center">
+                        {title} ⓘ
+                    </CardText>
                 </OverlayTrigger>
                 <Ratio aspectRatio="4x3">
                     {chart}
