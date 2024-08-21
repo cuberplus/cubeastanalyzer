@@ -3,7 +3,7 @@ import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, FastestSolve, 
 import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
 import { calculateAverage, calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset, splitIntoChunks, getTypicalAverages } from "../Helpers/MathHelpers";
 import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
-import { Card, Row, Col, Ratio, Tooltip, Table } from "react-bootstrap";
+import { Row, Tooltip } from "react-bootstrap";
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { Const } from "../Helpers/Constants";
 import DataGrid, { CellClickArgs, ColumnOrColumnGroup, DataGridProps } from 'react-data-grid';
@@ -507,10 +507,10 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
     buildBestSolves() {
         const cols = [
-            { key: 'time', name: 'Time', resizable: true },
-            { key: 'date', name: 'Date', resizable: true },
-            { key: 'scramble', name: 'Scramble', resizable: true },
-            { key: 'id', name: 'ID', resizable: true } // Make invisible?
+            { key: 'time', name: 'Time' },
+            { key: 'date', name: 'Date' },
+            { key: 'scramble', name: 'Scramble' },
+            { key: 'id', name: 'ID' } // Make invisible?
         ];
 
         let solveCopy: Solve[] = structuredClone(this.props.solves);
