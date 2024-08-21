@@ -1,0 +1,5 @@
+Hot Spots
+└─ Check file [35m/home/mpfeifer/Code/CubingStats/src/Helpers/[36mChartHelpers.tsx[39m[35m[39m (559ms)
+   └─ Check deferred node from (line 15, char 16) to (line 30, char 7) (459ms)
+
+No duplicate packages found

@@ -1,6 +1,6 @@
 import { Const } from "./Constants";
 import { GetEmptySolve } from "./CubeHelpers";
-import { Solve, Step, CrossColor, MethodName, StepName } from "./Types";
+import { Solve, CrossColor, MethodName, StepName } from "./Types";
 import moment from 'moment';
 
 export function parseCsv(stringVal: string, splitter: string): Solve[] {

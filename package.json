@@ -5,6 +5,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/plugin-transform-private-property-in-object": "^7.24.7",
     "@datastructures-js/deque": "github:datastructures-js/deque",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -14,16 +16,17 @@
     "@types/node": "^16.18.57",
     "@types/react": "^18.2.24",
     "@types/react-dom": "^18.2.8",
-    "bootstrap": "^5.3.2",
+    "bootstrap": "^5.3.3",
     "browserify": "^17.0.0",
     "buffer": "^6.0.3",
     "chart.js": "^4.4.0",
     "csv": "^6.3.3",
     "csv-parse": "^5.5.0",
     "fs": "^0.0.1-security",
-    "moment": "^2.29.4",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.9.0",
+    "react-bootstrap": "^2.10.4",
+    "react-bootstrap-validation": "^0.1.11",
     "react-chartjs-2": "^5.2.0",
     "react-data-grid": "^7.0.0-beta.46",
     "react-datepicker": "^4.18.0",
@@ -31,7 +34,7 @@
     "react-modern-calendar-datepicker": "^3.1.6",
     "react-multi-select-component": "^4.3.4",
     "react-scripts": "5.0.1",
-    "react-select": "^5.7.7",
+    "react-select": "^5.8.0",
     "stream": "^0.0.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
@@ -63,6 +66,8 @@
     ]
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
+    "@types/react-bootstrap": "^0.32.37",
     "@types/react-datepicker": "^4.15.1",
     "gh-pages": "^6.0.0"
   }

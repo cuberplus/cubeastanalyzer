@@ -1,4 +1,4 @@
-import { Card, CardText, Col, Container, OverlayTrigger, Ratio, Row, Tooltip } from "react-bootstrap";
+import { Card, CardText, Col, OverlayTrigger, Ratio, Tooltip } from "react-bootstrap";
 import { ChartType } from "./Types";
 
 export function createTooltip(description: string) {
