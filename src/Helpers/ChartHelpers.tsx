@@ -81,6 +81,10 @@ export function createOptions(chartType: ChartType, xAxis: string, yAxis: string
                     }
                 }
             };
+
+            if (useLogScale) {
+                chartOptions.scales.y.type = 'logarithmic';
+            }
             break;
 
         case ChartType.Doughnut:
