@@ -116,7 +116,8 @@ export interface FilterPanelState {
     showTestAlert: boolean,
     badTime: number,
     goodTime: number,
-    method: Option
+    method: Option,
+    useLogScale: boolean
 }
 
 export interface FileInputProps {
@@ -135,7 +136,8 @@ export interface ChartPanelProps {
     badTime: number,
     goodTime: number,
     methodName: MethodName,
-    steps: StepName[]
+    steps: StepName[],
+    useLogScale: boolean
 }
 
 export interface ChartPanelState {

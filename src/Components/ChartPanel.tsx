@@ -6,7 +6,7 @@ import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
 import { Row, Tooltip } from "react-bootstrap";
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { Const } from "../Helpers/Constants";
-import DataGrid, { CellClickArgs, ColumnOrColumnGroup, DataGridProps } from 'react-data-grid';
+import DataGrid, { CellClickArgs } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
@@ -541,36 +541,36 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
         // Add charts that require exactly one step to be chosen
         if (this.props.steps.length == 1 && (this.props.steps[0] === StepName.OLL || this.props.steps[0] === StepName.PLL)) {
-            charts.push(buildChartHtml(<Bar data={this.buildCaseData()} options={createOptions(ChartType.Bar, "Solve Number", "Time (s)")} />, "Average Recognition Time and Execution Time per Case", "This chart shows how long your execution/recognition took for any individual last layer algorithm, sorted by how long each took."));
+            charts.push(buildChartHtml(<Bar data={this.buildCaseData()} options={createOptions(ChartType.Bar, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Recognition Time and Execution Time per Case", "This chart shows how long your execution/recognition took for any individual last layer algorithm, sorted by how long each took."));
         }
 
         // Add remaining charts
-        charts.push(buildChartHtml(<Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)")} />, "Average Time", "This chart shows your running average"));
-        charts.push(buildChartHtml(<Line data={this.buildRunningRecognitionExecution()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)")} />, "Average Recognition and Execution", "This chart shows your running average, split up by recognition time and execution time"));
-        charts.push(buildChartHtml(<Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Time (s)", "Count")} />, "Count of Solves by How Long They Took", "This chart shows how many solves you have done in 10s, 11s, 12s, etc..."));
-        charts.push(buildChartHtml(<Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)")} />, "Average Turns Per Second", "This chart shows your average turns per second"));
-        charts.push(buildChartHtml(<Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Solve Number", "Turns")} />, "Average Turns", "This chart shows your average number of turns, in quarter turn metric"));
+        charts.push(buildChartHtml(<Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Time", "This chart shows your running average"));
+        charts.push(buildChartHtml(<Line data={this.buildRunningRecognitionExecution()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Recognition and Execution", "This chart shows your running average, split up by recognition time and execution time"));
+        charts.push(buildChartHtml(<Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Time (s)", "Count", this.props.useLogScale)} />, "Count of Solves by How Long They Took", "This chart shows how many solves you have done in 10s, 11s, 12s, etc..."));
+        charts.push(buildChartHtml(<Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Turns Per Second", "This chart shows your average turns per second"));
+        charts.push(buildChartHtml(<Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Solve Number", "Turns", this.props.useLogScale)} />, "Average Turns", "This chart shows your average number of turns, in quarter turn metric"));
         charts.push(buildChartHtml(this.buildBestSolves(), `Top ${Const.FastestSolvesCount} Fastest Solves`, `This shows your ${Const.FastestSolvesCount} fastest solves, given the filters`));
-        charts.push(buildChartHtml(<Line data={this.buildRunningStdDevData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)")} />, "Average Standard Deviation", "This chart shows your running average's standard deviation"));
-        charts.push(buildChartHtml(<Line data={this.buildRunningColorPercentages()} options={createOptions(ChartType.Line, "Solve Number", "Percentage")} />, "Percentage of Solves by Cross Color", "This chart shows what percentage of solves started with cross on White/Yellow/etc..."));
-        charts.push(buildChartHtml(<Bar data={this.buildInspectionData()} options={createOptions(ChartType.Bar, "Inspection Time (s)", "Solve Time (s)")} />, "Average solve time by inspection time", "This chart shows your average, grouped up by how much inspection time (For example, the left bar is the 1/7 of your solves with the lowest inspection time, and the right bar is the 1/7 of your solves with the most inspection time)"));
-        charts.push(buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)")} />, "Average Time by Step", "This chart shows what percentage of your solve each step takes"));
+        charts.push(buildChartHtml(<Line data={this.buildRunningStdDevData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Standard Deviation", "This chart shows your running average's standard deviation"));
+        charts.push(buildChartHtml(<Line data={this.buildRunningColorPercentages()} options={createOptions(ChartType.Line, "Solve Number", "Percentage", this.props.useLogScale)} />, "Percentage of Solves by Cross Color", "This chart shows what percentage of solves started with cross on White/Yellow/etc..."));
+        charts.push(buildChartHtml(<Bar data={this.buildInspectionData()} options={createOptions(ChartType.Bar, "Inspection Time (s)", "Solve Time (s)", this.props.useLogScale)} />, "Average solve time by inspection time", "This chart shows your average, grouped up by how much inspection time (For example, the left bar is the 1/7 of your solves with the lowest inspection time, and the right bar is the 1/7 of your solves with the most inspection time)"));
+        charts.push(buildChartHtml(<Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Time by Step", "This chart shows what percentage of your solve each step takes"));
 
 
         // Add charts that require CFOP method (and all of its steps) to be chosen
         if (this.props.methodName == MethodName.CFOP && this.props.steps.length == Const.MethodSteps[MethodName.CFOP].length) {
-            charts.push(buildChartHtml(<Bar data={this.buildTypicalCompare()} options={createOptions(ChartType.Bar, "Step Name", "Time (s)", false)} />, "Time Per Step, Compared to Typical Solver", "This chart shows how long each step takes, compared to a typical solver at your average. The 'typical' data is calculated based on a tool provided from Felix Zemdegs's CubeSkills blog"));
+            charts.push(buildChartHtml(<Bar data={this.buildTypicalCompare()} options={createOptions(ChartType.Bar, "Step Name", "Time (s)", this.props.useLogScale, false)} />, "Time Per Step, Compared to Typical Solver", "This chart shows how long each step takes, compared to a typical solver at your average. The 'typical' data is calculated based on a tool provided from Felix Zemdegs's CubeSkills blog"));
         }
 
         // Add charts that require 2+ steps
         if (this.props.steps.length >= 2) {
-            charts.push(buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "", "")} />, "Percentage of the Solve Each Step Took", "This chart shows what percentage of your solve each step takes"));
+            charts.push(buildChartHtml(<Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "", "", this.props.useLogScale)} />, "Percentage of the Solve Each Step Took", "This chart shows what percentage of your solve each step takes"));
         }
 
         // Add charts that require all steps to be chosen
         if (this.props.steps.length == Const.MethodSteps[this.props.methodName].length) {
-            charts.push(buildChartHtml(<Line data={this.buildGoodBadData(this.props.goodTime, this.props.badTime)} options={createOptions(ChartType.Line, "Solve Number", "Percentage")} />, "Percentage of 'Good' and 'Bad' Solves", "This chart shows your running average of solves considered 'good' and 'bad'. This can be configured in the filter panel. Just set the good and bad values to times you feel are correct"));
-            charts.push(buildChartHtml(<Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "Date", "Time (s)")} />, "History of Records", "This chart shows your history of PBs. Note that this will only show solves that meet the criteria in your filters, so don't be alarmed if you don't see your PB here."))
+            charts.push(buildChartHtml(<Line data={this.buildGoodBadData(this.props.goodTime, this.props.badTime)} options={createOptions(ChartType.Line, "Solve Number", "Percentage", this.props.useLogScale)} />, "Percentage of 'Good' and 'Bad' Solves", "This chart shows your running average of solves considered 'good' and 'bad'. This can be configured in the filter panel. Just set the good and bad values to times you feel are correct"));
+            charts.push(buildChartHtml(<Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "Date", "Time (s)", this.props.useLogScale)} />, "History of Records", "This chart shows your history of PBs. Note that this will only show solves that meet the criteria in your filters, so don't be alarmed if you don't see your PB here."))
         }
 
         return (

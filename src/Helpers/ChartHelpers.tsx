@@ -27,7 +27,7 @@ export function buildChartHtml(chart: JSX.Element, title: string, tooltip: strin
     )
 }
 
-export function createOptions(chartType: ChartType, xAxis: string, yAxis: string, isStacked: boolean = true) {
+export function createOptions(chartType: ChartType, xAxis: string, yAxis: string, useLogScale: boolean, isStacked: boolean = true) {
     let genericOptions: any = {
         maintainAspectRatio: false
     };
@@ -53,6 +53,10 @@ export function createOptions(chartType: ChartType, xAxis: string, yAxis: string
                     }
                 }
             };
+
+            if (useLogScale) {
+                chartOptions.scales.y.type = 'logarithmic';
+            }
             break;
 
         case ChartType.Bar:
@@ -86,7 +90,6 @@ export function createOptions(chartType: ChartType, xAxis: string, yAxis: string
         default:
             console.log("Unknown chart type: " + chartType)
     }
-
 
     return { ...chartOptions, ...genericOptions };
 }

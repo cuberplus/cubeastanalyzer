@@ -6,10 +6,11 @@ import { MultiSelect } from "react-multi-select-component";
 import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, MethodName, Solve, SolveCleanliness, Step, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
 import { Option } from "react-multi-select-component"
-import { calculate90thPercentile, calculateAverage, calculateStandardDeviation } from "../Helpers/MathHelpers";
-import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container, CloseButton, CardText } from 'react-bootstrap';
+import { calculateAverage, calculateStandardDeviation } from "../Helpers/MathHelpers";
+import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container, CardText } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 import { GetEmptySolve } from "../Helpers/CubeHelpers";
+import ReactSwitch from "react-switch";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
     state: FilterPanelState = {
@@ -47,7 +48,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         showTestAlert: false,
         badTime: 20,
         goodTime: 15,
-        method: { label: MethodName.CFOP, value: MethodName.CFOP }
+        method: { label: MethodName.CFOP, value: MethodName.CFOP },
+        useLogScale: false
     }
 
     static passesFilters(solve: Solve, filters: Filters, deviations: Deviations) {
@@ -153,7 +155,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             showTestAlert: prevState.showTestAlert,
             solveCleanliness: prevState.solveCleanliness,
             badTime: prevState.badTime,
-            goodTime: prevState.goodTime
+            goodTime: prevState.goodTime,
+            useLogScale: prevState.useLogScale
         }
 
         // Update anything that needs it
@@ -281,6 +284,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
     setPointsPerGraph(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ pointsPerGraph: parseInt(event.target.value) })
+    }
+
+    setUseLogScale(checked: boolean) {
+        this.setState({ useLogScale: checked });
     }
 
     setCleanliness(selectedList: any[]) {
@@ -471,9 +478,15 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     )}
 
                     {this.createFilterHtml(
-                        <FormControl min="5" max="10000" type="number" id="windowSize" value={this.state.pointsPerGraph} onChange={this.setPointsPerGraph.bind(this)} />,
+                        <FormControl min="5" max="10000" type="number" id="pointsPerGraph" value={this.state.pointsPerGraph} onChange={this.setPointsPerGraph.bind(this)} />,
                         "Points Per Graph",
                         "Choose how many points to show on each chart. If this value is set too high, you may see performance issues."
+                    )}
+
+                    {this.createFilterHtml(
+                        <ReactSwitch id="useLogScale" checked={this.state.useLogScale} onChange={this.setUseLogScale.bind(this)} />,
+                        "Use Logarithmic Scale",
+                        "Use a Logarithmic Scale for the Y axis. If you are unsure what this means, leave it disabled"
                     )}
 
                     {this.createFilterHtml(
@@ -541,6 +554,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                                 goodTime={this.state.goodTime}
                                 badTime={this.state.badTime}
                                 steps={this.state.filters.steps}
+                                useLogScale={this.state.useLogScale}
                             />
                         </Col>
                     </Row>
