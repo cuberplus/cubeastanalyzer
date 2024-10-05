@@ -381,24 +381,8 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             ao1000: this.buildRecordDataset(dates.slice(999), ao1000)
         };
 
-        // Figure out labels
-        let labels = [
-            ...records.single.map(x => x.x),
-            ...records.ao5.map(x => x.x),
-            ...records.ao12.map(x => x.x),
-            ...records.ao100.map(x => x.x),
-            ...records.ao1000.map(x => x.x)
-        ]
-
-        labels = labels.sort((a, b) => { return a.getTime() - b.getTime() })
-
-        labels = labels.filter((date, i, self) =>
-            self.findIndex(d => d.getTime() === date.getTime()) === i
-        );
-
         // Display the charts
         let data: ChartData<"line", { x: Date, y: number }[]> = {
-            labels: labels,
             datasets: [
                 {
                     label: `Record Single`,
