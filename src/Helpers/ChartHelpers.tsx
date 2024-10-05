@@ -27,7 +27,7 @@ export function buildChartHtml(key: number, chart: JSX.Element, title: string, t
     )
 }
 
-export function createOptions(chartType: ChartType, xAxis: string, yAxis: string, useLogScale: boolean, isStacked: boolean = true) {
+export function createOptions(chartType: ChartType, xAxis: string, yAxis: string, useLogScale: boolean, isStacked: boolean = true, isDateChart: boolean = false) {
     let genericOptions: any = {
         maintainAspectRatio: false
     };
@@ -53,6 +53,16 @@ export function createOptions(chartType: ChartType, xAxis: string, yAxis: string
                     }
                 }
             };
+
+            if (isDateChart) {
+                chartOptions.scales.x.type = 'timeseries';
+                chartOptions.scales.x.timeseries = {
+                    unit: 'month',
+                    displayFormats: {
+                        month: 'MMM yyyy'
+                    }
+                };
+            }
 
             if (useLogScale) {
                 chartOptions.scales.y.type = 'logarithmic';

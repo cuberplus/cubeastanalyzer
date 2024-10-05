@@ -1,6 +1,11 @@
 import { Deque } from "@datastructures-js/deque";
 import { Const } from "./Constants";
 import { Records } from "./Types";
+var Set = require("sorted-set");
+
+export function sumArray(data: number[]): number {
+    return data.reduce((acc, curr) => acc + curr, 0);
+}
 
 export function calculateAverage(data: number[]): number {
     let mean = 0;
@@ -58,6 +63,46 @@ export function calculateMovingAverage(data: number[], window: number): number[]
     }
     return result;
 };
+
+export function calculateMovingAverageChopped(data: number[], window: number, chop: number): number[] {
+    if (chop * 2 >= window) {
+        throw new Error("Bad chop")
+    }
+    if (chop <= 0) {
+        throw new Error("Bad chop")
+    }
+
+    let result: number[] = [];
+    if (data.length < window) {
+        return result;
+    }
+
+    var inWindow = new Set();
+    var trueWindow = window - (chop * 2);
+    const steps = data.length - window - 1;
+
+    let sum = 0;
+    for (let i = 0; i < window; ++i) {
+        sum += data[i];
+        inWindow.add(data[i]);
+    }
+
+    let minTotalHere = sumArray(inWindow.slice(0, chop));
+    let maxTotalHere = sumArray(inWindow.slice(-chop));
+    result.push((sum - minTotalHere - maxTotalHere) / trueWindow)
+
+    for (let i = 0; i < steps; ++i) {
+        sum -= data[i];
+        sum += data[i + window];
+        inWindow.del(data[i]);
+        inWindow.add(data[i + window])
+        let minTotalHere = sumArray(inWindow.slice(0, chop));
+        let maxTotalHere = sumArray(inWindow.slice(-chop));
+        result.push((sum - minTotalHere - maxTotalHere) / trueWindow)
+    }
+
+    return result;
+}
 
 export function calculateMovingPercentage(data: any[], window: number, criteria: (solve: any) => boolean): number[] {
     let result: number[] = [];

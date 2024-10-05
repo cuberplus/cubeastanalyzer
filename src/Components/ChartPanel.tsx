@@ -1,13 +1,14 @@
 import React from "react";
 import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, FastestSolve, MethodName, Solve, StepName } from "../Helpers/Types";
-import { Chart as ChartJS, ChartData, CategoryScale } from 'chart.js/auto';
-import { calculateAverage, calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset, splitIntoChunks, getTypicalAverages } from "../Helpers/MathHelpers";
+import { Chart as ChartJS, ChartData, CategoryScale, Point } from 'chart.js/auto';
+import { calculateAverage, calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset, splitIntoChunks, getTypicalAverages, calculateMovingAverageChopped } from "../Helpers/MathHelpers";
 import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
 import { Row, Tooltip } from "react-bootstrap";
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { Const } from "../Helpers/Constants";
 import DataGrid, { CellClickArgs } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
+import 'chartjs-adapter-moment';
 
 export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState> {
     state: ChartPanelState = { solves: [] };
@@ -342,29 +343,84 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         return data;
     }
 
-    buildRecordHistory() {
-        if (this.props.solves.length == 0) {
-            return this.getEmptyChartData();
-        }
+    buildRecordDataset(dates: Date[], times: number[]) {
+        let records = [{ x: dates[0], y: times[0] }];
 
-        let records = [this.props.solves[0].time];
-        let dates = [this.props.solves[0].date];
-
-        for (let i = 1; i < this.props.solves.length; i++) {
-            if (this.props.solves[i].time < records[records.length - 1]) {
-                records.push(this.props.solves[i].time);
-                dates.push(this.props.solves[i].date);
+        for (let i = 1; i < times.length; i++) {
+            if (times[i] < records[records.length - 1].y) {
+                records.push({ x: dates[i], y: times[i] });
             }
         }
 
-        let labels = dates.map(x => x.toDateString())
+        return records;
+    }
 
-        let data: ChartData<"line"> = {
+    buildRecordHistory()
+        : ChartData<"line", {
+            x: Date;
+            y: number;
+        }[]> {
+        if (this.props.solves.length == 0) {
+            //return this.getEmptyChartData();
+        }
+
+        let dates = this.props.solves.map(x => x.date);
+
+        let single = this.props.solves.map(x => x.time);
+        let ao5 = calculateMovingAverage(this.props.solves.map(x => x.time), 5);
+        let ao12 = calculateMovingAverageChopped(this.props.solves.map(x => x.time), 12, 1);
+        let ao100 = calculateMovingAverageChopped(this.props.solves.map(x => x.time), 100, 5);
+        let ao1000 = calculateMovingAverageChopped(this.props.solves.map(x => x.time), 1000, 50);
+
+        // Start initial records
+        let records = {
+            single: this.buildRecordDataset(dates, single),
+            ao5: this.buildRecordDataset(dates.slice(4), ao5),
+            ao12: this.buildRecordDataset(dates.slice(11), ao12),
+            ao100: this.buildRecordDataset(dates.slice(99), ao100),
+            ao1000: this.buildRecordDataset(dates.slice(999), ao1000)
+        };
+
+        // Figure out labels
+        let labels = [
+            ...records.single.map(x => x.x),
+            ...records.ao5.map(x => x.x),
+            ...records.ao12.map(x => x.x),
+            ...records.ao100.map(x => x.x),
+            ...records.ao1000.map(x => x.x)
+        ]
+
+        labels = labels.sort((a, b) => { return a.getTime() - b.getTime() })
+
+        labels = labels.filter((date, i, self) =>
+            self.findIndex(d => d.getTime() === date.getTime()) === i
+        );
+
+        // Display the charts
+        let data: ChartData<"line", { x: Date, y: number }[]> = {
             labels: labels,
-            datasets: [{
-                label: `Current record`,
-                data: records
-            }]
+            datasets: [
+                {
+                    label: `Record Single`,
+                    data: records.single
+                },
+                {
+                    label: `Record Ao5`,
+                    data: records.ao5
+                },
+                {
+                    label: `Record Ao12`,
+                    data: records.ao12
+                },
+                {
+                    label: `Record Ao100`,
+                    data: records.ao100
+                },
+                {
+                    label: `Record Ao1000`,
+                    data: records.ao1000
+                }
+            ]
         }
 
         return data;
@@ -570,7 +626,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         // Add charts that require all steps to be chosen
         if (this.props.steps.length == Const.MethodSteps[this.props.methodName].length) {
             charts.push(buildChartHtml(13, <Line data={this.buildGoodBadData(this.props.goodTime, this.props.badTime)} options={createOptions(ChartType.Line, "Solve Number", "Percentage", this.props.useLogScale)} />, "Percentage of 'Good' and 'Bad' Solves", "This chart shows your running average of solves considered 'good' and 'bad'. This can be configured in the filter panel. Just set the good and bad values to times you feel are correct"));
-            charts.push(buildChartHtml(14, <Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "Date", "Time (s)", this.props.useLogScale)} />, "History of Records", "This chart shows your history of PBs. Note that this will only show solves that meet the criteria in your filters, so don't be alarmed if you don't see your PB here."))
+            charts.push(buildChartHtml(14, <Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "Date", "Time (s)", this.props.useLogScale, true, true)} />, "History of Records", "This chart shows your history of PBs. Note that this will only show solves that meet the criteria in your filters, so don't be alarmed if you don't see your PB here."))
         }
 
         let chartRow = (
