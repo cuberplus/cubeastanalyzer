@@ -57,7 +57,7 @@ export function createOptions(chartType: ChartType, xAxis: string, yAxis: string
             if (isDateChart) {
                 chartOptions.scales.x.type = 'timeseries';
                 chartOptions.scales.x.timeseries = {
-                    unit: 'quarter',
+                    units: 'quarter',
                     displayFormats: {
                         quarter: 'MMM yyyy'
                     }

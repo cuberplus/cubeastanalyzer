@@ -610,7 +610,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         // Add charts that require all steps to be chosen
         if (this.props.steps.length == Const.MethodSteps[this.props.methodName].length) {
             charts.push(buildChartHtml(13, <Line data={this.buildGoodBadData(this.props.goodTime, this.props.badTime)} options={createOptions(ChartType.Line, "Solve Number", "Percentage", this.props.useLogScale)} />, "Percentage of 'Good' and 'Bad' Solves", "This chart shows your running average of solves considered 'good' and 'bad'. This can be configured in the filter panel. Just set the good and bad values to times you feel are correct"));
-            charts.push(buildChartHtml(14, <Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "Date", "Time (s)", this.props.useLogScale, true, true)} />, "History of Records", "This chart shows your history of PBs. Note that this will only show solves that meet the criteria in your filters, so don't be alarmed if you don't see your PB here."))
+            charts.push(buildChartHtml(14, <Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "Date", "Time (s)", this.props.useLogScale, true, true)} />, "History of Records", "This chart shows your history of PBs. Note that this will only show solves that meet the criteria in your filters, so don't be alarmed if you don't see your PB here. As a note, Ao12 removes the best and worst solves of the 12. Ao100 removes the best and worst 5. Ao1000 removes the best and worst 50."))
         }
 
         let chartRow = (
