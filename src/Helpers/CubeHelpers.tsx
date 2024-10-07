@@ -1,3 +1,4 @@
+import { Option } from "react-multi-select-component";
 import { Const } from "./Constants";
 import { CrossColor, MethodName, Solve, Step, StepName } from "./Types";
 
@@ -30,7 +31,8 @@ export function GetEmptySolve() {
         turns: 0,
         steps: [GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep()],
         isCorrupt: false,
-        method: MethodName.CFOP
+        method: MethodName.CFOP,
+        session: ""
     };
 
     return solve;
@@ -63,4 +65,18 @@ export function CalculateMostUsedMethod(solves: Solve[]): MethodName {
 export function CalculateWindowSize(solveCount: number): number {
     let reducedWindowSize = Math.ceil(solveCount / 4);
     return Math.min(reducedWindowSize, Const.DefaultWindowSize);
+}
+
+export function CalculateAllSessionOptions(solves: Solve[]): Option[] {
+    let options: Option[] = [];
+    let sessions = new Set<string>();
+    solves.forEach(x => {
+        sessions.add(x.session);
+    });
+    let uniqueSessions = Array.from(sessions.values());
+    uniqueSessions.forEach(x => {
+        options.push({ label: x, value: x })
+
+    })
+    return options;
 }

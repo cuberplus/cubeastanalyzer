@@ -58,6 +58,9 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
                 case "slice_turns":
                     obj.turns = Number(item.at(index));
                     break;
+                case "session_name":
+                    obj.session = item.at(index)!;
+                    break;
 
                 case "step_0_name":
                 case "step_1_name":

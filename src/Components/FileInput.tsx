@@ -3,9 +3,9 @@ import { FileInputProps, FileInputState, MethodName, Solve } from "../Helpers/Ty
 import { parseCsv } from "../Helpers/CsvParser";
 import { FilterPanel } from "./FilterPanel";
 import { GetDemoData } from "../Helpers/SampleData"
-import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar, Modal, Container } from "react-bootstrap";
+import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar, Container } from "react-bootstrap";
 import { HelpPanel } from "./HelpPanel";
-import { CalculateMostUsedMethod, CalculateWindowSize } from "../Helpers/CubeHelpers";
+import { CalculateMostUsedMethod, CalculateWindowSize, CalculateAllSessionOptions } from "../Helpers/CubeHelpers";
 import { Option } from "react-multi-select-component"
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
@@ -25,6 +25,9 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
             let newOption: Option = { label: method, value: method };
             this.filterPanel.current?.methodChanged(newOption);
 
+            let sessions = CalculateAllSessionOptions(solveList);
+            this.filterPanel.current?.chosenSessionsChanged(sessions);
+
             let windowSize = CalculateWindowSize(solveList.length);
             this.filterPanel.current?.windowSizeChanged(windowSize);
 
@@ -40,6 +43,9 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         let method = CalculateMostUsedMethod(solveList);
         let newOption: Option = { label: method, value: method };
         this.filterPanel.current?.methodChanged(newOption);
+
+        let sessions = CalculateAllSessionOptions(solveList);
+        this.filterPanel.current?.chosenSessionsChanged(sessions);
 
         let windowSize = CalculateWindowSize(solveList.length);
         this.filterPanel.current?.windowSizeChanged(windowSize);

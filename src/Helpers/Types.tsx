@@ -60,7 +60,8 @@ export interface Filters {
     ollCases: string[],
     steps: StepName[],
     solveCleanliness: string[],
-    method: MethodName
+    method: MethodName,
+    sessions: string[]
 }
 
 export interface Step {
@@ -87,7 +88,8 @@ export interface Solve {
     turns: number,
     steps: Step[],
     isCorrupt: boolean,
-    method: MethodName
+    method: MethodName,
+    session: string
 }
 
 export interface AppState {
@@ -108,6 +110,7 @@ export interface FilterPanelState {
     chosenColors: Option[],
     chosenPLLs: Option[],
     chosenOLLs: Option[],
+    chosenSessions: Option[],
     solveCleanliness: Option[],
     tabKey: number,
     windowSize: number,

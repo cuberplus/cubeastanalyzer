@@ -9,7 +9,7 @@ import { Option } from "react-multi-select-component"
 import { calculateAverage, calculateStandardDeviation } from "../Helpers/MathHelpers";
 import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container, CardText } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
-import { GetEmptySolve } from "../Helpers/CubeHelpers";
+import { CalculateAllSessionOptions, GetEmptySolve } from "../Helpers/CubeHelpers";
 import ReactSwitch from "react-switch";
 
 export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelState> {
@@ -26,7 +26,8 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             ollCases: Const.OllCases.map(x => x.value),
             steps: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.OLL, StepName.PLL],
             solveCleanliness: Const.solveCleanliness.map(x => x.value),
-            method: MethodName.CFOP
+            method: MethodName.CFOP,
+            sessions: []
         },
         chosenSteps: FilterPanel.getStepOptionsForMethod(MethodName.CFOP),
         chosenColors: [
@@ -38,6 +39,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             { label: CrossColor.Green, value: CrossColor.Green },
             { label: CrossColor.Unknown, value: CrossColor.Unknown },
         ],
+        chosenSessions: [],
         solveCleanliness: Const.solveCleanliness,
         chosenPLLs: Const.PllCases,
         chosenOLLs: Const.OllCases,
@@ -66,6 +68,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             return false;
         }
         if (solve.time < filters.fastestTime || solve.time > filters.slowestTime) {
+            return false;
+        }
+        if (filters.sessions.indexOf(solve.session) < 0) {
             return false;
         }
 
@@ -148,6 +153,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             chosenColors: prevState.chosenColors,
             chosenPLLs: prevState.chosenPLLs,
             chosenOLLs: prevState.chosenOLLs,
+            chosenSessions: prevState.chosenSessions,
             tabKey: prevState.tabKey,
             windowSize: prevState.windowSize,
             pointsPerGraph: prevState.pointsPerGraph,
@@ -194,6 +200,17 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         })
     }
 
+    chosenSessionsChanged(selectedList: any[]) {
+        let selectedSessions: string[] = selectedList.map(x => x.value);
+        let newFilters: Filters = this.state.filters;
+        newFilters.sessions = selectedSessions;
+
+        this.setState({
+            filters: newFilters,
+            chosenSessions: selectedList
+        })
+    }
+
     static getStepOptionsForMethod(method: MethodName) {
         let options: Option[] = [];
         Const.MethodSteps[method].forEach(x => {
@@ -208,6 +225,10 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             options.push({ label: x, value: x });
         })
         return options;
+    }
+
+    getSessionOptions() {
+        return CalculateAllSessionOptions(this.props.solves);
     }
 
     methodChanged(newValue: Option | null) {
@@ -268,7 +289,6 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         newFilters.fastestTime = parseInt(event.target.value);
         this.setState({ filters: newFilters })
     }
-
 
     setBadTime(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ badTime: parseInt(event.target.value) })
@@ -384,6 +404,16 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                             onChange={this.methodChanged.bind(this)}
                         />,
                         "Which Method?",
+                        "This dropdown lets you choose which method to show solves for."
+                    )}
+                    {this.createFilterHtml(
+                        <MultiSelect
+                            options={this.getSessionOptions()}
+                            value={this.state.chosenSessions}
+                            onChange={this.chosenSessionsChanged.bind(this)}
+                            labelledBy="Select"
+                        />,
+                        "Which Sessions?",
                         "This dropdown lets you choose which method to show solves for."
                     )}
                     {this.createFilterHtml(
