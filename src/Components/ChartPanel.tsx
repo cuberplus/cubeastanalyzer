@@ -67,6 +67,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
     buildRunningTpsData() {
         let movingAverage = calculateMovingAverage(this.props.solves.map(x => x.tps), this.props.windowSize);
+        let movingAverageDuringExecution = calculateMovingAverage(this.props.solves.map(x => (x.turns / x.executionTime)), this.props.windowSize)
 
         let labels = [];
         for (let i = 1; i <= movingAverage.length; i++) {
@@ -74,6 +75,7 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         };
 
         movingAverage = reduceDataset(movingAverage, this.props.pointsPerGraph);
+        movingAverageDuringExecution = reduceDataset(movingAverageDuringExecution, this.props.pointsPerGraph)
         labels = reduceDataset(labels, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
@@ -81,6 +83,32 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
             datasets: [{
                 label: `Average TPS Of ${this.props.windowSize}`,
                 data: movingAverage
+            },
+            {
+                label: `Average TPS During Execution Of ${this.props.windowSize}`,
+                data: movingAverageDuringExecution
+            }]
+        }
+
+        return data;
+    }
+
+    buildRunningInspectionData() {
+        let movingInspection = calculateMovingAverage(this.props.solves.map(x => x.inspectionTime), this.props.windowSize);
+
+        let labels = [];
+        for (let i = 1; i <= movingInspection.length; i++) {
+            labels.push(i.toString())
+        };
+
+        movingInspection = reduceDataset(movingInspection, this.props.pointsPerGraph);
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [{
+                label: `Average Inspection Of ${this.props.windowSize}`,
+                data: movingInspection
             }]
         }
 
@@ -588,14 +616,14 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         charts.push(buildChartHtml(1, <Line data={this.buildRunningAverageData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Time", "This chart shows your running average"));
         charts.push(buildChartHtml(2, <Line data={this.buildRunningRecognitionExecution()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Recognition and Execution", "This chart shows your running average, split up by recognition time and execution time"));
         charts.push(buildChartHtml(3, <Bar data={this.buildHistogramData()} options={createOptions(ChartType.Bar, "Time (s)", "Count", this.props.useLogScale)} />, "Count of Solves by How Long They Took", "This chart shows how many solves you have done in 10s, 11s, 12s, etc..."));
-        charts.push(buildChartHtml(4, <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Turns Per Second", "This chart shows your average turns per second"));
+        charts.push(buildChartHtml(4, <Line data={this.buildRunningTpsData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Turns Per Second", "This chart shows your average turns per second. 'TPS During Execution' only counts your TPS while actively turning the cube"));
         charts.push(buildChartHtml(5, <Line data={this.buildRunningTurnsData()} options={createOptions(ChartType.Line, "Solve Number", "Turns", this.props.useLogScale)} />, "Average Turns", "This chart shows your average number of turns, in quarter turn metric"));
         charts.push(buildChartHtml(6, this.buildBestSolves(), `Top ${Const.FastestSolvesCount} Fastest Solves`, `This shows your ${Const.FastestSolvesCount} fastest solves, given the filters`));
         charts.push(buildChartHtml(7, <Line data={this.buildRunningStdDevData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Standard Deviation", "This chart shows your running average's standard deviation"));
         charts.push(buildChartHtml(8, <Line data={this.buildRunningColorPercentages()} options={createOptions(ChartType.Line, "Solve Number", "Percentage", this.props.useLogScale)} />, "Percentage of Solves by Cross Color", "This chart shows what percentage of solves started with cross on White/Yellow/etc..."));
         charts.push(buildChartHtml(9, <Bar data={this.buildInspectionData()} options={createOptions(ChartType.Bar, "Inspection Time (s)", "Solve Time (s)", this.props.useLogScale)} />, "Average solve time by inspection time", "This chart shows your average, grouped up by how much inspection time (For example, the left bar is the 1/7 of your solves with the lowest inspection time, and the right bar is the 1/7 of your solves with the most inspection time)"));
         charts.push(buildChartHtml(10, <Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Time by Step", "This chart shows what percentage of your solve each step takes"));
-
+        charts.push(buildChartHtml(1, <Line data={this.buildRunningInspectionData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Inspection Time", "This chart shows how much inspection time you use on average"));
 
         // Add charts that require CFOP method (and all of its steps) to be chosen
         if (this.props.methodName == MethodName.CFOP && this.props.steps.length == Const.MethodSteps[MethodName.CFOP].length) {
