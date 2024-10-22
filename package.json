@@ -1,7 +1,7 @@
 {
   "name": "cubeastanalyzer",
   "version": "0.1.0",
-  "homepage": "https://cuberplus.com",
+  "homepage": "https://cuberplus.com/cubeastanalyzer",
   "private": true,
   "type": "module",
   "dependencies": {
