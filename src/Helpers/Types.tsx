@@ -50,6 +50,19 @@ export enum SolveCleanliness {
     Mistake = "Mistake",
 }
 
+export enum PllCornerPermutation {
+    Solved = "Solved",
+    Adjacent = "Adjacent",
+    Diagonal = "Diagonal"
+}
+
+export enum OllEdgeOrientation {
+    Dot = "Dot",
+    Line = "Line",
+    Angle = "Angle",
+    Cross = "Cross"
+}
+
 export interface Filters {
     crossColors: CrossColor[],
     startDate: Date,

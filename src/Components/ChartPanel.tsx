@@ -1,5 +1,5 @@
 import React from "react";
-import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, FastestSolve, MethodName, Solve, StepName } from "../Helpers/Types";
+import { ChartPanelProps, ChartPanelState, ChartType, CrossColor, FastestSolve, MethodName, OllEdgeOrientation, PllCornerPermutation, Solve, StepName } from "../Helpers/Types";
 import { Chart as ChartJS, ChartData, CategoryScale, Point } from 'chart.js/auto';
 import { calculateAverage, calculateMovingAverage, calculateMovingPercentage, calculateMovingStdDev, reduceDataset, splitIntoChunks, getTypicalAverages, calculateMovingAverageChopped } from "../Helpers/MathHelpers";
 import { createOptions, buildChartHtml } from "../Helpers/ChartHelpers";
@@ -256,6 +256,95 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
                 label: `Percentage of bad solves over last ${this.props.windowSize}`,
                 data: movingPercentBad
             }]
+        }
+
+        return data;
+    }
+
+    buildOllCategoryChart(ollStepIndex: number) {
+        let checkIfDot = (ollCase: string) => { return Const.OllEdgeOrientationMapping.get(ollCase) == OllEdgeOrientation.Dot };
+        let checkIfLine = (ollCase: string) => { return Const.OllEdgeOrientationMapping.get(ollCase) == OllEdgeOrientation.Line };
+        let checkIfAngle = (ollCase: string) => { return Const.OllEdgeOrientationMapping.get(ollCase) == OllEdgeOrientation.Angle };
+        let checkIfCross = (ollCase: string) => { return Const.OllEdgeOrientationMapping.get(ollCase) == OllEdgeOrientation.Cross };
+
+        let movingPercentDot = calculateMovingPercentage(this.props.solves.map(x => x.steps[ollStepIndex].case), this.props.windowSize, checkIfDot);
+        let movingPercentLine = calculateMovingPercentage(this.props.solves.map(x => x.steps[ollStepIndex].case), this.props.windowSize, checkIfLine);
+        let movingPercentAngle = calculateMovingPercentage(this.props.solves.map(x => x.steps[ollStepIndex].case), this.props.windowSize, checkIfAngle);
+        let movingPercentCross = calculateMovingPercentage(this.props.solves.map(x => x.steps[ollStepIndex].case), this.props.windowSize, checkIfCross);
+
+        let labels = [];
+        for (let i = 1; i <= movingPercentDot.length; i++) {
+            labels.push(i.toString())
+        };
+
+        movingPercentDot = reduceDataset(movingPercentDot, this.props.pointsPerGraph);
+        movingPercentLine = reduceDataset(movingPercentLine, this.props.pointsPerGraph);
+        movingPercentAngle = reduceDataset(movingPercentAngle, this.props.pointsPerGraph);
+        movingPercentCross = reduceDataset(movingPercentCross, this.props.pointsPerGraph);
+
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [
+                {
+                    label: `Percentage of OLL Dot Cases over last ${this.props.windowSize}`,
+                    data: movingPercentDot
+                },
+                {
+                    label: `Percentage of OLL Line Cases over last ${this.props.windowSize}`,
+                    data: movingPercentLine
+                },
+                {
+                    label: `Percentage of OLL Angle Cases over last ${this.props.windowSize}`,
+                    data: movingPercentAngle
+                },
+                {
+                    label: `Percentage of OLL Cross Cases over last ${this.props.windowSize}`,
+                    data: movingPercentCross
+                }
+            ]
+        }
+
+        return data;
+    }
+
+    buildPllCategoryChart(pllStepIndex: number) {
+        let checkIfSolved = (pllCase: string) => { return Const.PllCornerPermutationMapping.get(pllCase) == PllCornerPermutation.Solved };
+        let checkIfAdjacent = (pllCase: string) => { return Const.PllCornerPermutationMapping.get(pllCase) == PllCornerPermutation.Adjacent };
+        let checkIfDiagonal = (pllCase: string) => { return Const.PllCornerPermutationMapping.get(pllCase) == PllCornerPermutation.Diagonal };
+
+        let movingPercentSolved = calculateMovingPercentage(this.props.solves.map(x => x.steps[pllStepIndex].case), this.props.windowSize, checkIfSolved);
+        let movingPercentAdjacent = calculateMovingPercentage(this.props.solves.map(x => x.steps[pllStepIndex].case), this.props.windowSize, checkIfAdjacent);
+        let movingPercentDiagonal = calculateMovingPercentage(this.props.solves.map(x => x.steps[pllStepIndex].case), this.props.windowSize, checkIfDiagonal);
+
+        let labels = [];
+        for (let i = 1; i <= movingPercentSolved.length; i++) {
+            labels.push(i.toString())
+        };
+
+        movingPercentSolved = reduceDataset(movingPercentSolved, this.props.pointsPerGraph);
+        movingPercentAdjacent = reduceDataset(movingPercentAdjacent, this.props.pointsPerGraph);
+        movingPercentDiagonal = reduceDataset(movingPercentDiagonal, this.props.pointsPerGraph);
+
+        labels = reduceDataset(labels, this.props.pointsPerGraph);
+
+        let data: ChartData<"line"> = {
+            labels,
+            datasets: [
+                {
+                    label: `Percentage of PLL Solved Corner Cases over last ${this.props.windowSize}`,
+                    data: movingPercentSolved
+                },
+                {
+                    label: `Percentage of PLL Adjacent Corner Cases over last ${this.props.windowSize}`,
+                    data: movingPercentAdjacent
+                },
+                {
+                    label: `Percentage of PLL Diagonal Corner Cases over last ${this.props.windowSize}`,
+                    data: movingPercentDiagonal
+                }
+            ]
         }
 
         return data;
@@ -607,6 +696,10 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
 
         let charts: JSX.Element[] = [];
 
+        // Check if OLL and PLL are selected
+        let ollIndex: number = this.props.steps.indexOf(StepName.OLL);
+        let pllIndex: number = this.props.steps.indexOf(StepName.PLL);
+
         // Add charts that require exactly one step to be chosen
         if (this.props.steps.length == 1 && (this.props.steps[0] === StepName.OLL || this.props.steps[0] === StepName.PLL)) {
             charts.push(buildChartHtml(0, <Bar data={this.buildCaseData()} options={createOptions(ChartType.Bar, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Recognition Time and Execution Time per Case", "This chart shows how long your execution/recognition took for any individual last layer algorithm, sorted by how long each took."));
@@ -625,20 +718,30 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
         charts.push(buildChartHtml(10, <Line data={this.buildStepAverages()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Time by Step", "This chart shows what percentage of your solve each step takes"));
         charts.push(buildChartHtml(11, <Line data={this.buildRunningInspectionData()} options={createOptions(ChartType.Line, "Solve Number", "Time (s)", this.props.useLogScale)} />, "Average Inspection Time", "This chart shows how much inspection time you use on average"));
 
+        // Add charts that require OLL
+        if (ollIndex != -1) {
+            charts.push(buildChartHtml(12, <Line data={this.buildOllCategoryChart(ollIndex)} options={createOptions(ChartType.Line, "Solve Number", "Percentage", this.props.useLogScale)} />, "OLL Edge Orientation", "This chart shows your percentage of OLL cases by edge orientation"));
+        }
+
+        // Add charts that require PLL
+        if (pllIndex != -1) {
+            charts.push(buildChartHtml(13, <Line data={this.buildPllCategoryChart(pllIndex)} options={createOptions(ChartType.Line, "Solve Number", "Percentage", this.props.useLogScale)} />, "PLL Corner Permutation", "This chart shows your percentage of PLL cases by corner permutation"));
+        }
+
         // Add charts that require CFOP method (and all of its steps) to be chosen
         if (this.props.methodName == MethodName.CFOP && this.props.steps.length == Const.MethodSteps[MethodName.CFOP].length) {
-            charts.push(buildChartHtml(12, <Bar data={this.buildTypicalCompare()} options={createOptions(ChartType.Bar, "Step Name", "Time (s)", this.props.useLogScale, false)} />, "Time Per Step, Compared to Typical Solver", "This chart shows how long each step takes, compared to a typical solver at your average. The 'typical' data is calculated based on a tool provided from Felix Zemdegs's CubeSkills blog"));
+            charts.push(buildChartHtml(14, <Bar data={this.buildTypicalCompare()} options={createOptions(ChartType.Bar, "Step Name", "Time (s)", this.props.useLogScale, false)} />, "Time Per Step, Compared to Typical Solver", "This chart shows how long each step takes, compared to a typical solver at your average. The 'typical' data is calculated based on a tool provided from Felix Zemdegs's CubeSkills blog"));
         }
 
         // Add charts that require 2+ steps
         if (this.props.steps.length >= 2) {
-            charts.push(buildChartHtml(13, <Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "", "", this.props.useLogScale)} />, "Percentage of the Solve Each Step Took", "This chart shows what percentage of your solve each step takes"));
+            charts.push(buildChartHtml(15, <Doughnut data={this.buildStepPercentages()} options={createOptions(ChartType.Doughnut, "", "", this.props.useLogScale)} />, "Percentage of the Solve Each Step Took", "This chart shows what percentage of your solve each step takes"));
         }
 
         // Add charts that require all steps to be chosen
         if (this.props.steps.length == Const.MethodSteps[this.props.methodName].length) {
-            charts.push(buildChartHtml(14, <Line data={this.buildGoodBadData(this.props.goodTime, this.props.badTime)} options={createOptions(ChartType.Line, "Solve Number", "Percentage", this.props.useLogScale)} />, "Percentage of 'Good' and 'Bad' Solves", "This chart shows your running average of solves considered 'good' and 'bad'. This can be configured in the filter panel. Just set the good and bad values to times you feel are correct"));
-            charts.push(buildChartHtml(15, <Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "Date", "Time (s)", this.props.useLogScale, true, true)} />, "History of Records", "This chart shows your history of PBs. Note that this will only show solves that meet the criteria in your filters, so don't be alarmed if you don't see your PB here. As a note, Ao12 removes the best and worst solves of the 12. Ao100 removes the best and worst 5. Ao1000 removes the best and worst 50."))
+            charts.push(buildChartHtml(16, <Line data={this.buildGoodBadData(this.props.goodTime, this.props.badTime)} options={createOptions(ChartType.Line, "Solve Number", "Percentage", this.props.useLogScale)} />, "Percentage of 'Good' and 'Bad' Solves", "This chart shows your running average of solves considered 'good' and 'bad'. This can be configured in the filter panel. Just set the good and bad values to times you feel are correct"));
+            charts.push(buildChartHtml(17, <Line data={this.buildRecordHistory()} options={createOptions(ChartType.Line, "Date", "Time (s)", this.props.useLogScale, true, true)} />, "History of Records", "This chart shows your history of PBs. Note that this will only show solves that meet the criteria in your filters, so don't be alarmed if you don't see your PB here. As a note, Ao12 removes the best and worst solves of the 12. Ao100 removes the best and worst 5. Ao1000 removes the best and worst 50."))
         }
 
         let chartRow = (

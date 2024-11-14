@@ -2,10 +2,9 @@ import React from "react";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
-import { MultiSelect } from "react-multi-select-component";
+import { MultiSelect, Option } from "react-multi-select-component";
 import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, MethodName, Solve, SolveCleanliness, Step, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
-import { Option } from "react-multi-select-component"
 import { calculateAverage, calculateStandardDeviation } from "../Helpers/MathHelpers";
 import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container, CardText } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
@@ -94,6 +93,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         return true;
     }
 
+    // TODO: fix this to consider window, not all solves
     static isMistakeSolve(solve: Solve, deviations: Deviations) {
         if (solve.time > (3 * deviations.dev_total) + deviations.avg_total) {
             return true;
@@ -191,6 +191,14 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
     chosenStepsChanged(selectedList: any[]) {
         let selectedSteps: StepName[] = selectedList.map(x => x.value);
+        let allSteps = Const.MethodSteps[this.state.filters.method];
+
+        // Sort the steps to match the order in the method
+        let sortOrder = Object.fromEntries(allSteps.map((k, i) => [k, i + 1]));
+        selectedSteps.sort((a, b) =>
+            (sortOrder[a] || Number.MAX_VALUE) - (sortOrder[b] || Number.MAX_VALUE)
+        );
+
         let newFilters: Filters = this.state.filters;
         newFilters.steps = selectedSteps;
 
@@ -493,6 +501,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                     {this.createFilterHtml(
                         <MultiSelect
                             options={Const.OllCases}
+
                             value={this.state.chosenOLLs}
                             onChange={this.ollChanged.bind(this)}
                             labelledBy="Select"

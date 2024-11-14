@@ -1,5 +1,5 @@
 import { Option } from "react-multi-select-component";
-import { CrossColor, MethodName, StepName } from "./Types";
+import { CrossColor, MethodName, OllEdgeOrientation, PllCornerPermutation, StepName } from "./Types";
 
 export class Const {
     static readonly StdDevWindow: number = 1000; // This is the default window to use when calculating a single standard deviation
@@ -39,6 +39,33 @@ export class Const {
         { label: "E Perm", value: "E" },
         { label: "Z Perm", value: "Z" }
     ]
+
+    static readonly PllCornerPermutationMapping = new Map<string, PllCornerPermutation>(
+        [
+            ['Solved', PllCornerPermutation.Solved],
+            ['T', PllCornerPermutation.Adjacent],
+            ['V', PllCornerPermutation.Diagonal],
+            ['Aa', PllCornerPermutation.Adjacent],
+            ['Ab', PllCornerPermutation.Adjacent],
+            ['Ga', PllCornerPermutation.Adjacent],
+            ['Gb', PllCornerPermutation.Adjacent],
+            ['Gc', PllCornerPermutation.Adjacent],
+            ['Gd', PllCornerPermutation.Adjacent],
+            ['Ja', PllCornerPermutation.Adjacent],
+            ['Jb', PllCornerPermutation.Adjacent],
+            ['F', PllCornerPermutation.Adjacent],
+            ['Y', PllCornerPermutation.Diagonal],
+            ['Ua', PllCornerPermutation.Solved],
+            ['Ub', PllCornerPermutation.Solved],
+            ['Ra', PllCornerPermutation.Adjacent],
+            ['Rb', PllCornerPermutation.Adjacent],
+            ['Na', PllCornerPermutation.Diagonal],
+            ['Nb', PllCornerPermutation.Diagonal],
+            ['H', PllCornerPermutation.Solved],
+            ['E', PllCornerPermutation.Diagonal],
+            ['Z', PllCornerPermutation.Solved],
+        ]
+    );
 
     static readonly OllCases: Option[] = [
         { label: "Solved", value: "Solved" },
@@ -100,6 +127,69 @@ export class Const {
         { label: "56", value: "56" },
         { label: "57", value: "57" }
     ]
+
+    static readonly OllEdgeOrientationMapping = new Map<string, OllEdgeOrientation>(
+        [
+            ['Solved', OllEdgeOrientation.Cross],
+            ['1', OllEdgeOrientation.Dot],
+            ['2', OllEdgeOrientation.Dot],
+            ['3', OllEdgeOrientation.Dot],
+            ['4', OllEdgeOrientation.Dot],
+            ['5', OllEdgeOrientation.Angle],
+            ['6', OllEdgeOrientation.Angle],
+            ['7', OllEdgeOrientation.Angle],
+            ['8', OllEdgeOrientation.Angle],
+            ['9', OllEdgeOrientation.Angle],
+            ['10', OllEdgeOrientation.Angle],
+            ['11', OllEdgeOrientation.Angle],
+            ['12', OllEdgeOrientation.Angle],
+            ['13', OllEdgeOrientation.Line],
+            ['14', OllEdgeOrientation.Line],
+            ['15', OllEdgeOrientation.Line],
+            ['16', OllEdgeOrientation.Line],
+            ['17', OllEdgeOrientation.Dot],
+            ['18', OllEdgeOrientation.Dot],
+            ['19', OllEdgeOrientation.Dot],
+            ['20', OllEdgeOrientation.Dot],
+            ['21', OllEdgeOrientation.Cross],
+            ['22', OllEdgeOrientation.Cross],
+            ['23', OllEdgeOrientation.Cross],
+            ['24', OllEdgeOrientation.Cross],
+            ['25', OllEdgeOrientation.Cross],
+            ['26', OllEdgeOrientation.Cross],
+            ['27', OllEdgeOrientation.Cross],
+            ['28', OllEdgeOrientation.Angle],
+            ['29', OllEdgeOrientation.Angle],
+            ['30', OllEdgeOrientation.Angle],
+            ['31', OllEdgeOrientation.Angle],
+            ['32', OllEdgeOrientation.Angle],
+            ['33', OllEdgeOrientation.Line],
+            ['34', OllEdgeOrientation.Line],
+            ['35', OllEdgeOrientation.Angle],
+            ['36', OllEdgeOrientation.Angle],
+            ['37', OllEdgeOrientation.Angle],
+            ['38', OllEdgeOrientation.Angle],
+            ['39', OllEdgeOrientation.Line],
+            ['40', OllEdgeOrientation.Line],
+            ['41', OllEdgeOrientation.Angle],
+            ['42', OllEdgeOrientation.Angle],
+            ['43', OllEdgeOrientation.Angle],
+            ['44', OllEdgeOrientation.Angle],
+            ['45', OllEdgeOrientation.Line],
+            ['46', OllEdgeOrientation.Line],
+            ['47', OllEdgeOrientation.Angle],
+            ['48', OllEdgeOrientation.Angle],
+            ['49', OllEdgeOrientation.Angle],
+            ['50', OllEdgeOrientation.Angle],
+            ['51', OllEdgeOrientation.Line],
+            ['52', OllEdgeOrientation.Line],
+            ['53', OllEdgeOrientation.Angle],
+            ['54', OllEdgeOrientation.Angle],
+            ['55', OllEdgeOrientation.Line],
+            ['56', OllEdgeOrientation.Line],
+            ['57', OllEdgeOrientation.Line]
+        ]
+    )
 
     static readonly crossMappings = new Map<string, CrossColor>(
         [
