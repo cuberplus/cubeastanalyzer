@@ -3,9 +3,9 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { MultiSelect, Option } from "react-multi-select-component";
-import { CrossColor, Deviations, FilterPanelProps, FilterPanelState, Filters, MethodName, Solve, SolveCleanliness, Step, StepName } from "../Helpers/Types";
+import { CrossColor, FilterPanelProps, FilterPanelState, Filters, MethodName, Solve, SolveCleanliness, Step, StepName } from "../Helpers/Types";
 import { ChartPanel } from "./ChartPanel";
-import { calculateAverage, calculateStandardDeviation } from "../Helpers/MathHelpers";
+import { calculateMovingAverage, calculateMovingStdDev } from "../Helpers/MathHelpers";
 import { FormControl, Card, Row, Offcanvas, Col, Button, Tooltip, OverlayTrigger, Alert, Container, CardText } from 'react-bootstrap';
 import { Const } from "../Helpers/Constants";
 import { CalculateAllSessionOptions, GetEmptySolve } from "../Helpers/CubeHelpers";
@@ -53,7 +53,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         useLogScale: false
     }
 
-    static passesFilters(solve: Solve, filters: Filters, deviations: Deviations) {
+    static passesFilters(solve: Solve, filters: Filters) {
         if (solve.isCorrupt) {
             return false;
         }
@@ -82,60 +82,62 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         }
 
         // If total time or any step is 3 standard deviations away, remove it
-        let isMistake = this.isMistakeSolve(solve, deviations);
-        if (filters.solveCleanliness.indexOf(SolveCleanliness.Clean) < 0 && !isMistake) {
+        if (filters.solveCleanliness.indexOf(SolveCleanliness.Clean) < 0 && !solve.isMistake) {
             return false;
         }
-        if (filters.solveCleanliness.indexOf(SolveCleanliness.Mistake) < 0 && isMistake) {
+        if (filters.solveCleanliness.indexOf(SolveCleanliness.Mistake) < 0 && solve.isMistake) {
             return false;
         }
 
         return true;
     }
 
-    // TODO: fix this to consider window, not all solves
-    static isMistakeSolve(solve: Solve, deviations: Deviations) {
-        if (solve.time > (3 * deviations.dev_total) + deviations.avg_total) {
-            return true;
+    static getMistakeMap(values: number[], windowSize: number): boolean[] {
+        let average = calculateMovingAverage(values, windowSize);
+        let stdDev = calculateMovingStdDev(values, windowSize);
+
+        let mistakes: boolean[] = [];
+
+        for (let i = 0; i < values.length; i++) {
+            let index = Math.max(0, i - windowSize);
+            let isMistake = values[i] > (average[index] + (3 * stdDev[index]));
+            mistakes.push(isMistake);
         }
 
-        for (let i = 0; i < solve.steps.length; i++) {
-            if (solve.steps[i].time > ((3 * deviations.dev[i]) + deviations.avg[i])) {
-                return true;
+        return mistakes;
+    }
+
+    // For each step, check if it is 3 standard deviations more than the average
+    static markAllMistakes(allSolves: Solve[], windowSize: number): Solve[] {
+        if (allSolves.length == 0) {
+            return [];
+        }
+
+        let mistakes: boolean[][] = [];
+
+        mistakes.push(this.getMistakeMap(allSolves.map(x => x.time), windowSize));
+        for (let i = 0; i < allSolves[0].steps.length; i++) {
+            mistakes.push(this.getMistakeMap(allSolves.map(x => x.steps[i].time), windowSize))
+        }
+
+        for (let i = 0; i < allSolves.length; i++) {
+            for (let j = 0; j < mistakes.length; j++) {
+                if (mistakes[j][i]) {
+                    allSolves[i].isMistake = true;
+                    continue;
+                }
             }
         }
 
-        return false;
+        return allSolves;
     }
 
-    static calculateDeviations(allSolves: Solve[]) {
-        let deviations: Deviations = {
-            dev_total: calculateStandardDeviation(allSolves.map(x => x.time)),
-            avg_total: calculateAverage(allSolves.map(x => x.time)),
-            dev: [],
-            avg: []
-        }
-
-        if (allSolves.length == 0) {
-            return deviations;
-        }
-
-        for (let i = 0; i < allSolves[0].steps.length; i++) {
-            let dev = calculateStandardDeviation(allSolves.map(x => x.steps[i].time));
-            let avg = calculateAverage(allSolves.map(x => x.steps[i].time));
-            deviations.dev.push(dev);
-            deviations.avg.push(avg);
-        }
-
-        return deviations;
-    }
-
-    static applyFiltersToSolves(allSolves: Solve[], filters: Filters): Solve[] {
-        let deviations = this.calculateDeviations(allSolves);
+    static applyFiltersToSolves(allSolves: Solve[], filters: Filters, windowSize: number): Solve[] {
+        let solvesWithMistakesMarked = this.markAllMistakes(allSolves, windowSize);
 
         let filteredSolves: Solve[] = [];
-        allSolves.forEach(x => {
-            if (this.passesFilters(x, filters, deviations)) {
+        solvesWithMistakesMarked.forEach(x => {
+            if (this.passesFilters(x, filters)) {
                 filteredSolves.push(x);
             }
         })
@@ -167,7 +169,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
         // Update anything that needs it
         newState.allSolves = nextProps.solves;
-        newState.filteredSolves = FilterPanel.applyFiltersToSolves(nextProps.solves, prevState.filters);
+        newState.filteredSolves = FilterPanel.applyFiltersToSolves(nextProps.solves, prevState.filters, newState.windowSize);
 
         return newState;
     }

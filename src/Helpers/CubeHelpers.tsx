@@ -32,7 +32,8 @@ export function GetEmptySolve() {
         steps: [GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep(), GetEmptyStep()],
         isCorrupt: false,
         method: MethodName.CFOP,
-        session: ""
+        session: "",
+        isMistake: false
     };
 
     return solve;

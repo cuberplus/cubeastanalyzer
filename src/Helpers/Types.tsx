@@ -102,7 +102,8 @@ export interface Solve {
     steps: Step[],
     isCorrupt: boolean,
     method: MethodName,
-    session: string
+    session: string,
+    isMistake: boolean
 }
 
 export interface AppState {
