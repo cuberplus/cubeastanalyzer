@@ -124,6 +124,7 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
 
         for (let i = 0; i < allSolves.length; i++) {
             newSolves.push(allSolves[i]);
+            newSolves[i].isMistake = false;
             for (let j = 0; j < mistakes.length; j++) {
                 if (mistakes[j][i]) {
                     newSolves[i].isMistake = true;
