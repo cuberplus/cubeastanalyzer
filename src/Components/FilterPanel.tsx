@@ -120,16 +120,19 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             mistakes.push(this.getMistakeMap(allSolves.map(x => x.steps[i].time), windowSize))
         }
 
+        let newSolves: Solve[] = [];
+
         for (let i = 0; i < allSolves.length; i++) {
+            newSolves.push(allSolves[i]);
             for (let j = 0; j < mistakes.length; j++) {
                 if (mistakes[j][i]) {
-                    allSolves[i].isMistake = true;
+                    newSolves[i].isMistake = true;
                     continue;
                 }
             }
         }
 
-        return allSolves;
+        return newSolves;
     }
 
     static applyFiltersToSolves(allSolves: Solve[], filters: Filters, windowSize: number): Solve[] {
