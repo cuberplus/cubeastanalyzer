@@ -26,7 +26,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             steps: [StepName.Cross, StepName.F2L_1, StepName.F2L_2, StepName.F2L_3, StepName.F2L_4, StepName.OLL, StepName.PLL],
             solveCleanliness: Const.solveCleanliness.map(x => x.value),
             method: MethodName.CFOP,
-            sessions: []
+            sessions: [],
+            lowestInspection: 0,
+            highestInspection: 300
         },
         chosenSteps: FilterPanel.getStepOptionsForMethod(MethodName.CFOP),
         chosenColors: [
@@ -67,6 +69,9 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
             return false;
         }
         if (solve.time < filters.fastestTime || solve.time > filters.slowestTime) {
+            return false;
+        }
+        if (solve.inspectionTime < filters.lowestInspection || solve.inspectionTime > filters.highestInspection) {
             return false;
         }
         if (filters.sessions.indexOf(solve.session) < 0) {
@@ -304,6 +309,18 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
         this.setState({ filters: newFilters })
     }
 
+    setLowestInspection(event: React.ChangeEvent<HTMLInputElement>) {
+        let newFilters: Filters = this.state.filters;
+        newFilters.lowestInspection = parseInt(event.target.value);
+        this.setState({ filters: newFilters })
+    }
+
+    setHighestInspection(event: React.ChangeEvent<HTMLInputElement>) {
+        let newFilters: Filters = this.state.filters;
+        newFilters.highestInspection = parseInt(event.target.value);
+        this.setState({ filters: newFilters })
+    }
+
     setBadTime(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ badTime: parseInt(event.target.value) })
     }
@@ -526,6 +543,19 @@ export class FilterPanel extends React.Component<FilterPanelProps, FilterPanelSt
                         <FormControl min="5" max="10000" type="number" id="pointsPerGraph" value={this.state.pointsPerGraph} onChange={this.setPointsPerGraph.bind(this)} />,
                         "Points Per Graph",
                         "Choose how many points to show on each chart. If this value is set too high, you may see performance issues."
+                    )}
+
+                    {this.createFilterHtml(
+                        <div className="row">
+                            <div className="form-outline col-6" >
+                                <FormControl min="0" max="100000" type="number" id="lowestInspection" value={this.state.filters.lowestInspection} onChange={this.setLowestInspection.bind(this)} />
+                            </div>
+                            <div className="form-outline col-6" >
+                                <FormControl min="0" max="100000" type="number" id="highestInspection" value={this.state.filters.highestInspection} onChange={this.setHighestInspection.bind(this)} />
+                            </div>
+                        </div>,
+                        "Inspection Time",
+                        "Choose lowest and highest inspection times to keep"
                     )}
 
                     {this.createFilterHtml(

@@ -74,7 +74,9 @@ export interface Filters {
     steps: StepName[],
     solveCleanliness: string[],
     method: MethodName,
-    sessions: string[]
+    sessions: string[],
+    lowestInspection: number,
+    highestInspection: number
 }
 
 export interface Step {
