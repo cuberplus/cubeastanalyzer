@@ -7,6 +7,7 @@ import { Button, Form, FormControl, Card, Row, ButtonGroup, Navbar, Container } 
 import { HelpPanel } from "./HelpPanel";
 import { CalculateMostUsedMethod, CalculateWindowSize, CalculateAllSessionOptions } from "../Helpers/CubeHelpers";
 import { Option } from "react-multi-select-component"
+import ReactGA from 'react-ga4';
 
 export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [], showHelpModal: false };
@@ -33,6 +34,12 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
             this.filterPanel.current?.setTestAlert(false);
         })
+
+        ReactGA.event({
+            category: 'DataLoaded',
+            action: 'Loaded User Data',
+            value: this.state.solves.length
+        });
     };
 
     showTestData() {
@@ -51,6 +58,12 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         this.filterPanel.current?.windowSizeChanged(windowSize);
 
         this.filterPanel.current?.setTestAlert(true);
+
+        ReactGA.event({
+            category: 'DataLoaded',
+            action: 'Loaded Test Data',
+            value: this.state.solves.length
+        });
     }
 
     helpButtonClicked() {
