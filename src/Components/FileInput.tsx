@@ -13,6 +13,11 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
     state: FileInputState = { solves: [], showHelpModal: false };
     filterPanel: RefObject<FilterPanel> = React.createRef();
 
+    constructor(props: FileInputProps) {
+        super(props);
+        ReactGA.initialize('G-BHXNCQ3K0D');
+    }
+
     showFileData() {
         let dataset = (document.getElementById("uploaded_data") as HTMLInputElement);
         let files: FileList = dataset.files as FileList;
