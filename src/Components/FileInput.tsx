@@ -38,13 +38,13 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
             this.filterPanel.current?.windowSizeChanged(windowSize);
 
             this.filterPanel.current?.setTestAlert(false);
-        })
 
-        ReactGA.event({
-            category: 'DataLoaded',
-            action: 'Loaded User Data',
-            value: this.state.solves.length
-        });
+            ReactGA.event({
+                category: 'DataLoaded',
+                action: 'Loaded User Data',
+                value: this.state.solves.length
+            });
+        })
     };
 
     showTestData() {
