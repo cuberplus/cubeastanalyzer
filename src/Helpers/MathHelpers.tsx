@@ -189,54 +189,25 @@ export function splitIntoChunks(values: any[], chunks: number) {
 
 // Given the user's average time, calculate what the expected splits should be
 export function getTypicalAverages(userAverage: number) {
-    let expectedSplits = [7, 35, 8, 10];
-    let expected = 60;
-    if (userAverage <= 50) {
-        expectedSplits = [6, 28, 7, 9];
-        expected = 50;
-    }
-    if (userAverage <= 40) {
-        expectedSplits = [5, 21, 6, 8];
-        expected = 40;
-    }
-    if (userAverage <= 30) {
-        expectedSplits = [4, 15.5, 4.5, 6];
-        expected = 30;
-    }
-    if (userAverage <= 25) {
-        expectedSplits = [3.5, 12.7, 3.8, 5];
-        expected = 25;
-    }
-    if (userAverage <= 20) {
-        expectedSplits = [2.8, 10.2, 3, 4];
-        expected = 20;
-    }
-    if (userAverage <= 15) {
-        expectedSplits = [2, 7.5, 2.3, 3.2];
-        expected = 15;
-    }
-    if (userAverage <= 12) {
-        expectedSplits = [1.5, 6, 1.9, 2.6];
-        expected = 12;
-    }
-    if (userAverage <= 10) {
-        expectedSplits = [1.2, 5, 1.65, 2.15];
-        expected = 10;
-    }
-    if (userAverage <= 8) {
-        expectedSplits = [.95, 4.05, 1.3, 1.7];
-        expected = 8;
+    const typicalData = [
+        { maxAverage: 8, splits: [.95, 4.05, 1.3, 1.7], expected: 8 },
+        { maxAverage: 10, splits: [1.2, 5, 1.65, 2.15], expected: 10 },
+        { maxAverage: 12, splits: [1.5, 6, 1.9, 2.6], expected: 12 },
+        { maxAverage: 15, splits: [2, 7.5, 2.3, 3.2], expected: 15 },
+        { maxAverage: 20, splits: [2.8, 10.2, 3, 4], expected: 20 },
+        { maxAverage: 25, splits: [3.5, 12.7, 3.8, 5], expected: 25 },
+        { maxAverage: 30, splits: [4, 15.5, 4.5, 6], expected: 30 },
+        { maxAverage: 40, splits: [5, 21, 6, 8], expected: 40 },
+        { maxAverage: 50, splits: [6, 28, 7, 9], expected: 50 },
+        { maxAverage: Infinity, splits: [7, 35, 8, 10], expected: 60 }
+    ];
+
+    const { splits, expected } = typicalData.find(data => userAverage <= data.maxAverage)!;
+
+    if (splits.reduce((a, b) => a + b, 0) !== expected) {
+        console.log("There is an error with the expected splits. Please verify");
     }
 
-    if (expectedSplits[0] + expectedSplits[1] + expectedSplits[2] + expectedSplits[3] != expected) {
-        console.log("There is an error with the expected splits. Please verify")
-    }
-
-    let scalar = (userAverage / expected);
-
-    for (let i = 0; i < 4; i++) {
-        expectedSplits[i] *= scalar;
-    }
-
-    return expectedSplits;
+    const scalar = userAverage / expected;
+    return splits.map(split => split * scalar);
 }
