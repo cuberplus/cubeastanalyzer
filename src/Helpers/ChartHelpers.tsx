@@ -13,9 +13,9 @@ export function createTooltip(description: string) {
 export function buildChartHtml(chart: JSX.Element, title: string, tooltip: string): JSX.Element {
     return (
         <Col className="col-12 col-lg-6">
-            <Card className="p-2">
-                <OverlayTrigger placement="auto" overlay={createTooltip(tooltip)}>
-                    <CardText className="text-center">
+            <Card className="p-3 shadow-sm">
+                <OverlayTrigger placement="top" overlay={createTooltip(tooltip)}>
+                    <CardText className="text-center fw-bold">
                         {title} ⓘ
                     </CardText>
                 </OverlayTrigger>

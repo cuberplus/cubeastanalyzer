@@ -528,77 +528,42 @@ export class ChartPanel extends React.Component<ChartPanelProps, ChartPanelState
     }
 
     buildRunningColorPercentages() {
-        let checkIfWhite = (crossColor: CrossColor) => { return crossColor == CrossColor.White };
-        let checkIfYellow = (crossColor: CrossColor) => { return crossColor == CrossColor.Yellow };
-        let checkIfRed = (crossColor: CrossColor) => { return crossColor == CrossColor.Red };
-        let checkIfOrange = (crossColor: CrossColor) => { return crossColor == CrossColor.Orange };
-        let checkIfBlue = (crossColor: CrossColor) => { return crossColor == CrossColor.Blue };
-        let checkIfGreen = (crossColor: CrossColor) => { return crossColor == CrossColor.Green };
-        let checkIfUnknown = (crossColor: CrossColor) => { return crossColor == CrossColor.Unknown };
+        const colors = [
+            { color: CrossColor.White, label: 'White', borderColor: 'Black', backgroundColor: 'Black' },
+            { color: CrossColor.Yellow, label: 'Yellow', borderColor: 'Yellow', backgroundColor: 'Yellow' },
+            { color: CrossColor.Red, label: 'Red', borderColor: 'Red', backgroundColor: 'Red' },
+            { color: CrossColor.Orange, label: 'Orange', borderColor: 'Orange', backgroundColor: 'Orange' },
+            { color: CrossColor.Blue, label: 'Blue', borderColor: 'Blue', backgroundColor: 'Blue' },
+            { color: CrossColor.Green, label: 'Green', borderColor: 'Green', backgroundColor: 'Green' }
+        ];
 
-        let movingPercentWhite = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfWhite);
-        let movingPercentYellow = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfYellow);
-        let movingPercentRed = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfRed);
-        let movingPercentOrange = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfOrange);
-        let movingPercentBlue = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfBlue);
-        let movingPercentGreen = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfGreen);
-        let movingPercentUnknown = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, checkIfUnknown);
+        // Check if there are any 'Unknown' color data points
+        const hasUnknownColor = this.props.solves.some(solve => solve.crossColor === CrossColor.Unknown);
+        if (hasUnknownColor) {
+            colors.push({ color: CrossColor.Unknown, label: 'Unknown', borderColor: 'Purple', backgroundColor: 'Purple' });
+        }
+
+        let datasets = colors.map(({ color, label, borderColor, backgroundColor }) => {
+            let movingPercent = calculateMovingPercentage(this.props.solves.map(x => x.crossColor), this.props.windowSize, (crossColor: CrossColor) => crossColor == color);
+            movingPercent = reduceDataset(movingPercent, this.props.pointsPerGraph);
+            return {
+                label: `Percentage of solves with ${label} cross over last ${this.props.windowSize}`,
+                data: movingPercent,
+                borderColor,
+                backgroundColor
+            };
+        });
 
         let labels = [];
-        for (let i = 1; i <= movingPercentWhite.length; i++) {
-            labels.push(i.toString())
-        };
-
-        movingPercentWhite = reduceDataset(movingPercentWhite, this.props.pointsPerGraph);
-        movingPercentYellow = reduceDataset(movingPercentYellow, this.props.pointsPerGraph);
-        movingPercentRed = reduceDataset(movingPercentRed, this.props.pointsPerGraph);
-        movingPercentOrange = reduceDataset(movingPercentOrange, this.props.pointsPerGraph);
-        movingPercentBlue = reduceDataset(movingPercentBlue, this.props.pointsPerGraph);
-        movingPercentGreen = reduceDataset(movingPercentGreen, this.props.pointsPerGraph);
-        movingPercentUnknown = reduceDataset(movingPercentUnknown, this.props.pointsPerGraph);
-
-
+        for (let i = 1; i <= datasets[0].data.length; i++) {
+            labels.push(i.toString());
+        }
         labels = reduceDataset(labels, this.props.pointsPerGraph);
 
         let data: ChartData<"line"> = {
             labels,
-            datasets: [{
-                label: `Percentage of solves with white cross over last ${this.props.windowSize}`,
-                data: movingPercentWhite,
-                borderColor: 'Black',
-                backgroundColor: 'Black'
-            }, {
-                label: `Percentage of solves with yellow cross over last ${this.props.windowSize}`,
-                data: movingPercentYellow,
-                borderColor: 'Yellow',
-                backgroundColor: 'Yellow'
-            }, {
-                label: `Percentage of solves with red cross over last ${this.props.windowSize}`,
-                data: movingPercentRed,
-                borderColor: 'Red',
-                backgroundColor: 'Red'
-            }, {
-                label: `Percentage of solves with orange cross over last ${this.props.windowSize}`,
-                data: movingPercentOrange,
-                borderColor: 'Orange',
-                backgroundColor: 'Orange'
-            }, {
-                label: `Percentage of solves with blue cross over last ${this.props.windowSize}`,
-                data: movingPercentBlue,
-                borderColor: 'Blue',
-                backgroundColor: 'Blue'
-            }, {
-                label: `Percentage of solves with green cross over last ${this.props.windowSize}`,
-                data: movingPercentGreen,
-                borderColor: 'Green',
-                backgroundColor: 'Green'
-            }, {
-                label: `Percentage of solves with unknown cross over last ${this.props.windowSize}`,
-                data: movingPercentUnknown,
-                borderColor: 'Purple',
-                backgroundColor: 'Purple'
-            }]
-        }
+            datasets
+        };
 
         return data;
     }
