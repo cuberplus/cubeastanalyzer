@@ -1,5 +1,6 @@
-import { GetEmptyStep, GetEmptySolve, CalculateWindowSize  } from '../Helpers/CubeHelpers';
+import { GetEmptyStep, GetEmptySolve, CalculateWindowSize, CalculateMostUsedMethod, CalculateAllSessionOptions  } from '../Helpers/CubeHelpers';
 import { describe, expect, test } from '@jest/globals';
+import { MethodName, Solve } from '../Helpers/Types';
 
 test('GetEmptyStep returns an empty step', () => {
     const step = GetEmptyStep();
@@ -36,33 +37,28 @@ test('GetEmptySolve returns an empty solve', () => {
     });
 });
 
-/*
 test('CalculateMostUsedMethod returns the most used method', () => {
     const solves: Solve[] = [
-        { method: MethodName.CFOP, ...GetEmptySolve() },
-        { method: MethodName.Roux, ...GetEmptySolve() },
-        { method: MethodName.CFOP, ...GetEmptySolve() }
+        { ...GetEmptySolve(), method: MethodName.CFOP },
+        { ...GetEmptySolve(), method: MethodName.Roux },
+        { ...GetEmptySolve(), method: MethodName.CFOP }
     ];
     expect(CalculateMostUsedMethod(solves)).toBe(MethodName.CFOP);
 });
-*/
 
 test('CalculateWindowSize returns the correct window size', () => {
     expect(CalculateWindowSize(4000)).toBe(1000);
     expect(CalculateWindowSize(2000)).toBe(500);
 });
 
-/*
 test('CalculateAllSessionOptions returns unique session options', () => {
     const solves: Solve[] = [
-        { session: "Session1", ...GetEmptySolve() },
-        { session: "Session2", ...GetEmptySolve() },
-        { session: "Session1", ...GetEmptySolve() }
+        { ...GetEmptySolve(), session: "Session1" },
+        { ...GetEmptySolve(), session: "Session2" },
+        { ...GetEmptySolve(), session: "Session1" }
     ];
     expect(CalculateAllSessionOptions(solves)).toEqual([
         { label: "Session1", value: "Session1" },
         { label: "Session2", value: "Session2" }
     ]);
 });
-
-*/
