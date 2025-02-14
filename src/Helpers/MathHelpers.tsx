@@ -117,12 +117,11 @@ export function calculateMovingPercentage(data: any[], window: number, criteria:
         }
     }
     result.push(good / window * 100);
-    const steps = data.length - window - 1;
-    for (let i = 0; i < steps; ++i) {
-        if (criteria(data[i])) {
+    for (let i = window; i < data.length; ++i) {
+        if (criteria(data[i - window])) {
             good--;
         }
-        if (criteria(data[i + window])) {
+        if (criteria(data[i])) {
             good++;
         }
         result.push(good / window * 100);
