@@ -15,7 +15,7 @@ export function parseCsv(stringVal: string, splitter: string): Solve[] {
         "id": (obj, value) => { obj.id = value; },
         "time": (obj, value) => { obj.time = Number(value) / 1000; if (obj.time < 1) obj.isCorrupt = true; },
         "date": (obj, value) => { obj.date = moment.utc(value, 'YYYY-MM-DD hh:mm:ss').toDate(); },
-        "solution_rotation": (obj, value) => { obj.crossColor = Const.crossMappings.get(value) ?? CrossColor.Unknown; if (obj.crossColor === CrossColor.Unknown) obj.isCorrupt = true; },
+        "solution_rotation": (obj, value) => { obj.crossColor = Const.crossMappings.get(value) ?? CrossColor.Unknown },
         "scramble": (obj, value) => { obj.scramble = value; },
         "solving_method": (obj, value) => { obj.method = value as MethodName; },
         "turns_per_second": (obj, value) => { obj.tps = Number(value); },
